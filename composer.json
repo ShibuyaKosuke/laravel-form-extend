@@ -1,0 +1,36 @@
+{
+    "name": "shibuyakosuke/laravel-form-extend",
+    "description": "Laravel 7+ form wrappers for Bootstrap and bulma.",
+    "keywords": [
+        "laravel",
+        "form",
+        "bootstrap",
+        "bootstrap 3",
+        "bootstrap 4",
+        "bulma"
+    ],
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "ShibuyaKosuke\\LaravelFormExtend\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ShibuyaKosuke\\LaravelFormExtend\\Providers\\ServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^7.2.5",
+        "laravelcollective/html": "~5.0 | ~6.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ShibuyaKosuke",
+            "email": "shibuya@imagenious.co.jp"
+        }
+    ]
+}

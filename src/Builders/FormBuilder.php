@@ -1,0 +1,895 @@
+<?php
+
+namespace ShibuyaKosuke\LaravelFormExtend\Builders;
+
+use ArrayAccess;
+use Collective\Html\FormBuilder as CollectiveFormBuilder;
+use Collective\Html\HtmlBuilder;
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
+use DateTime;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
+use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
+
+/**
+ * Class FormBuilder
+ * @package ShibuyaKosuke\LaravelFormExtend\Builders
+ */
+abstract class FormBuilder
+{
+    /**
+     * @var Collection $config
+     */
+    protected $config;
+
+    /**
+     * @var HtmlBuilder $html LaravelCollective/HtmlBuilder
+     */
+    protected $html;
+
+    /**
+     * @var CollectiveFormBuilder $form LaravelCollective/FormBuilder
+     */
+    protected $form;
+
+    /**
+     * @var bool form style horizontal
+     */
+    protected $is_horizontal = false;
+
+    /**
+     * The errorBag that is used for validation (multiple forms).
+     *
+     * @var string
+     */
+    protected $errorBag;
+
+    /**
+     * FormBuilder constructor.
+     * @param Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+        $this->config = collect($this->app['config']->get(ServiceProvider::KEY));
+
+        if (is_null($this->html)) {
+            $this->html = new HtmlBuilder(
+                $app['url'],
+                $app['view']
+            );
+        }
+        if (is_null($this->form)) {
+            $this->form = new CollectiveFormBuilder(
+                $app['html'],
+                $app['url'],
+                $app['view'],
+                $app['session.store']->token(),
+                $app['request']
+            );
+            $this->form->setSessionStore($app['session.store']);
+        }
+    }
+
+    /**
+     * get selected css framework name
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->config->get('default');
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->form, $name], $arguments);
+    }
+
+    /**
+     * Form open tag
+     *
+     * @param array $options
+     * @return HtmlString
+     */
+    public function open($options = [])
+    {
+        if (array_key_exists('error_bag', $options)) {
+            $this->setErrorBag($options['error_bag']);
+        }
+        return $this->form->open($options);
+    }
+
+    /**
+     * Form open tag for horizontal form
+     *
+     * @param array $options
+     * @return HtmlString
+     */
+    public function horizontal($options = [])
+    {
+        $this->addFormElementClass($options, $this->getHorizontalFormClassName());
+        $this->is_horizontal = true;
+        return $this->form->open($options);
+    }
+
+    /**
+     * check in horizontal form
+     *
+     * @return bool
+     */
+    public function isHorizontal(): bool
+    {
+        return $this->is_horizontal;
+    }
+
+    /**
+     * Form close tag
+     *
+     * @return HtmlString|string
+     */
+    public function close()
+    {
+        if ($this->is_horizontal) {
+            $this->is_horizontal = false;
+        }
+        return $this->form->close();
+    }
+
+    /**
+     * Output html tags
+     *
+     * @param mixed ...$html
+     * @return string
+     * @required php >=5.6
+     */
+    protected function toHtml(...$html): string
+    {
+        return (new HtmlString(implode($html)))->toHtml();
+    }
+
+    /**
+     * get form group
+     *
+     * @param $label
+     * @param $form
+     * @param string $name
+     * @return HtmlString
+     */
+    protected function formGroup($label, $form, $name)
+    {
+        $error = $this->getFieldError($name);
+        $errorElements = ($error) ? $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) : null;
+
+        $this->addFormElementClass($attributes, $this->getFormGroupClassName());
+
+        if ($this->isHorizontal()) {
+            return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
+        }
+
+        return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
+    }
+
+    /**
+     * label
+     *
+     * @param string $name
+     * @param null $value
+     * @param array $options
+     * @param bool $escape_html
+     * @return HtmlString|null
+     */
+    public function label(string $name, $value = null, $options = [], $escape_html = true)
+    {
+        if ($value === false) {
+            return null;
+        }
+        return $this->form->label($name, $value, $options, $escape_html);
+    }
+
+    /**
+     * input
+     *
+     * @param string $type
+     * @param string $name
+     * @param null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
+    {
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $this->form->input($type, $name, $value, $options),
+            $name
+        );
+    }
+
+    /**
+     * input::password
+     *
+     * @param string $name
+     * @param null $label
+     * @param array $options
+     * @return HtmlString
+     */
+    public function password(string $name, $label = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, '', $options);
+    }
+
+    /**
+     * input::range
+     *
+     * @param string $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function range(string $name, $label = null, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::hidden
+     *
+     * @param string $name
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function hidden(string $name, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, false, $value, $options);
+    }
+
+    /**
+     * input::number
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function number(string $name, $label = null, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::text
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function text(string $name, $label, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::search
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function search(string $name, $label, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::tel
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function tel(string $name, $label, string $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::email
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function email(string $name, $label, string $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::date
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function date(string $name, $label, string $value = null, $options = [])
+    {
+        if ($value instanceof DateTime) {
+            $value = $value->format('Y-m-d');
+        }
+
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::datetime
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function datetime(string $name, $label, $value = null, $options = [])
+    {
+        if ($value instanceof DateTime) {
+            $value = $value->format(DateTime::RFC3339);
+        }
+
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::datetime-local
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function datetimeLocal(string $name, $label, $value = null, $options = [])
+    {
+        if ($value instanceof DateTime) {
+            $value = $value->format('Y-m-d\TH:i');
+        }
+
+        return $this->input('datetime-local', $name, $label, $value, $options);
+    }
+
+    /**
+     * input::time
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function time(string $name, $label, $value = null, $options = [])
+    {
+        if ($value instanceof DateTime) {
+            $value = $value->format('H:i');
+        }
+
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::url
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function url(string $name, $label, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::week
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function week(string $name, $label, $value = null, $options = [])
+    {
+        if ($value instanceof DateTime) {
+            $value = $value->format('Y-\WW');
+        }
+
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::file
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param array $options
+     * @return HtmlString
+     */
+    public function file(string $name, $label, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, null, $options);
+    }
+
+    /**
+     * input::color
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function color(string $name, $label, $value = null, $options = [])
+    {
+        return $this->input(__FUNCTION__, $name, $label, $value, $options);
+    }
+
+    /**
+     * input::submit
+     *
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function submit(string $value = null, $options = [])
+    {
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        return $this->formGroup(
+            null,
+            $this->form->submit($value, $options),
+            null
+        );
+    }
+
+    /**
+     * input::button
+     *
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function button(string $value = null, $options = [])
+    {
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        return $this->formGroup(
+            null,
+            $this->form->button($value, $options),
+            null
+        );
+    }
+
+    /**
+     * textarea
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function textarea(string $name, $label, $value = null, $options = [])
+    {
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $this->form->textarea($name, $value, $options),
+            $name
+        );
+    }
+
+    /**
+     * select
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param array $list
+     * @param mixed|null $selected
+     * @param array $selectAttributes
+     * @param array $optionsAttributes
+     * @param array $optgroupsAttributes
+     * @return HtmlString
+     */
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
+    {
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        $this->addFormElementClass($selectAttributes, $this->getFormControlClassName());
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($selectAttributes, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $this->form->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes),
+            $name
+        );
+    }
+
+    /**
+     * selectRange
+     *
+     * @param string $name
+     * @param string|null $label
+     * @param $begin
+     * @param $end
+     * @param null $selected
+     * @param array $options
+     * @return HtmlString
+     */
+    public function selectRange(string $name, $label, $begin, $end, $selected = null, $options = [])
+    {
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $this->form->selectRange($name, $begin, $end, $selected, $options),
+            $name
+        );
+    }
+
+    /**
+     * Create a checkbox input.
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param int $value
+     * @param mixed|null $checked
+     * @param array $options
+     */
+    public function checkbox(string $name, $label = null, $value = 1, $checked = null, array $options = [])
+    {
+        $inputElement = $this->checkboxElement($name, $label, $value, $checked, false, $options);
+
+        return $this->formGroup(null, $inputElement, $name);
+    }
+
+    /**
+     * Create a single checkbox element.
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param int $value
+     * @param mixed|null $checked
+     * @param bool $inline
+     * @param array $options
+     * @return HtmlString
+     */
+    public function checkboxElement($name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    {
+        $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
+        $inputElement = $this->form->checkbox($name, $value, $checked, $options);
+
+        $this->addFormElementClass($labelAttributes, $this->getCheckboxLabelClassName($inline));
+        $labelElement = $this->html->tag('label', $inputElement->toHtml() . ' ' . $label, $labelAttributes);
+
+        $this->addFormElementClass($attributes, $this->getCheckboxWrapperClassName($inline));
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($attributes, $this->getFormControlErrorClassName());
+        }
+        return $this->html->tag('div', $labelElement->toHtml(), $attributes);
+    }
+
+    /**
+     * Create a collection of checkboxes.
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param array $choices
+     * @param array $checkedValues
+     * @param bool $inline
+     * @param array $options
+     */
+    public function checkboxes(string $name, $label = null, $choices = [], $checkedValues = [], $inline = false, array $options = [])
+    {
+    }
+
+    /**
+     * Create a radio input.
+     *
+     * @param string $name
+     * @param mixed $label
+     * @param mixed $value
+     * @param mixed $checked
+     * @param array $options
+     */
+    public function radio(string $name, $label = null, $value = null, $checked = null, array $options = [])
+    {
+    }
+
+    /**
+     * Create a single radio input.
+     *
+     * @param string $name
+     * @param mixed $label
+     * @param mixed $value
+     * @param mixed $checked
+     * @param bool $inline
+     * @param array $options
+     */
+    public function radioElement(string $name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
+    {
+    }
+
+    /**
+     * Create a collection of radio inputs.
+     *
+     * @param string $name
+     * @param mixed $label
+     * @param array $choices
+     * @param mixed $checkedValue
+     * @param bool $inline
+     * @param array $options
+     */
+    public function radios(string $name, $label = null, $choices = [], $checkedValue = null, $inline = false, array $options = [])
+    {
+    }
+
+    /**
+     * Build class names for form element
+     *
+     * @param array $options form element attributes
+     * @param string $value class name to be add
+     * @return mixed
+     */
+    protected function addFormElementClass(&$options, string $value)
+    {
+        if (!is_null($options) && !is_array($options)) {
+            return $options;
+        }
+
+        if (!Arr::has($options, 'class')) {
+            Arr::set($options, 'class', []);
+        }
+        if ($value !== '') {
+            if (is_string($options['class'])) {
+                $options['class'] = explode(' ', $options['class']);
+            }
+            array_push($options['class'], $value);
+        }
+        return $options;
+    }
+
+    /**
+     * Get the error bag.
+     *
+     * @return string
+     */
+    protected function getErrorBag(): string
+    {
+        return $this->errorBag ?: 'default';
+    }
+
+    /**
+     * Set the error bag.
+     *
+     * @param string $errorBag
+     * @return void
+     */
+    protected function setErrorBag(string $errorBag)
+    {
+        $this->errorBag = $errorBag;
+    }
+
+    /**
+     * Flatten arrayed field names to work with the validator, including removing "[]",
+     * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
+     *
+     * @param string $field
+     * @return string
+     */
+    protected function flattenFieldName($field): string
+    {
+        return preg_replace_callback("/\[(.*)]/U", function ($matches) {
+            if (!empty($matches[1]) || $matches[1] === '0') {
+                return "." . $matches[1];
+            }
+            return null;
+        }, $field);
+    }
+
+    /**
+     * Get the MessageBag of errors that is populated by the
+     * validator.
+     *
+     * @return ViewErrorBag
+     */
+    protected function getErrors()
+    {
+        return $this->form->getSessionStore()->get('errors');
+    }
+
+    /**
+     * Get the first error for a given field, using the provided
+     * format, defaulting to the normal Bootstrap 3 format.
+     *
+     * @param string|null $field
+     * @return mixed
+     */
+    protected function getFieldError(string $field = null)
+    {
+        $field = $this->flattenFieldName($field);
+
+        if ($this->getErrors()) {
+
+            if ($this->getErrorBag()) {
+                $errorBag = $this->getErrors()->{$this->getErrorBag()};
+            } else {
+                $errorBag = $this->getErrors();
+            }
+
+            return $errorBag->first($field, ':message');
+        }
+
+        return null;
+    }
+
+    /**
+     * get form element class name
+     *
+     * @param string $class
+     * @return array|ArrayAccess|mixed
+     */
+    protected function getClassName(string $class)
+    {
+        return Arr::get($this->config, sprintf('class_name.%s.%s', $this->name(), $class)) ?: '';
+    }
+
+    /**
+     * form element class name
+     *
+     * @return string
+     */
+    protected function getFormControlClassName(): string
+    {
+        return $this->getClassName('form_control');
+    }
+
+    /**
+     * form group class name
+     *
+     * @return string
+     */
+    protected function getFormGroupClassName(): string
+    {
+        return $this->getClassName('form_group');
+    }
+
+    /**
+     * form horizontal class name
+     *
+     * @return string
+     */
+    protected function getHorizontalFormClassName(): string
+    {
+        return $this->getClassName('horizontal');
+    }
+
+    /**
+     * form inline class name
+     * @return string
+     */
+    protected function getInlineFormClassName(): string
+    {
+        return $this->getClassName('inline');
+    }
+
+    /**
+     * form element on error class name
+     *
+     * @return string
+     */
+    protected function getFormGroupErrorClassName(): string
+    {
+        return $this->getClassName('form_group_error');
+    }
+
+    /**
+     * form element on error class name
+     *
+     * @return string
+     */
+    protected function getFormControlErrorClassName(): string
+    {
+        return $this->getClassName('form_control_error');
+    }
+
+    /**
+     * form element on error class name
+     *
+     * @return string
+     */
+    protected function getHelpTextErrorClassName(): string
+    {
+        return $this->getClassName('help_text_error');
+    }
+
+    /**
+     * @param bool $inline
+     * @return string
+     */
+    protected function getCheckboxWrapperClassName(bool $inline = false): string
+    {
+        if ($inline) {
+            return $this->getClassName('inline_checkbox_wrapper');
+        }
+        return $this->getClassName('checkbox_wrapper');
+    }
+
+    /**
+     * @param bool $inline
+     * @return string
+     */
+    protected function getCheckboxInputClassName(bool $inline = false): string
+    {
+        if ($inline) {
+            return $this->getClassName('inline_checkbox_input');
+        }
+        return $this->getClassName('checkbox_input');
+    }
+
+    /**
+     * @param bool $inline
+     * @return string
+     */
+    protected function getCheckboxLabelClassName(bool $inline = false): string
+    {
+        if ($inline) {
+            return $this->getClassName('inline_checkbox_label');
+        }
+        return $this->getClassName('checkbox_label');
+    }
+}
