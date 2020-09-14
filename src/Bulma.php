@@ -11,7 +11,6 @@ use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
  */
 class Bulma extends FormBuilder
 {
-
     /**
      * input
      *
@@ -21,6 +20,7 @@ class Bulma extends FormBuilder
      * @param string|null $value
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::input()
      */
     public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
     {
@@ -45,6 +45,7 @@ class Bulma extends FormBuilder
      * @param string|null $value
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::submit()
      */
     public function submit(string $value = null, $options = [])
     {
@@ -66,6 +67,7 @@ class Bulma extends FormBuilder
      * @param string|null $value
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::button()
      */
     public function button(string $value = null, $options = [])
     {
@@ -92,6 +94,7 @@ class Bulma extends FormBuilder
      * @param array $optionsAttributes
      * @param array $optgroupsAttributes
      * @return HtmlString
+     * @see FormBuilder::select()
      */
     public function select(string $name, $label, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
     {
@@ -123,6 +126,7 @@ class Bulma extends FormBuilder
      * @param null $selected
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::selectRange()
      */
     public function selectRange(string $name, $label, $begin, $end, $selected = null, $options = [])
     {
@@ -150,6 +154,7 @@ class Bulma extends FormBuilder
      * @param string|null $value
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::textarea()
      */
     public function textarea(string $name, $label, $value = null, $options = [])
     {
@@ -178,6 +183,7 @@ class Bulma extends FormBuilder
      * @param mixed|null $checked
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::checkbox()
      */
     public function checkbox(string $name, $label = null, $value = 1, $checked = null, array $options = [])
     {
@@ -196,6 +202,7 @@ class Bulma extends FormBuilder
      * @param mixed $checked
      * @param array $options
      * @return HtmlString
+     * @see FormBuilder::radio()
      */
     public function radio(string $name, $label = null, $value = null, $checked = null, array $options = [])
     {
@@ -205,6 +212,11 @@ class Bulma extends FormBuilder
         return $this->formGroup(null, $inputElement, $name);
     }
 
+    /**
+     * Only use when Bulma support
+     * @param $inputElement
+     * @return HtmlString
+     */
     private function wrapElement($inputElement)
     {
         return $this->html->tag('div', $inputElement->toHtml(), ['class' => 'control']);

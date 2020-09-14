@@ -96,6 +96,8 @@ abstract class FormBuilder
     }
 
     /**
+     * Dynamically handle calls to the class.
+     *
      * @param $method
      * @param $parameters
      * @return mixed
@@ -623,7 +625,7 @@ abstract class FormBuilder
      * @param array $options
      * @return HtmlString
      */
-    public function checkboxElement($name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
     {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);

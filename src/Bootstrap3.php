@@ -18,6 +18,7 @@ class Bootstrap3 extends FormBuilder
      * @param $form
      * @param string $name
      * @return HtmlString
+     * @see FormBuilder::formGroup()
      */
     public function formGroup($label, $form, $name)
     {
@@ -37,11 +38,14 @@ class Bootstrap3 extends FormBuilder
     }
 
     /**
+     * label
+     *
      * @param string $name
      * @param null $value
      * @param array $options
      * @param bool $escape_html
      * @return HtmlString|null
+     * @see FormBuilder::label()
      */
     public function label(string $name, $value = null, $options = [], $escape_html = true)
     {
@@ -50,7 +54,19 @@ class Bootstrap3 extends FormBuilder
         return parent::label($name, $value, $options, $escape_html);
     }
 
-    public function checkboxElement($name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    /**
+     * Create a single checkbox element.
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param int $value
+     * @param mixed|null $checked
+     * @param bool $inline
+     * @param array $options
+     * @return HtmlString
+     * @see FormBuilder::checkboxElement()
+     */
+    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
     {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
