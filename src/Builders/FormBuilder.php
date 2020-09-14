@@ -486,7 +486,7 @@ abstract class FormBuilder
      */
     public function submit(string $value = null, $options = [])
     {
-        $this->addFormElementClass($options, $this->getFormControlClassName());
+        $this->addFormElementClass($options, $this->getButtonClass());
 
         return $this->formGroup(
             null,
@@ -504,7 +504,7 @@ abstract class FormBuilder
      */
     public function button(string $value = null, $options = [])
     {
-        $this->addFormElementClass($options, $this->getFormControlClassName());
+        $this->addFormElementClass($options, $this->getButtonClass());
 
         return $this->formGroup(
             null,
@@ -600,6 +600,7 @@ abstract class FormBuilder
      * @param int $value
      * @param mixed|null $checked
      * @param array $options
+     * @return HtmlString
      */
     public function checkbox(string $name, $label = null, $value = 1, $checked = null, array $options = [])
     {
@@ -656,9 +657,13 @@ abstract class FormBuilder
      * @param mixed $value
      * @param mixed $checked
      * @param array $options
+     * @return HtmlString
      */
     public function radio(string $name, $label = null, $value = null, $checked = null, array $options = [])
     {
+        $inputElement = $this->radioElement($name, $label, $value, $checked, false, $options);
+
+        return $this->formGroup(null, $inputElement, $name);
     }
 
     /**
@@ -670,9 +675,21 @@ abstract class FormBuilder
      * @param mixed $checked
      * @param bool $inline
      * @param array $options
+     * @return HtmlString
      */
     public function radioElement(string $name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
     {
+        $this->addFormElementClass($options, $this->getRadioInputClassName($inline));
+        $inputElement = $this->form->radio($name, $value, $checked, $options);
+
+        $this->addFormElementClass($labelAttributes, $this->getRadioLabelClassName($inline));
+        $labelElement = $this->html->tag('label', $inputElement->toHtml() . ' ' . $label, $labelAttributes);
+
+        $this->addFormElementClass($attributes, $this->getRadioWrapperClassName($inline));
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($attributes, $this->getFormControlErrorClassName());
+        }
+        return $this->html->tag('div', $labelElement->toHtml(), $attributes);
     }
 
     /**
@@ -868,6 +885,11 @@ abstract class FormBuilder
         return $this->getClassName('help_text_error');
     }
 
+    protected function getButtonClass():string
+    {
+        return $this->getClassName('button');
+    }
+
     /**
      * @param bool $inline
      * @return string
@@ -902,5 +924,41 @@ abstract class FormBuilder
             return $this->getClassName('inline_checkbox_label');
         }
         return $this->getClassName('checkbox_label');
+    }
+
+    /**
+     * @param bool $inline
+     * @return string
+     */
+    protected function getRadioWrapperClassName(bool $inline = false): string
+    {
+        if ($inline) {
+            return $this->getClassName('inline_radio_wrapper');
+        }
+        return $this->getClassName('radio_wrapper');
+    }
+
+    /**
+     * @param bool $inline
+     * @return string
+     */
+    protected function getRadioInputClassName(bool $inline = false): string
+    {
+        if ($inline) {
+            return $this->getClassName('inline_radio_input');
+        }
+        return $this->getClassName('radio_input');
+    }
+
+    /**
+     * @param bool $inline
+     * @return string
+     */
+    protected function getRadioLabelClassName(bool $inline = false): string
+    {
+        if ($inline) {
+            return $this->getClassName('inline_radio_label');
+        }
+        return $this->getClassName('radio_label');
     }
 }

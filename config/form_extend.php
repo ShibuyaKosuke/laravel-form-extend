@@ -19,7 +19,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'default' => 'bootstrap4',
+    'default' => 'bulma',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,12 +48,21 @@ return [
             'form_control_error' => 'is-invalid',
             'help_text_error' => 'invalid-feedback',
 
+            'button' => 'btn btn-primary',
+
             'checkbox_wrapper' => 'form-check',
             'checkbox_input' => 'form-check-input',
             'checkbox_label' => 'form-check-label',
             'inline_checkbox_wrapper' => 'form-check form-check-inline',
             'inline_checkbox_input' => 'form-check-input',
-            'inline_checkbox_label' => 'form-check-label'
+            'inline_checkbox_label' => 'form-check-label',
+
+            'radio_wrapper' => 'form-check',
+            'radio_input' => 'form-check-input',
+            'radio_label' => 'form-check-label',
+            'inline_radio_wrapper' => 'form-check form-check-inline',
+            'inline_radio_input' => 'form-check-input',
+            'inline_radio_label' => 'form-check-label'
         ],
 
         'bootstrap3' => [
@@ -65,12 +74,21 @@ return [
             'form_control_error' => null,
             'help_text_error' => 'help-block',
 
+            'button' => 'btn btn-primary',
+
             'checkbox_wrapper' => 'checkbox',
             'checkbox_input' => null,
             'checkbox_label' => null,
             'inline_checkbox_wrapper' => '',
             'inline_checkbox_input' => null,
-            'inline_checkbox_label' => null
+            'inline_checkbox_label' => 'checkbox-inline',
+
+            'radio_wrapper' => 'radio',
+            'radio_input' => null,
+            'radio_label' => null,
+            'inline_radio_wrapper' => '',
+            'inline_radio_input' => null,
+            'inline_radio_label' => 'radio-inline'
         ],
 
         'bulma' => [
@@ -82,12 +100,21 @@ return [
             'form_control_error' => 'is-danger',
             'help_text_error' => 'help is-danger',
 
-            'checkbox_wrapper' => 'form-check',
-            'checkbox_input' => 'form-check-input',
+            'button' => 'button is-link',
+
+            'checkbox_wrapper' => 'control',
+            'checkbox_input' => null,
             'checkbox_label' => 'checkbox',
-            'inline_checkbox_wrapper' => 'form-check form-check-inline',
-            'inline_checkbox_input' => 'form-check-input',
-            'inline_checkbox_label' => 'form-check-label'
+            'inline_checkbox_wrapper' => 'control',
+            'inline_checkbox_input' => null,
+            'inline_checkbox_label' => 'checkbox',
+
+            'radio_wrapper' => 'control',
+            'radio_input' => null,
+            'radio_label' => 'radio',
+            'inline_radio_wrapper' => 'control',
+            'inline_radio_input' => null,
+            'inline_radio_label' => 'radio'
         ]
     ]
 ];
