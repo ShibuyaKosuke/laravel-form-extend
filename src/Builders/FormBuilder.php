@@ -21,6 +21,26 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 abstract class FormBuilder
 {
     /**
+     * Vertical form
+     */
+    const VERTICAL = 1;
+
+    /**
+     * Horizontal form
+     */
+    const HORIZONTAL = 2;
+
+    /**
+     * Inline form
+     */
+    const INLINE = 3;
+
+    /**
+     * @var int $form_type form style
+     */
+    protected $form_type = self::VERTICAL;
+
+    /**
      * @var Application $app
      */
     protected $app;
@@ -44,11 +64,6 @@ abstract class FormBuilder
      * @var CollectiveFormBuilder $form LaravelCollective/FormBuilder
      */
     protected $form;
-
-    /**
-     * @var bool form style horizontal
-     */
-    protected $is_horizontal = false;
 
     /**
      * The errorBag that is used for validation (multiple forms).
@@ -83,6 +98,16 @@ abstract class FormBuilder
             );
             $this->form->setSessionStore($app['session.store']);
         }
+    }
+
+    /**
+     * set form style
+     *
+     * @param int $type form style
+     */
+    protected function setType(int $type)
+    {
+        $this->form_type = $type;
     }
 
     /**
@@ -135,10 +160,33 @@ abstract class FormBuilder
      * @param array $options
      * @return HtmlString
      */
-    public function horizontal($options = [])
+    public function vertical($options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getHorizontalFormClassName());
-        $this->is_horizontal = true;
+        $this->setType(self::VERTICAL);
+        return $this->open($options);
+    }
+
+    /**
+     * check in horizontal form
+     *
+     * @return bool
+     */
+    public function isVertical(): bool
+    {
+        return $this->form_type === self::VERTICAL;
+    }
+
+    /**
+     * Form open tag for horizontal form
+     *
+     * @param array $options
+     * @return HtmlString
+     */
+    public function horizontal($options = []): HtmlString
+    {
+        $this->addFormElementClass($options, $this->getHorizontalFormClassName());
+        $this->setType(self::HORIZONTAL);
         return $this->open($options);
     }
 
@@ -149,7 +197,30 @@ abstract class FormBuilder
      */
     public function isHorizontal(): bool
     {
-        return $this->is_horizontal;
+        return $this->form_type === self::HORIZONTAL;
+    }
+
+    /**
+     * Form open tag for inline form
+     *
+     * @param array $options
+     * @return HtmlString
+     */
+    public function inline($options = []): HtmlString
+    {
+        $this->addFormElementClass($options, $this->getInlineFormClassName());
+        $this->setType(self::INLINE);
+        return $this->open($options);
+    }
+
+    /**
+     * check in inline form
+     *
+     * @return bool
+     */
+    public function isInline(): bool
+    {
+        return $this->form_type === self::INLINE;
     }
 
     /**
@@ -157,11 +228,9 @@ abstract class FormBuilder
      *
      * @return HtmlString|string
      */
-    public function close()
+    public function close(): HtmlString
     {
-        if ($this->is_horizontal) {
-            $this->is_horizontal = false;
-        }
+        $this->setType(self::VERTICAL);
         return $this->form->close();
     }
 
