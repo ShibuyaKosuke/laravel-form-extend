@@ -2,7 +2,7 @@
 
 Laravel 7+ form wrappers for Bootstrap and bulma.
 
-# Support
+## Support css framework
 
 - [Bootstrap 3](https://getbootstrap.com/docs/3.4/)
 - [Bootstrap 4](https://getbootstrap.com/docs/4.5/getting-started/introduction/)
