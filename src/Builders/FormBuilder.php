@@ -121,6 +121,9 @@ abstract class FormBuilder
         if (array_key_exists('error_bag', $options)) {
             $this->setErrorBag($options['error_bag']);
         }
+
+        $this->addFormElementClass($options, $this->name());
+
         return $this->form->open($options);
     }
 
@@ -134,7 +137,7 @@ abstract class FormBuilder
     {
         $this->addFormElementClass($options, $this->getHorizontalFormClassName());
         $this->is_horizontal = true;
-        return $this->form->open($options);
+        return $this->open($options);
     }
 
     /**
@@ -885,7 +888,7 @@ abstract class FormBuilder
         return $this->getClassName('help_text_error');
     }
 
-    protected function getButtonClass():string
+    protected function getButtonClass(): string
     {
         return $this->getClassName('button');
     }
