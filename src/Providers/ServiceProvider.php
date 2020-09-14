@@ -2,9 +2,11 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend\Providers;
 
+use ArrayAccess;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class ServiceProvider
@@ -55,7 +57,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             /** @var Application $app */
             $app = $this->app;
             $class = $this->defaultClass($app);
-
             return new $class($app);
         });
     }
@@ -64,7 +65,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      * get default CSS Framework class name
      *
      * @param Application $app
-     * @return array|\ArrayAccess|mixed
+     * @return array|ArrayAccess|mixed
      * @see /config/form_extend.php
      */
     private function defaultClass(Application $app)
@@ -72,6 +73,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $config = Arr::get($app['config'], self::KEY);
         $default = Arr::get($config, 'default');
         $frameworks = Arr::get($config, 'frameworks');
-        return Arr::get($frameworks, $default);
+        $class = Arr::get($frameworks, $default);
+        if (!$app->isProduction()) {
+            Log::debug($class);
+        }
+        return $class;
     }
 }

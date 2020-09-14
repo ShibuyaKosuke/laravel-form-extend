@@ -5,18 +5,13 @@ namespace ShibuyaKosuke\LaravelFormExtend\Builders;
 use ArrayAccess;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Collective\Html\HtmlBuilder;
-use Illuminate\Config\Repository;
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Contracts\Session\Session;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use DateTime;
-use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
+use ShibuyaKosuke\LaravelFormExtend\Exceptions\FormExtendException;
 use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
 /**
@@ -26,9 +21,19 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 abstract class FormBuilder
 {
     /**
+     * @var Application $app
+     */
+    protected $app;
+
+    /**
      * @var Collection $config
      */
     protected $config;
+
+    /**
+     * @var string default css framework
+     */
+    protected $default;
 
     /**
      * @var HtmlBuilder $html LaravelCollective/HtmlBuilder
@@ -59,7 +64,8 @@ abstract class FormBuilder
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->config = collect($this->app['config']->get(ServiceProvider::KEY));
+        $this->config = new Collection($this->app['config']->get(ServiceProvider::KEY));
+        $this->default = $this->config->get('default');
 
         if (is_null($this->html)) {
             $this->html = new HtmlBuilder(
@@ -86,17 +92,22 @@ abstract class FormBuilder
      */
     public function name(): string
     {
-        return $this->config->get('default');
+        return $this->default;
     }
 
     /**
-     * @param $name
-     * @param $arguments
+     * @param $method
+     * @param $parameters
      * @return mixed
+     * @throws FormExtendException
      */
-    public function __call($name, $arguments)
+    public function __call($method, $parameters)
     {
-        return call_user_func_array([$this->form, $name], $arguments);
+        try {
+            return call_user_func_array([$this->form, $method], $parameters);
+        } catch (\BadMethodCallException $e) {
+            throw new FormExtendException($e->getMessage());
+        }
     }
 
     /**

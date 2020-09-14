@@ -19,7 +19,7 @@ class Bootstrap3 extends FormBuilder
      * @param string $name
      * @return HtmlString
      */
-    protected function formGroup($label, $form, $name)
+    public function formGroup($label, $form, $name)
     {
         $error = $this->getFieldError($name);
         $errorElements = ($error) ? $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) : null;
