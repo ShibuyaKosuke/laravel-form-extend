@@ -9,7 +9,7 @@ use ShibuyaKosuke\LaravelFormExtend\Bootstrap4;
 use ShibuyaKosuke\LaravelFormExtend\Bulma;
 
 /**
- * Laravel form extend
+ * Lara-form
  */
 return [
 

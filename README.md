@@ -21,3 +21,11 @@ Publish config file.
 ```shell script
 php artisan vendor:publish --tag=lara-form
 ```
+
+## Set css framework name
+
+Edit config/lara_form.php.
+
+```
+'default' => 'bootstrap4', // bootstrap3 or bulma
+```
