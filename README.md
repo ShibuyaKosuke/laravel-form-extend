@@ -13,3 +13,11 @@ Laravel 7+ form wrappers for Bootstrap and bulma.
 ```shell script
 composer require shibuyakosuke/laravel-form-extend
 ```
+
+## Config file
+
+Publish config file.
+
+```shell script
+php artisan vendor:publish --tag=lara-form
+```

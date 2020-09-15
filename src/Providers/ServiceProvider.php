@@ -30,8 +30,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function boot()
     {
         $this->publishes([
-            self::CONFIG => config_path('form_extend.php')
-        ]);
+            self::CONFIG => config_path('lara_form.php')
+        ], 'lara-form');
     }
 
     /**
