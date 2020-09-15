@@ -19,7 +19,11 @@
         "laravel": {
             "providers": [
                 "ShibuyaKosuke\\LaravelFormExtend\\Providers\\ServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "LaraForm": "ShibuyaKosuke\\LaravelFormExtend\\Facades\\FormBuilder",
+                "LaraHtml": "ShibuyaKosuke\\LaravelFormExtend\\Facades\\HtmlBuilder"
+            }
         }
     },
     "require": {

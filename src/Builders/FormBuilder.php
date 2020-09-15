@@ -3,6 +3,7 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Builders;
 
 use ArrayAccess;
+use BadMethodCallException;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Foundation\Application;
@@ -132,7 +133,7 @@ abstract class FormBuilder
     {
         try {
             return call_user_func_array([$this->form, $method], $parameters);
-        } catch (\BadMethodCallException $e) {
+        } catch (BadMethodCallException $e) {
             throw new FormExtendException($e->getMessage());
         }
     }
@@ -718,9 +719,22 @@ abstract class FormBuilder
      * @param array $checkedValues
      * @param bool $inline
      * @param array $options
+     * @return HtmlString
      */
     public function checkboxes(string $name, $label = null, $choices = [], $checkedValues = [], $inline = false, array $options = [])
     {
+        $elements = '';
+        foreach ($choices as $value => $choiceLabel) {
+            $checked = in_array($value, (array)$checkedValues);
+            $elements .= $this->checkboxElement($name . '[]', $choiceLabel, $value, $checked, $inline, $options);
+        }
+        $wrapperOptions = [];
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($wrapperOptions, $this->getFormControlErrorClassName());
+        }
+        $wrapperElement = $this->html->tag('div', $elements, $wrapperOptions);
+
+        return $this->formGroup($label, $wrapperElement, $name);
     }
 
     /**
@@ -775,9 +789,22 @@ abstract class FormBuilder
      * @param mixed $checkedValue
      * @param bool $inline
      * @param array $options
+     * @return HtmlString
      */
     public function radios(string $name, $label = null, $choices = [], $checkedValue = null, $inline = false, array $options = [])
     {
+        $elements = '';
+        foreach ($choices as $value => $choiceLabel) {
+            $checked = $value === $checkedValue;
+            $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $options);
+        }
+        $wrapperOptions =  [];
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($wrapperOptions, $this->getFormControlErrorClassName());
+        }
+        $wrapperElement = $this->html->tag('div', $elements, $wrapperOptions);
+
+        return $this->formGroup($label, $wrapperElement, $name);
     }
 
     /**
@@ -849,7 +876,7 @@ abstract class FormBuilder
      *
      * @return ViewErrorBag
      */
-    protected function getErrors()
+    public function getErrors()
     {
         return $this->form->getSessionStore()->get('errors');
     }

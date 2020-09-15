@@ -44,7 +44,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         /**
          * Extends LaravelCollective/HtmlBuilder
          */
-        $this->app->extend('html', function () {
+        $this->app->singleton('lara-html', function () {
             /** @var Application $app */
             $app = $this->app;
             return new HtmlBuilder($app['url'], $app['view']);
@@ -53,7 +53,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         /**
          * Extends LaravelCollective/FormBuilder
          */
-        $this->app->extend('form', function () {
+        $this->app->singleton('lara-form', function () {
             /** @var Application $app */
             $app = $this->app;
             $class = $this->defaultClass($app);
