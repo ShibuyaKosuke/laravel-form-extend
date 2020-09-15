@@ -96,8 +96,15 @@ class Bulma extends FormBuilder
      * @return HtmlString
      * @see FormBuilder::select()
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
-    {
+    public function select(
+        string $name,
+        $label,
+        $list = [],
+        $selected = null,
+        array $selectAttributes = [],
+        array $optionsAttributes = [],
+        array $optgroupsAttributes = []
+    ) {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $this->addFormElementClass($selectAttributes, $this->getFormControlClassName());
@@ -106,7 +113,9 @@ class Bulma extends FormBuilder
             $this->addFormElementClass($selectAttributes, $this->getFormControlErrorClassName());
         }
 
-        $inputElement = $this->form->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes);
+        $inputElement = $this->form
+            ->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes);
+
         $inputElement = $this->wrapElement($inputElement);
 
         return $this->formGroup(
@@ -121,9 +130,9 @@ class Bulma extends FormBuilder
      *
      * @param string $name
      * @param string|null $label
-     * @param $begin
-     * @param $end
-     * @param null $selected
+     * @param string|integer $begin
+     * @param string|integer$end
+     * @param string|integer|null $selected
      * @param array $options
      * @return HtmlString
      * @see FormBuilder::selectRange()
@@ -179,7 +188,7 @@ class Bulma extends FormBuilder
      *
      * @param string $name
      * @param mixed|null $label
-     * @param int $value
+     * @param integer $value
      * @param mixed|null $checked
      * @param array $options
      * @return HtmlString
@@ -214,7 +223,7 @@ class Bulma extends FormBuilder
 
     /**
      * Only use when Bulma support
-     * @param $inputElement
+     * @param HtmlString|string $inputElement
      * @return HtmlString
      */
     private function wrapElement($inputElement)

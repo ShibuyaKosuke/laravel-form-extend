@@ -17,15 +17,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * config key name
      */
-    const KEY = 'shibuyakosuke.form_extend';
+    public const KEY = 'shibuyakosuke.form_extend';
 
     /**
      * default config file
      */
-    const CONFIG = __DIR__ . '/../../config/form_extend.php';
+    public const CONFIG = __DIR__ . '/../../config/form_extend.php';
 
     /**
      * boot method
+     * @return void
      */
     public function boot()
     {
@@ -36,6 +37,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * register method
+     * @return void
      */
     public function register()
     {

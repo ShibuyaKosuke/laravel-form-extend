@@ -24,20 +24,20 @@ abstract class FormBuilder
     /**
      * Vertical form
      */
-    const VERTICAL = 1;
+    public const VERTICAL = 1;
 
     /**
      * Horizontal form
      */
-    const HORIZONTAL = 2;
+    public const HORIZONTAL = 2;
 
     /**
      * Inline form
      */
-    const INLINE = 3;
+    public const INLINE = 3;
 
     /**
-     * @var int $form_type form style
+     * @var integer $form_type form style
      */
     protected $form_type = self::VERTICAL;
 
@@ -104,7 +104,8 @@ abstract class FormBuilder
     /**
      * set form style
      *
-     * @param int $type form style
+     * @param integer $type form style
+     * @return void
      */
     protected function setType(int $type)
     {
@@ -124,8 +125,8 @@ abstract class FormBuilder
     /**
      * Dynamically handle calls to the class.
      *
-     * @param $method
-     * @param $parameters
+     * @param string $method
+     * @param array|null $parameters
      * @return mixed
      * @throws FormExtendException
      */
@@ -141,7 +142,7 @@ abstract class FormBuilder
     /**
      * Form open tag
      *
-     * @param array $options
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function open($options = [])
@@ -158,7 +159,7 @@ abstract class FormBuilder
     /**
      * Form open tag for horizontal form
      *
-     * @param array $options
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function vertical($options = []): HtmlString
@@ -171,7 +172,7 @@ abstract class FormBuilder
     /**
      * check in horizontal form
      *
-     * @return bool
+     * @return boolean
      */
     public function isVertical(): bool
     {
@@ -181,7 +182,7 @@ abstract class FormBuilder
     /**
      * Form open tag for horizontal form
      *
-     * @param array $options
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function horizontal($options = []): HtmlString
@@ -194,7 +195,7 @@ abstract class FormBuilder
     /**
      * check in horizontal form
      *
-     * @return bool
+     * @return boolean
      */
     public function isHorizontal(): bool
     {
@@ -204,7 +205,7 @@ abstract class FormBuilder
     /**
      * Form open tag for inline form
      *
-     * @param array $options
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function inline($options = []): HtmlString
@@ -217,7 +218,7 @@ abstract class FormBuilder
     /**
      * check in inline form
      *
-     * @return bool
+     * @return boolean
      */
     public function isInline(): bool
     {
@@ -250,15 +251,17 @@ abstract class FormBuilder
     /**
      * get form group
      *
-     * @param $label
-     * @param $form
-     * @param string $name
+     * @param string $label
+     * @param HtmlString $form
+     * @param string $name name attribute
      * @return HtmlString
      */
     protected function formGroup($label, $form, $name)
     {
         $error = $this->getFieldError($name);
-        $errorElements = ($error) ? $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) : null;
+        $errorElements = ($error) ?
+            $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) :
+            null;
 
         $this->addFormElementClass($attributes, $this->getFormGroupClassName());
 
@@ -272,10 +275,10 @@ abstract class FormBuilder
     /**
      * label
      *
-     * @param string $name
-     * @param null $value
-     * @param array $options
-     * @param bool $escape_html
+     * @param string $name name attribute
+     * @param mixed|null $value value property
+     * @param array $options attributes array
+     * @param boolean $escape_html
      * @return HtmlString|null
      */
     public function label(string $name, $value = null, $options = [], $escape_html = true)
@@ -290,10 +293,10 @@ abstract class FormBuilder
      * input
      *
      * @param string $type
-     * @param string $name
-     * @param null $label
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
      * @param string|null $value
-     * @param array $options
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
@@ -314,9 +317,9 @@ abstract class FormBuilder
     /**
      * input::password
      *
-     * @param string $name
-     * @param null $label
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function password(string $name, $label = null, $options = [])
@@ -327,10 +330,10 @@ abstract class FormBuilder
     /**
      * input::range
      *
-     * @param string $name
-     * @param null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function range(string $name, $label = null, $value = null, $options = [])
@@ -341,9 +344,9 @@ abstract class FormBuilder
     /**
      * input::hidden
      *
-     * @param string $name
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function hidden(string $name, $value = null, $options = [])
@@ -354,10 +357,10 @@ abstract class FormBuilder
     /**
      * input::number
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function number(string $name, $label = null, $value = null, $options = [])
@@ -368,10 +371,10 @@ abstract class FormBuilder
     /**
      * input::text
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param string|null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param string|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function text(string $name, $label, $value = null, $options = [])
@@ -382,10 +385,10 @@ abstract class FormBuilder
     /**
      * input::search
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param string|null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param string|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function search(string $name, $label, $value = null, $options = [])
@@ -396,10 +399,10 @@ abstract class FormBuilder
     /**
      * input::tel
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param string|null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param string|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function tel(string $name, $label, string $value = null, $options = [])
@@ -410,10 +413,10 @@ abstract class FormBuilder
     /**
      * input::email
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param string|null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param string|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function email(string $name, $label, string $value = null, $options = [])
@@ -424,10 +427,10 @@ abstract class FormBuilder
     /**
      * input::date
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param string|null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param DateTime|string|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function date(string $name, $label, string $value = null, $options = [])
@@ -442,10 +445,10 @@ abstract class FormBuilder
     /**
      * input::datetime
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param DateTime|mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function datetime(string $name, $label, $value = null, $options = [])
@@ -460,10 +463,10 @@ abstract class FormBuilder
     /**
      * input::datetime-local
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param DateTime|mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function datetimeLocal(string $name, $label, $value = null, $options = [])
@@ -478,10 +481,10 @@ abstract class FormBuilder
     /**
      * input::time
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param DateTime|mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function time(string $name, $label, $value = null, $options = [])
@@ -496,10 +499,10 @@ abstract class FormBuilder
     /**
      * input::url
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function url(string $name, $label, $value = null, $options = [])
@@ -510,10 +513,10 @@ abstract class FormBuilder
     /**
      * input::week
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param DateTime|mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function week(string $name, $label, $value = null, $options = [])
@@ -528,9 +531,9 @@ abstract class FormBuilder
     /**
      * input::file
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function file(string $name, $label, $options = [])
@@ -541,10 +544,10 @@ abstract class FormBuilder
     /**
      * input::color
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param null $value
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param mixed|null $value value property
+     * @param array $options attributes array
      * @return HtmlString
      */
     public function color(string $name, $label, $value = null, $options = [])
@@ -555,7 +558,7 @@ abstract class FormBuilder
     /**
      * input::submit
      *
-     * @param string|null $value
+     * @param string|null $value value property
      * @param array $options
      * @return HtmlString
      */
@@ -573,7 +576,7 @@ abstract class FormBuilder
     /**
      * input::button
      *
-     * @param string|null $value
+     * @param string|null $value value property
      * @param array $options
      * @return HtmlString
      */
@@ -591,9 +594,9 @@ abstract class FormBuilder
     /**
      * textarea
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param string|null $value
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param string|null $value value property
      * @param array $options
      * @return HtmlString
      */
@@ -615,28 +618,28 @@ abstract class FormBuilder
     /**
      * select
      *
-     * @param string $name
-     * @param mixed|null $label
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
      * @param array $list
      * @param mixed|null $selected
-     * @param array $selectAttributes
-     * @param array $optionsAttributes
-     * @param array $optgroupsAttributes
+     * @param array $selectAttrs
+     * @param array $optionsAttrs
+     * @param array $optgroupsAttrs
      * @return HtmlString
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
     {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
-        $this->addFormElementClass($selectAttributes, $this->getFormControlClassName());
+        $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
 
         if ($this->getFieldError($name)) {
-            $this->addFormElementClass($selectAttributes, $this->getFormControlErrorClassName());
+            $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
         }
 
         return $this->formGroup(
             $this->label($name, $label),
-            $this->form->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes),
+            $this->form->select($name, $list, $selected, $selectAttrs, $optionsAttrs, $optgroupsAttrs),
             $name
         );
     }
@@ -644,11 +647,11 @@ abstract class FormBuilder
     /**
      * selectRange
      *
-     * @param string $name
-     * @param string|null $label
-     * @param $begin
-     * @param $end
-     * @param null $selected
+     * @param string $name name attribute
+     * @param string|null $label inner text label element
+     * @param string|integer $begin
+     * @param string|integer $end
+     * @param string|integer|null $selected
      * @param array $options
      * @return HtmlString
      */
@@ -670,9 +673,9 @@ abstract class FormBuilder
     /**
      * Create a checkbox input.
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param int $value
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param integer $value value property
      * @param mixed|null $checked
      * @param array $options
      * @return HtmlString
@@ -687,11 +690,11 @@ abstract class FormBuilder
     /**
      * Create a single checkbox element.
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param int $value
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param integer $value value property
      * @param mixed|null $checked
-     * @param bool $inline
+     * @param boolean $inline
      * @param array $options
      * @return HtmlString
      */
@@ -713,11 +716,11 @@ abstract class FormBuilder
     /**
      * Create a collection of checkboxes.
      *
-     * @param string $name
-     * @param mixed|null $label
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
      * @param array $choices
      * @param array $checkedValues
-     * @param bool $inline
+     * @param boolean $inline
      * @param array $options
      * @return HtmlString
      */
@@ -740,9 +743,9 @@ abstract class FormBuilder
     /**
      * Create a radio input.
      *
-     * @param string $name
+     * @param string $name name attribute
      * @param mixed $label
-     * @param mixed $value
+     * @param mixed $value value property
      * @param mixed $checked
      * @param array $options
      * @return HtmlString
@@ -757,11 +760,11 @@ abstract class FormBuilder
     /**
      * Create a single radio input.
      *
-     * @param string $name
+     * @param string $name name attribute
      * @param mixed $label
-     * @param mixed $value
+     * @param mixed $value value property
      * @param mixed $checked
-     * @param bool $inline
+     * @param boolean $inline
      * @param array $options
      * @return HtmlString
      */
@@ -783,11 +786,11 @@ abstract class FormBuilder
     /**
      * Create a collection of radio inputs.
      *
-     * @param string $name
+     * @param string $name name attribute
      * @param mixed $label
      * @param array $choices
      * @param mixed $checkedValue
-     * @param bool $inline
+     * @param boolean $inline
      * @param array $options
      * @return HtmlString
      */
@@ -798,7 +801,7 @@ abstract class FormBuilder
             $checked = $value === $checkedValue;
             $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $options);
         }
-        $wrapperOptions =  [];
+        $wrapperOptions = [];
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($wrapperOptions, $this->getFormControlErrorClassName());
         }
@@ -893,7 +896,6 @@ abstract class FormBuilder
         $field = $this->flattenFieldName($field);
 
         if ($this->getErrors()) {
-
             if ($this->getErrorBag()) {
                 $errorBag = $this->getErrors()->{$this->getErrorBag()};
             } else {
@@ -949,6 +951,7 @@ abstract class FormBuilder
 
     /**
      * form inline class name
+     *
      * @return string
      */
     protected function getInlineFormClassName(): string
@@ -986,13 +989,20 @@ abstract class FormBuilder
         return $this->getClassName('help_text_error');
     }
 
+    /**
+     * button element class name
+     *
+     * @return string
+     */
     protected function getButtonClass(): string
     {
         return $this->getClassName('button');
     }
 
     /**
-     * @param bool $inline
+     * wrapper div element class name for checkbox
+     *
+     * @param boolean $inline
      * @return string
      */
     protected function getCheckboxWrapperClassName(bool $inline = false): string
@@ -1004,7 +1014,9 @@ abstract class FormBuilder
     }
 
     /**
-     * @param bool $inline
+     * checkbox class name
+     *
+     * @param boolean $inline
      * @return string
      */
     protected function getCheckboxInputClassName(bool $inline = false): string
@@ -1016,7 +1028,9 @@ abstract class FormBuilder
     }
 
     /**
-     * @param bool $inline
+     * label element class name for checkbox
+     *
+     * @param boolean $inline
      * @return string
      */
     protected function getCheckboxLabelClassName(bool $inline = false): string
@@ -1028,7 +1042,9 @@ abstract class FormBuilder
     }
 
     /**
-     * @param bool $inline
+     * wrapper div element class name for radio
+     *
+     * @param boolean $inline
      * @return string
      */
     protected function getRadioWrapperClassName(bool $inline = false): string
@@ -1040,7 +1056,9 @@ abstract class FormBuilder
     }
 
     /**
-     * @param bool $inline
+     * radio class name
+     *
+     * @param boolean $inline
      * @return string
      */
     protected function getRadioInputClassName(bool $inline = false): string
@@ -1052,7 +1070,9 @@ abstract class FormBuilder
     }
 
     /**
-     * @param bool $inline
+     * label element class name for radio
+     *
+     * @param boolean $inline
      * @return string
      */
     protected function getRadioLabelClassName(bool $inline = false): string

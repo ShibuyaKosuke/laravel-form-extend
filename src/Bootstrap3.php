@@ -14,16 +14,18 @@ class Bootstrap3 extends FormBuilder
     /**
      * get form group
      *
-     * @param $label
-     * @param $form
-     * @param string $name
+     * @param string $label Label text
+     * @param HtmlString|string $form Form element
+     * @param string $name Name attribute
      * @return HtmlString
      * @see FormBuilder::formGroup()
      */
     public function formGroup($label, $form, $name)
     {
         $error = $this->getFieldError($name);
-        $errorElements = ($error) ? $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) : null;
+        $errorElements = ($error) ?
+            $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) :
+            null;
 
         $this->addFormElementClass($attributes, $this->getFormGroupClassName());
         if ($error) {
@@ -40,10 +42,10 @@ class Bootstrap3 extends FormBuilder
     /**
      * label
      *
-     * @param string $name
-     * @param null $value
-     * @param array $options
-     * @param bool $escape_html
+     * @param string $name name
+     * @param string|null $value value
+     * @param array $options attributes
+     * @param boolean $escape_html if escape true
      * @return HtmlString|null
      * @see FormBuilder::label()
      */
@@ -57,17 +59,23 @@ class Bootstrap3 extends FormBuilder
     /**
      * Create a single checkbox element.
      *
-     * @param string $name
-     * @param mixed|null $label
-     * @param int $value
-     * @param mixed|null $checked
-     * @param bool $inline
-     * @param array $options
+     * @param string $name name attribute
+     * @param mixed|null $label inner text for label element
+     * @param integer $value value
+     * @param array|null $checked checked values array
+     * @param boolean $inline true if inline
+     * @param array $options attributes array
      * @return HtmlString
      * @see FormBuilder::checkboxElement()
      */
-    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
-    {
+    public function checkboxElement(
+        string $name,
+        $label = null,
+        $value = 1,
+        $checked = null,
+        $inline = false,
+        array $options = []
+    ) {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
 

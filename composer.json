@@ -36,5 +36,8 @@
             "name": "ShibuyaKosuke",
             "email": "shibuya@imagenious.co.jp"
         }
-    ]
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
+    }
 }

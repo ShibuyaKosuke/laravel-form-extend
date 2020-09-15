@@ -16,6 +16,11 @@ class HtmlBuilder
      */
     protected $html;
 
+    /**
+     * HtmlBuilder constructor.
+     * @param UrlGenerator $url
+     * @param Factory $view
+     */
     public function __construct(UrlGenerator $url, Factory $view)
     {
         if (is_null($this->html)) {
@@ -23,6 +28,11 @@ class HtmlBuilder
         }
     }
 
+    /**
+     * @param string $name
+     * @param array|null $arguments
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         return call_user_func_array([$this->html, $name], $arguments);
