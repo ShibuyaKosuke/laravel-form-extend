@@ -19,7 +19,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'default' => 'bootstrap4',
+    'default' => 'bootstrap3',
 
     /*
     |--------------------------------------------------------------------------
@@ -40,6 +40,12 @@ return [
     "class_name" => [
 
         'bootstrap4' => [
+            // horizontal form
+            'left_column_class'  => 'col-sm-2 col-md-3 col-form-label',
+            'right_column_class' => 'col-sm-10 col-md-9',
+            'left_column_offset_class' => 'offset-sm-2 offset-md-3',
+
+            // form elements
             'form_control' => 'form-control',
             'form_group' => 'form-group',
             'horizontal' => 'form-horizontal',
@@ -66,6 +72,12 @@ return [
         ],
 
         'bootstrap3' => [
+            // horizontal form
+            'left_column_class'  => ' control-label text-bold col-sm-2 col-md-3',
+            'right_column_class' => 'col-sm-10 col-md-9',
+            'left_column_offset_class' => 'col-sm-offset-2 col-md-offset-3',
+
+            // form elements
             'form_control' => 'form-control',
             'form_group' => 'form-group',
             'horizontal' => 'form-horizontal',
@@ -92,6 +104,12 @@ return [
         ],
 
         'bulma' => [
+            // horizontal form
+            'left_column_class'  => 'col-sm-2 col-md-3',
+            'right_column_class' => 'col-sm-10 col-md-9',
+            'left_column_offset_class' => 'col-sm-offset-2 col-md-offset-3',
+
+            // form elements
             'form_control' => 'input',
             'form_group' => 'field',
             'horizontal' => 'is-horizontal',

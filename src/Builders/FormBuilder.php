@@ -732,12 +732,17 @@ abstract class FormBuilder
             $elements .= $this->checkboxElement($name . '[]', $choiceLabel, $value, $checked, $inline, $options);
         }
         $wrapperOptions = [];
+        $labelElement = $label;
+
+        if ($this->isHorizontal()) {
+            $this->addFormElementClass($labelOptions, $this->getClassName('left_column_class'));
+            $labelElement = $this->html->tag('div', $label, $labelOptions);
+        }
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($wrapperOptions, $this->getFormControlErrorClassName());
         }
         $wrapperElement = $this->html->tag('div', $elements, $wrapperOptions);
-
-        return $this->formGroup($label, $wrapperElement, $name);
+        return $this->formGroup($labelElement, $wrapperElement, $name);
     }
 
     /**
@@ -802,12 +807,19 @@ abstract class FormBuilder
             $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $options);
         }
         $wrapperOptions = [];
+        $labelElement = $label;
+
+        if ($this->isHorizontal()) {
+            $this->addFormElementClass($labelOptions, $this->getClassName('left_column_class'));
+            $labelElement = $this->html->tag('div', $label, $labelOptions);
+        }
+
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($wrapperOptions, $this->getFormControlErrorClassName());
         }
         $wrapperElement = $this->html->tag('div', $elements, $wrapperOptions);
 
-        return $this->formGroup($label, $wrapperElement, $name);
+        return $this->formGroup($labelElement, $wrapperElement, $name);
     }
 
     /**

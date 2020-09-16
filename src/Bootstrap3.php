@@ -33,7 +33,13 @@ class Bootstrap3 extends FormBuilder
         }
 
         if ($this->isHorizontal()) {
-            return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
+            $this->addFormElementClass($formAttributes, $this->getClassName('right_column_class'));
+            if (is_null($label)) {
+                $this->addFormElementClass($formAttributes, $this->getClassName('left_column_offset_class'));
+            }
+
+            $form = $this->html->tag('div', $form->toHtml() . $errorElements, $formAttributes);
+            return $this->html->tag('div', implode([$label, $form]), $attributes);
         }
 
         return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
@@ -53,6 +59,9 @@ class Bootstrap3 extends FormBuilder
     {
         // Bootstrap3 only
         $this->addFormElementClass($options, 'control-label');
+        if ($this->isHorizontal()) {
+            $this->addFormElementClass($options, $this->getClassName('left_column_class'));
+        }
         return parent::label($name, $value, $options, $escape_html);
     }
 
