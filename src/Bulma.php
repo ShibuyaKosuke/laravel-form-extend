@@ -90,31 +90,24 @@ class Bulma extends FormBuilder
      * @param mixed|null $label
      * @param array $list
      * @param mixed|null $selected
-     * @param array $selectAttributes
-     * @param array $optionsAttributes
-     * @param array $optgroupsAttributes
+     * @param array $selectAttrs
+     * @param array $optionsAttrs
+     * @param array $optgroupsAttrs
      * @return HtmlString
      * @see FormBuilder::select()
      */
-    public function select(
-        string $name,
-        $label,
-        $list = [],
-        $selected = null,
-        array $selectAttributes = [],
-        array $optionsAttributes = [],
-        array $optgroupsAttributes = []
-    ) {
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
-        $this->addFormElementClass($selectAttributes, $this->getFormControlClassName());
+        $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
 
         if ($this->getFieldError($name)) {
-            $this->addFormElementClass($selectAttributes, $this->getFormControlErrorClassName());
+            $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
         }
 
         $inputElement = $this->form
-            ->select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes);
+            ->select($name, $list, $selected, $selectAttrs, $optionsAttrs, $optgroupsAttrs);
 
         $inputElement = $this->wrapElement($inputElement);
 
@@ -131,7 +124,7 @@ class Bulma extends FormBuilder
      * @param string $name
      * @param string|null $label
      * @param string|integer $begin
-     * @param string|integer$end
+     * @param string|integer $end
      * @param string|integer|null $selected
      * @param array $options
      * @return HtmlString

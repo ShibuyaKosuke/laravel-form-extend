@@ -4,6 +4,10 @@ namespace ShibuyaKosuke\LaravelFormExtend\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class HtmlBuilder
+ * @package ShibuyaKosuke\LaravelFormExtend\Facades
+ */
 class HtmlBuilder extends Facade
 {
     /**

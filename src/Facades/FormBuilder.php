@@ -4,6 +4,10 @@ namespace ShibuyaKosuke\LaravelFormExtend\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class FormBuilder
+ * @package ShibuyaKosuke\LaravelFormExtend\Facades
+ */
 class FormBuilder extends Facade
 {
     /**
