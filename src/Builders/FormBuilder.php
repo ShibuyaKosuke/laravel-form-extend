@@ -256,21 +256,7 @@ abstract class FormBuilder
      * @param string $name name attribute
      * @return HtmlString
      */
-    protected function formGroup($label, $form, $name)
-    {
-        $error = $this->getFieldError($name);
-        $errorElements = ($error) ?
-            $this->html->tag('div', $error, ['class' => $this->getHelpTextErrorClassName()]) :
-            null;
-
-        $this->addFormElementClass($attributes, $this->getFormGroupClassName());
-
-        if ($this->isHorizontal()) {
-            return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
-        }
-
-        return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
-    }
+    abstract protected function formGroup($label, $form, $name);
 
     /**
      * label
