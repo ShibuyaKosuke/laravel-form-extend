@@ -164,7 +164,6 @@ abstract class FormBuilder
      */
     public function vertical($options = []): HtmlString
     {
-        $this->addFormElementClass($options, $this->getHorizontalFormClassName());
         $this->setType(self::VERTICAL);
         return $this->open($options);
     }
