@@ -48,4 +48,27 @@ class Bootstrap4 extends FormBuilder
 
         return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
     }
+
+    /**
+     * input::file
+     *
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param array $options attributes array
+     * @return HtmlString
+     */
+    public function file(string $name, $label, $options = [])
+    {
+        $this->addFormElementClass($options, 'form-control-file');
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $this->form->input(__FUNCTION__, $name, null, $options),
+            $name
+        );
+    }
 }
