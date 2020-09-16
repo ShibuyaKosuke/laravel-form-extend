@@ -30,33 +30,22 @@ class Bootstrap4 extends FormBuilder
         $this->addFormElementClass($attributes, $this->getFormGroupClassName());
 
         if ($this->isHorizontal()) {
+            $this->addFormElementClass($attributes, 'row');
+
+            // label
+            $this->addFormElementClass($labelAttributes, $this->getClassName('left_column_class'));
+            $label = $this->html->tag('div', implode([$label]), $labelAttributes);
+
+            $formAttributes = [];
             $this->addFormElementClass($formAttributes, $this->getClassName('right_column_class'));
             if (is_null($label)) {
                 $this->addFormElementClass($formAttributes, $this->getClassName('left_column_offset_class'));
             }
-            return $this->html->tag('div', implode([$label, $form]), $formAttributes);
+
+            $form = $this->html->tag('div', implode([$form . $errorElements]), $formAttributes);
+            return $this->html->tag('div', implode([$label, $form]), $attributes);
         }
 
         return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
-    }
-
-    /**
-     * label
-     *
-     * @param string $name name attribute
-     * @param mixed|null $value value property
-     * @param array $options attributes array
-     * @param boolean $escape_html
-     * @return HtmlString|null
-     */
-    public function label(string $name, $value = null, $options = [], $escape_html = true)
-    {
-        if ($value === false) {
-            return null;
-        }
-        if ($this->isHorizontal()) {
-            $this->addFormElementClass($options, $this->getClassName('left_column_class'));
-        }
-        return $this->form->label($name, $value, $options, $escape_html);
     }
 }
