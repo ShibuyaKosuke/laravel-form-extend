@@ -77,11 +77,13 @@ abstract class FormBuilder
      * FormBuilder constructor.
      * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, $default = null)
     {
+        /** @var Application app */
         $this->app = $app;
-        $this->config = new Collection($this->app['config']->get(ServiceProvider::KEY));
-        $this->default = $this->config->get('default');
+        $config = $this->app->config->get(ServiceProvider::KEY);
+        $this->config = new Collection($config);
+        $this->default = $this->config->get('default', $default);
 
         if (is_null($this->html)) {
             $this->html = new HtmlBuilder(
@@ -91,7 +93,7 @@ abstract class FormBuilder
         }
         if (is_null($this->form)) {
             $this->form = new CollectiveFormBuilder(
-                $app['html'],
+                $this->html,
                 $app['url'],
                 $app['view'],
                 $app['session.store']->token(),

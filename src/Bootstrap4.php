@@ -11,7 +11,6 @@ use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
  */
 class Bootstrap4 extends FormBuilder
 {
-
     /**
      * get form group
      *
