@@ -21,22 +21,37 @@ class FormBuilderTest extends TestCase
         $this->form = new Bootstrap4($this->app, 'bootstrap4');
     }
 
-    /**
-     * @return void
-     */
-    public function testHorizontalInput()
+    public function testSomeInputHorizontal()
     {
         $this->setType(Bootstrap4::HORIZONTAL);
 
-        $type = 'text';
-        $name = 'input-name';
-        $output = $this->form->input($type, $name);
+        $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
+        foreach ($types as $type) {
+            $name = 'input-name';
+            $output = $this->form->input($type, $name);
 
-        $this->horizontal($output);
-        $this->label($output, $name, $name);
-        $this->input($output, $type, $name);
-        $this->hasClass($output, 'input', 'form-control');
-        $this->assertHtml($output, '//div/div/input');
+            $this->horizontal($output);
+            $this->label($output, $name, $name);
+            $this->input($output, $type, $name);
+            $this->hasClass($output, 'input', 'form-control');
+            $this->assertHtml($output, '//div/div/input');
+        }
+    }
+
+    public function testSomeInputVertical()
+    {
+        $this->setType(Bootstrap4::VERTICAL);
+
+        $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
+        foreach ($types as $type) {
+            $name = 'input-name';
+            $output = $this->form->input($type, $name);
+
+            $this->label($output, $name, $name);
+            $this->input($output, $type, $name);
+            $this->hasClass($output, 'input', 'form-control');
+            $this->assertHtml($output, '//div/input');
+        }
     }
 
     public function testVerticalInput()
