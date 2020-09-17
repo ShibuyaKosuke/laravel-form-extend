@@ -27,10 +27,14 @@ class FormBuilderTest extends TestCase
     public function testHorizontalInput()
     {
         $this->setType(Bootstrap4::HORIZONTAL);
-        $output = $this->form->input('text', 'input-name');
+
+        $type = 'text';
+        $name = 'input-name';
+        $output = $this->form->input($type, $name);
 
         $this->horizontal($output);
-        $this->label($output, 'input-name', 'input-name');
+        $this->label($output, $name, $name);
+        $this->input($output, $type, $name);
         $this->hasClass($output, 'input', 'form-control');
         $this->assertHtml($output, '//div/div/input');
     }
@@ -38,12 +42,15 @@ class FormBuilderTest extends TestCase
     public function testVerticalInput()
     {
         $this->setType(Bootstrap4::VERTICAL);
-        $output = $this->form->input('text', 'text');
-        $this->label($output, 'text', 'text');
+        $type = 'text';
+        $name = 'input-name';
+        $output = $this->form->input($type, $name);
+        $this->label($output, $name, $name);
         $this->hasClass($output, 'div', 'form-group');
+        $this->input($output, $type, $name);
         $this->hasClass($output, 'input', 'form-control');
-        $this->assertHtml($output, '//div/label[@for=\'text\']');
-        $this->assertHtml($output, '//div/input[@name=\'text\'][@type=\'text\']');
+        $this->assertHtml($output, "//div/label[@for='$name']");
+        $this->assertHtml($output, "//div/input[@name='$name'][@type='$type']");
     }
 
     public function testHorizontal()
@@ -57,17 +64,22 @@ class FormBuilderTest extends TestCase
     public function testFile()
     {
         $this->setType(Bootstrap4::HORIZONTAL);
-        $output = $this->form->file('file', 'file');
+        $name = 'input-name';
+        $label = 'file';
+        $type = 'file';
+        $output = $this->form->file($name, $label);
 
+        $this->input($output, $type, $name);
         $this->horizontal($output);
-        $this->label($output, 'file', 'file');
+        $this->label($output, $name, $label);
         $this->hasClass($output, 'input', 'form-control-file');
 
         $this->setType(Bootstrap4::VERTICAL);
-        $output = $this->form->file('file', 'file');
+        $output = $this->form->file($name, $label);
 
+        $this->input($output, $type, $name);
         $this->hasClass($output, 'div', 'form-group');
-        $this->label($output, 'file', 'file');
+        $this->label($output, $name, $label);
         $this->hasClass($output, 'input', 'form-control-file');
     }
 }

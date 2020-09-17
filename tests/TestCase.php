@@ -206,6 +206,12 @@ class TestCase extends OrchestraTestCase
         }
     }
 
+    public function input($output, $type, $name)
+    {
+        $this->hasAttribute($output, 'input', 'type', $type);
+        $this->hasAttribute($output, 'input', 'name', $name);
+    }
+
     public function label($output, $name, $label)
     {
         $this->hasAttribute($output, 'label', 'for', $name);
