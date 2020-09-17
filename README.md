@@ -34,7 +34,7 @@ Edit config/lara_form.php.
 
 ### Blade
 
-```
+```php
 {{ LaraForm::horizontal() }}
 
 {{ LaraForm::text('text', 'text') }}
