@@ -57,8 +57,8 @@ Edit config/lara_form.php.
 
 {{ LaraForm::checkbox('check', 'check', 1) }}
 {{ LaraForm::radio('radio', 'radio', 1) }}
-{{ LaraForm::button('Button') }}
 
+{{ LaraForm::button('Button') }}
 {{ LaraForm::submit() }}
 
 {{ LaraForm::close() }}
