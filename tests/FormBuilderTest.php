@@ -50,6 +50,7 @@ class FormBuilderTest extends TestCase
             $this->label($output, $name, $name);
             $this->input($output, $type, $name);
             $this->hasClass($output, 'input', 'form-control');
+            $this->assertHtml($output, '//div/label');
             $this->assertHtml($output, '//div/input');
         }
     }
@@ -88,6 +89,8 @@ class FormBuilderTest extends TestCase
         $this->horizontal($output);
         $this->label($output, $name, $label);
         $this->hasClass($output, 'input', 'form-control-file');
+        $this->assertHtml($output, "//div/div/label[@for='$name']");
+        $this->assertHtml($output, "//div/div/input[@name='$name']");
 
         $this->setType(Bootstrap4::VERTICAL);
         $output = $this->form->file($name, $label);
@@ -96,5 +99,32 @@ class FormBuilderTest extends TestCase
         $this->hasClass($output, 'div', 'form-group');
         $this->label($output, $name, $label);
         $this->hasClass($output, 'input', 'form-control-file');
+        $this->assertHtml($output, "//div/label[@for='$name']");
+        $this->assertHtml($output, "//div/input[@name='$name']");
+    }
+
+    public function testSelectHorizontal()
+    {
+        $this->setType(Bootstrap4::HORIZONTAL);
+        $name = 'input-name';
+        $label = 'select';
+        $output = $this->form->select($name, $label);
+        $this->select($output, $name);
+        $this->horizontal($output);
+        $this->label($output, $name, $label);
+        $this->assertHtml($output, "//div/div/label[@for='$name']");
+        $this->assertHtml($output, "//div/div/select[@name='$name']");
+    }
+
+    public function testSelectVertical()
+    {
+        $this->setType(Bootstrap4::VERTICAL);
+        $name = 'input-name';
+        $label = 'select';
+        $output = $this->form->select($name, $label);
+        $this->select($output, $name);
+        $this->label($output, $name, $label);
+        $this->assertHtml($output, "//div/label[@for='$name']");
+        $this->assertHtml($output, "//div/select[@name='$name']");
     }
 }

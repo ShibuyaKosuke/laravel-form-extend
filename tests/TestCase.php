@@ -153,13 +153,13 @@ class TestCase extends OrchestraTestCase
         $this->method->invoke($this->form, $type);
     }
 
-    protected function assertHtml($output, $expression)
+    protected function assertHtml($output, $expression, $count = 1)
     {
         $dom = new \DOMDocument();
         $dom->loadHTML($output->toHtml());
         $xpath = new \DOMXPath($dom);
         $ul_nodes = $xpath->evaluate($expression);
-        $this->assertEquals(1, $ul_nodes->length);
+        $this->assertEquals($count, $ul_nodes->length);
     }
 
     protected function getNodeByTagName($output, $tagName)
@@ -221,5 +221,10 @@ class TestCase extends OrchestraTestCase
     {
         $name = $this->form->name();
         return Arr::get($this->app->config->get(ServiceProvider::KEY), "class_name.$name");
+    }
+
+    public function select($output, $name)
+    {
+        $this->hasAttribute($output, 'select', 'name', $name);
     }
 }
