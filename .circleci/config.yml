@@ -39,4 +39,4 @@ jobs:
           paths:
             - ./vendor
             -
-      - run: ./vendor/bin/phpcbf --standard=phpcs.xml
+      - run: ./vendor/bin/phpcbf --standard=phpcs.xml .
