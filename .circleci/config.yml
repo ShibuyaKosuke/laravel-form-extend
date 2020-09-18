@@ -38,5 +38,7 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-            -
+
       - run: ./vendor/bin/phpcbf --standard=phpcs.xml .
+
+      - run: ./vendor/bin/phpunit
