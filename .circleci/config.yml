@@ -22,7 +22,6 @@ jobs:
       - checkout
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
 
       # Download and cache dependencies
       - restore_cache:
@@ -38,6 +37,8 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
+
+      - run: ./vendor/bin/phpcs --standard=phpcs.xml .
 
       - run: ./vendor/bin/phpcbf --standard=phpcs.xml .
 
