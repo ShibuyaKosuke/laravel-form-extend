@@ -76,6 +76,7 @@ abstract class FormBuilder
     /**
      * FormBuilder constructor.
      * @param Application $app
+     * @param null $default
      */
     public function __construct(Application $app, $default = null)
     {

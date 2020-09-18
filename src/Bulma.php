@@ -31,7 +31,7 @@ class Bulma extends FormBuilder
         if ($this->isHorizontal()) {
             if ($label) {
                 $label = $this->wrapElement($label->toHtml(), 'field-label is-normal');
-            }else{
+            } else {
                 $label = $this->wrapElement('', 'field-label is-normal');
             }
             $form = $this->wrapElement($form->toHtml(), 'control');
