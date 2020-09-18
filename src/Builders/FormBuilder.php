@@ -84,7 +84,7 @@ abstract class FormBuilder
         $this->app = $app;
         $config = $this->app->config->get(ServiceProvider::KEY);
         $this->config = new Collection($config);
-        $this->default = $this->config->get('default', $default);
+        $this->default = ($default) ? $default : $this->config->get('default', $default);
 
         if (is_null($this->html)) {
             $this->html = new HtmlBuilder(

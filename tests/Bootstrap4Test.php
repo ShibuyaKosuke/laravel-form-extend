@@ -10,7 +10,7 @@ use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
  * Class FormBuilderTest
  * @package ShibuyaKosuke\LaravelFormExtend\Test
  */
-class FormBuilderTest extends TestCase
+class Bootstrap4Test extends TestCase
 {
     public function setUp(): void
     {
@@ -126,5 +126,14 @@ class FormBuilderTest extends TestCase
         $this->label($output, $name, $label);
         $this->assertHtml($output, "//div/label[@for='$name']");
         $this->assertHtml($output, "//div/select[@name='$name']");
+    }
+
+    public function horizontal($output)
+    {
+        $config = $this->getConfigClass();
+        $classes = explode(' ', implode(' ', [$config['left_column_class'], $config['right_column_class']]));
+        foreach ($classes as $class) {
+            $this->hasClass($output, 'div', $class);
+        }
     }
 }

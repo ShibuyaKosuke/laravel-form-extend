@@ -9,7 +9,7 @@ use ShibuyaKosuke\LaravelFormExtend\Bootstrap4;
 use ShibuyaKosuke\LaravelFormExtend\Bulma;
 use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
-class TestCase extends OrchestraTestCase
+abstract class TestCase extends OrchestraTestCase
 {
     protected $form;
     protected $method;
@@ -197,14 +197,7 @@ class TestCase extends OrchestraTestCase
         $this->hasAttribute($output, $tagName, 'class', $className);
     }
 
-    public function horizontal($output)
-    {
-        $config = $this->getConfigClass();
-        $classes = explode(' ', implode(' ', [$config['left_column_class'], $config['right_column_class']]));
-        foreach ($classes as $class) {
-            $this->hasClass($output, 'div', $class);
-        }
-    }
+   abstract public function horizontal($output);
 
     public function input($output, $type, $name)
     {
@@ -217,7 +210,7 @@ class TestCase extends OrchestraTestCase
         $this->hasAttribute($output, 'label', 'for', $name);
     }
 
-    private function getConfigClass()
+    protected function getConfigClass()
     {
         $name = $this->form->name();
         return Arr::get($this->app->config->get(ServiceProvider::KEY), "class_name.$name");
