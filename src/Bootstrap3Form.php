@@ -6,16 +6,16 @@ use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
- * Class Bootstrap3
+ * Class Bootstrap3Form
  * @package ShibuyaKosuke\LaravelFormExtend
  */
-class Bootstrap3 extends FormBuilder
+class Bootstrap3Form extends FormBuilder
 {
     /**
      * get form group
      *
-     * @param string $label Label text
-     * @param HtmlString|string $form Form element
+     * @param HtmlString $label Label text
+     * @param HtmlString $form Form element
      * @param string $name Name attribute
      * @return HtmlString
      * @see FormBuilder::formGroup()
@@ -57,7 +57,7 @@ class Bootstrap3 extends FormBuilder
      */
     public function label(string $name, $value = null, $options = [], $escape_html = true)
     {
-        // Bootstrap3 only
+        // Bootstrap3Form only
         $this->addFormElementClass($options, 'control-label');
         if ($this->isHorizontal()) {
             $this->addFormElementClass($options, $this->getClassName('left_column_class'));

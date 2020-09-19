@@ -4,9 +4,9 @@ namespace ShibuyaKosuke\LaravelFormExtend\Test;
 
 use Illuminate\Support\Arr;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use ShibuyaKosuke\LaravelFormExtend\Bootstrap3;
-use ShibuyaKosuke\LaravelFormExtend\Bootstrap4;
-use ShibuyaKosuke\LaravelFormExtend\Bulma;
+use ShibuyaKosuke\LaravelFormExtend\Bootstrap3Form;
+use ShibuyaKosuke\LaravelFormExtend\Bootstrap4Form;
+use ShibuyaKosuke\LaravelFormExtend\BulmaForm;
 use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
@@ -33,9 +33,9 @@ abstract class TestCase extends OrchestraTestCase
             |--------------------------------------------------------------------------
             */
             'frameworks' => [
-                'bootstrap4' => Bootstrap4::class,
-                'bootstrap3' => Bootstrap3::class,
-                'bulma' => Bulma::class
+                'bootstrap4' => Bootstrap4Form::class,
+                'bootstrap3' => Bootstrap3Form::class,
+                'bulma' => BulmaForm::class
             ],
 
             /*
@@ -197,7 +197,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->hasAttribute($output, $tagName, 'class', $className);
     }
 
-   abstract public function horizontal($output);
+    abstract public function horizontal($output);
 
     public function input($output, $type, $name)
     {

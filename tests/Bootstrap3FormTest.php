@@ -3,27 +3,27 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Test;
 
 use Collective\Html\HtmlBuilder;
-use ShibuyaKosuke\LaravelFormExtend\Bootstrap3;
+use ShibuyaKosuke\LaravelFormExtend\Bootstrap3Form;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
  * Class FormBuilderTest
  * @package ShibuyaKosuke\LaravelFormExtend\Test
  */
-class Bootstrap3Test extends TestCase
+class Bootstrap3FormTest extends TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
         $this->app['html'] = \Mockery::mock(HtmlBuilder::class);
 
-        /** @var Bootstrap3|FormBuilder form */
-        $this->form = new Bootstrap3($this->app, 'bootstrap3');
+        /** @var Bootstrap3Form|FormBuilder form */
+        $this->form = new Bootstrap3Form($this->app, 'bootstrap3');
     }
 
     public function testSomeInputHorizontal()
     {
-        $this->setType(Bootstrap3::HORIZONTAL);
+        $this->setType(Bootstrap3Form::HORIZONTAL);
 
         $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
         foreach ($types as $type) {
@@ -40,7 +40,7 @@ class Bootstrap3Test extends TestCase
 
     public function testSomeInputVertical()
     {
-        $this->setType(Bootstrap3::VERTICAL);
+        $this->setType(Bootstrap3Form::VERTICAL);
 
         $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
         foreach ($types as $type) {
@@ -57,7 +57,7 @@ class Bootstrap3Test extends TestCase
 
     public function testVerticalInput()
     {
-        $this->setType(Bootstrap3::VERTICAL);
+        $this->setType(Bootstrap3Form::VERTICAL);
         $type = 'text';
         $name = 'input-name';
         $output = $this->form->input($type, $name);
@@ -79,7 +79,7 @@ class Bootstrap3Test extends TestCase
 
     public function testFile()
     {
-        $this->setType(Bootstrap3::HORIZONTAL);
+        $this->setType(Bootstrap3Form::HORIZONTAL);
         $name = 'input-name';
         $label = 'file';
         $type = 'file';
@@ -91,7 +91,7 @@ class Bootstrap3Test extends TestCase
         $this->assertHtml($output, "//div/label[@for='$name']");
         $this->assertHtml($output, "//div/input[@name='$name']");
 
-        $this->setType(Bootstrap3::VERTICAL);
+        $this->setType(Bootstrap3Form::VERTICAL);
         $output = $this->form->file($name, $label);
 
         $this->input($output, $type, $name);
@@ -103,7 +103,7 @@ class Bootstrap3Test extends TestCase
 
     public function testSelectHorizontal()
     {
-        $this->setType(Bootstrap3::HORIZONTAL);
+        $this->setType(Bootstrap3Form::HORIZONTAL);
         $name = 'input-name';
         $label = 'select';
         $output = $this->form->select($name, $label);
@@ -116,7 +116,7 @@ class Bootstrap3Test extends TestCase
 
     public function testSelectVertical()
     {
-        $this->setType(Bootstrap3::VERTICAL);
+        $this->setType(Bootstrap3Form::VERTICAL);
         $name = 'input-name';
         $label = 'select';
         $output = $this->form->select($name, $label);

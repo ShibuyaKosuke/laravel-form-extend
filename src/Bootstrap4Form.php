@@ -6,15 +6,15 @@ use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
- * Class Bootstrap4
+ * Class Bootstrap4Form
  * @package ShibuyaKosuke\LaravelFormExtend
  */
-class Bootstrap4 extends FormBuilder
+class Bootstrap4Form extends FormBuilder
 {
     /**
      * get form group
      *
-     * @param string $label
+     * @param HtmlString $label
      * @param HtmlString $form
      * @param string $name name attribute
      * @return HtmlString

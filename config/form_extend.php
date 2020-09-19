@@ -4,9 +4,9 @@
  * Package: ShibuyaKosuke\LaravelFormExtend
  */
 
-use ShibuyaKosuke\LaravelFormExtend\Bootstrap3;
-use ShibuyaKosuke\LaravelFormExtend\Bootstrap4;
-use ShibuyaKosuke\LaravelFormExtend\Bulma;
+use ShibuyaKosuke\LaravelFormExtend\Bootstrap3Form;
+use ShibuyaKosuke\LaravelFormExtend\Bootstrap4Form;
+use ShibuyaKosuke\LaravelFormExtend\BulmaForm;
 
 /**
  * Lara-form
@@ -27,9 +27,9 @@ return [
     |--------------------------------------------------------------------------
     */
     'frameworks' => [
-        'bootstrap4' => Bootstrap4::class,
-        'bootstrap3' => Bootstrap3::class,
-        'bulma' => Bulma::class
+        'bootstrap4' => Bootstrap4Form::class,
+        'bootstrap3' => Bootstrap3Form::class,
+        'bulma' => BulmaForm::class
     ],
 
     /*

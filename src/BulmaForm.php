@@ -6,15 +6,15 @@ use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
- * Class Bulma
+ * Class BulmaForm
  * @package ShibuyaKosuke\LaravelFormExtend
  */
-class Bulma extends FormBuilder
+class BulmaForm extends FormBuilder
 {
     /**
      * get form group
      *
-     * @param string $label
+     * @param HtmlString $label
      * @param HtmlString $form
      * @param string $name name attribute
      * @return HtmlString
@@ -44,7 +44,7 @@ class Bulma extends FormBuilder
     }
 
     /**
-     * Only use when Bulma support
+     * Only use when BulmaForm support
      * @param HtmlString|string $inputElement
      * @param string|null $class
      * @return HtmlString

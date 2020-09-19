@@ -12,11 +12,7 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "ShibuyaKosuke\\LaravelFormExtend\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
+            "ShibuyaKosuke\\LaravelFormExtend\\": "src/",
             "ShibuyaKosuke\\LaravelFormExtend\\Test\\": "tests/"
         }
     },

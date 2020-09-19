@@ -253,7 +253,7 @@ abstract class FormBuilder
     /**
      * get form group
      *
-     * @param string $label
+     * @param HtmlString $label
      * @param HtmlString $form
      * @param string $name name attribute
      * @return HtmlString
