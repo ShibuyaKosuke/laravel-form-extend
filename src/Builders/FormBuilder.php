@@ -127,6 +127,22 @@ abstract class FormBuilder implements Addon
     }
 
     /**
+     * @return HtmlString
+     */
+    public function linkCss()
+    {
+        return new HtmlString('<link rel="stylesheet" href="' . $this->css() . '">');
+    }
+
+    /**
+     * @return array|ArrayAccess|mixed
+     */
+    public function css()
+    {
+        return Arr::get($this->config->get('css'), $this->name());
+    }
+
+    /**
      * Dynamically handle calls to the class.
      *
      * @param string $method
