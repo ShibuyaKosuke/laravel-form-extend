@@ -49,6 +49,22 @@ class Bootstrap4Form extends FormBuilder
     }
 
     /**
+     * @param string $type
+     * @param string $name
+     * @param null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
+    {
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+        return parent::input($type, $name, $label, $value, $options);
+    }
+
+    /**
      * input::file
      *
      * @param string $name name attribute
