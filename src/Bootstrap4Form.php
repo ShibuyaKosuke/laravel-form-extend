@@ -70,4 +70,28 @@ class Bootstrap4Form extends FormBuilder
             $name
         );
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonButton($label, $options = []): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonText($text, $options = []): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonIcon($icon, $options = []): string
+    {
+        return '';
+    }
 }

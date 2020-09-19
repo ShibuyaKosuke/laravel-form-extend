@@ -118,7 +118,7 @@ return [
             'form_control_error' => 'is-danger',
             'help_text_error' => 'help is-danger',
 
-            'button' => 'button is-link',
+            'button' => 'button is-primary',
 
             'checkbox_wrapper' => 'control',
             'checkbox_input' => null,

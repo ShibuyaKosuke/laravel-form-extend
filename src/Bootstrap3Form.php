@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
@@ -112,5 +113,37 @@ class Bootstrap3Form extends FormBuilder
             $this->form->input(__FUNCTION__, $name, null, $options),
             $name
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonButton($label, $options = []): string
+    {
+        $attributes = array_merge(['class' => 'btn', 'type' => 'button'], $options);
+
+        if (isset($options['class'])) {
+            $attributes['class'] .= ' btn';
+        }
+
+        return '<div class="input-group-btn"><button ' . $this->html->attributes($attributes) . '>'.$label.'</button></div>';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonText($text, $options = []): string
+    {
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '>'.$text.'</span></div>';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonIcon($icon, $options = []): string
+    {
+        $prefix = Arr::get($options, 'prefix', $this->getIconPrefix());
+
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="'.$prefix.$icon.'"></i></span></div>';
     }
 }

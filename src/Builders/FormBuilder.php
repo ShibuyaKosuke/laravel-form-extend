@@ -6,14 +6,13 @@ use ArrayAccess;
 use BadMethodCallException;
 use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Collective\Html\HtmlBuilder;
-use DebugBar\DebugBar;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\HtmlString;
 use DateTime;
 use Illuminate\Support\ViewErrorBag;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Addon;
 use ShibuyaKosuke\LaravelFormExtend\Exceptions\FormExtendException;
 use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
@@ -21,7 +20,7 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
  * Class FormBuilder
  * @package ShibuyaKosuke\LaravelFormExtend\Builders
  */
-abstract class FormBuilder
+abstract class FormBuilder implements Addon
 {
     /**
      * Vertical form
@@ -279,6 +278,23 @@ abstract class FormBuilder
         return $this->form->label($name, $value, $options, $escape_html);
     }
 
+    public function withAddon($inputElement, $options)
+    {
+        $prefix = $options['prefix'] ?? null;
+
+        $suffix = $options['suffix'] ?? null;
+
+        if ($prefix || $suffix) {
+            $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'input-group');
+            return $this->html->tag(
+                'div',
+                implode([$prefix, $inputElement->toHtml(), $suffix]),
+                $inputGroupClass
+            );
+        }
+        return $inputElement;
+    }
+
     /**
      * input
      *
@@ -293,13 +309,17 @@ abstract class FormBuilder
     {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
+        $optionsField = Arr::except($options, ['suffix', 'prefix']);
+        $inputElement = $this->form->input($type, $name, $value, $optionsField);
+        $inputElement = $this->withAddon($inputElement, $options);
+
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
         }
 
         return $this->formGroup(
             $this->label($name, $label),
-            $this->form->input($type, $name, $value, $options),
+            $inputElement,
             $name
         );
     }
@@ -623,13 +643,17 @@ abstract class FormBuilder
 
         $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
 
+        $optionsField = Arr::except($selectAttrs, ['suffix', 'prefix']);
+        $inputElement = $this->form->select($name, $list, $selected, $optionsField, $optionsAttrs, $optgroupsAttrs);
+        $inputElement = $this->withAddon($inputElement, $selectAttrs);
+
         if ($this->getFieldError($name)) {
-            $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
+            $this->addFormElementClass($optionsField, $this->getFormControlErrorClassName());
         }
 
         return $this->formGroup(
             $this->label($name, $label),
-            $this->form->select($name, $list, $selected, $selectAttrs, $optionsAttrs, $optgroupsAttrs),
+            $inputElement,
             $name
         );
     }

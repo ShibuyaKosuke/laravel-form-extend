@@ -30,13 +30,13 @@ class BulmaForm extends FormBuilder
 
         if ($this->isHorizontal()) {
             if ($label) {
-                $label = $this->wrapElement($label->toHtml(), 'field-label is-normal');
+                $label = $this->wrapElement($label, 'field-label is-normal');
             } else {
                 $label = $this->wrapElement('', 'field-label is-normal');
             }
-            $form = $this->wrapElement($form->toHtml(), 'control');
+            $form = $this->wrapElement($form, 'control');
             $form = $this->wrapElement($form->toHtml() . $errorElements, 'field');
-            $form = $this->wrapElement($form->toHtml(), 'field-body');
+            $form = $this->wrapElement($form, 'field-body');
             return $this->wrapElement(implode([$label, $form]), 'field is-horizontal');
         }
 
@@ -51,7 +51,34 @@ class BulmaForm extends FormBuilder
      */
     private function wrapElement($inputElement, string $class = null)
     {
+        if ($inputElement instanceof HtmlString) {
+            $inputElement = $inputElement->toHtml();
+        }
         $this->addFormElementClass($attributes, $class);
         return $this->html->tag('div', $inputElement, $attributes);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonButton($label, $options = []): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonText($text, $options = []): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addonIcon($icon, $options = []): string
+    {
+        return '';
     }
 }
