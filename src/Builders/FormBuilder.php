@@ -278,6 +278,11 @@ abstract class FormBuilder implements Addon
         return $this->form->label($name, $value, $options, $escape_html);
     }
 
+    /**
+     * @param HtmlString $inputElement
+     * @param array $options
+     * @return HtmlString
+     */
     public function withAddon($inputElement, $options)
     {
         $prefix = $options['prefix'] ?? null;
