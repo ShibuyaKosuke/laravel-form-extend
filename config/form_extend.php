@@ -73,7 +73,7 @@ return [
 
         'bootstrap3' => [
             // horizontal form
-            'left_column_class'  => ' control-label text-bold col-sm-2 col-md-3',
+            'left_column_class'  => 'control-label text-bold col-sm-2 col-md-3',
             'right_column_class' => 'col-sm-10 col-md-9',
             'left_column_offset_class' => 'col-sm-offset-2 col-md-offset-3',
 

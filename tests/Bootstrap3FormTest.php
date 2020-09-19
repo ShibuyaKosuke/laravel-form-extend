@@ -30,7 +30,7 @@ class Bootstrap3FormTest extends TestCase
             $name = 'input-name';
             $output = $this->form->input($type, $name);
 
-//            $this->horizontal($output);
+            $this->horizontal($output);
             $this->label($output, $name, $name);
             $this->input($output, $type, $name);
             $this->hasClass($output, 'input', 'form-control');
@@ -86,7 +86,7 @@ class Bootstrap3FormTest extends TestCase
         $output = $this->form->file($name, $label);
 
         $this->input($output, $type, $name);
-//        $this->horizontal($output);
+        $this->horizontal($output);
         $this->label($output, $name, $label);
         $this->assertHtml($output, "//div/label[@for='$name']");
         $this->assertHtml($output, "//div/input[@name='$name']");
@@ -108,7 +108,7 @@ class Bootstrap3FormTest extends TestCase
         $label = 'select';
         $output = $this->form->select($name, $label);
         $this->select($output, $name);
-//        $this->horizontal($output);
+        $this->horizontal($output);
         $this->label($output, $name, $label);
         $this->assertHtml($output, "//div/label[@for='$name']");
         $this->assertHtml($output, "//div/select[@name='$name']");
@@ -129,9 +129,13 @@ class Bootstrap3FormTest extends TestCase
     public function horizontal($output)
     {
         $config = $this->getConfigClass();
-        $classes = explode(' ', implode(' ', [$config['left_column_class'], $config['right_column_class']]));
+        $classes = explode(' ', implode(' ', [$config['right_column_class']]));
         foreach ($classes as $class) {
             $this->hasClass($output, 'div', $class);
+        }
+        $classes = explode(' ', implode(' ', [$config['left_column_class']]));
+        foreach ($classes as $class) {
+            $this->hasClass($output, 'label', $class);
         }
     }
 }
