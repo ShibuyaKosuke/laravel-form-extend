@@ -72,7 +72,9 @@ class Bootstrap4Form extends FormBuilder
     }
 
     /**
-     * @inheritDoc
+     * @param string $label
+     * @param array $options
+     * @return string
      */
     public function addonButton($label, $options = []): string
     {
@@ -80,7 +82,9 @@ class Bootstrap4Form extends FormBuilder
     }
 
     /**
-     * @inheritDoc
+     * @param string $text
+     * @param array $options
+     * @return string
      */
     public function addonText($text, $options = []): string
     {
@@ -88,7 +92,9 @@ class Bootstrap4Form extends FormBuilder
     }
 
     /**
-     * @inheritDoc
+     * @param string $icon
+     * @param array $options
+     * @return string
      */
     public function addonIcon($icon, $options = []): string
     {
