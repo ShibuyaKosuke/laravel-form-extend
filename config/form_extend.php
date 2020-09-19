@@ -29,7 +29,13 @@ return [
     'frameworks' => [
         'bootstrap4' => Bootstrap4Form::class,
         'bootstrap3' => Bootstrap3Form::class,
-        'bulma' => BulmaForm::class
+        'bulma' => BulmaForm::class,
+    ],
+
+    'css' => [
+        'bootstrap4' => 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
+        'bootstrap3' => 'https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css',
+        'bulma' => 'https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css',
     ],
 
     /*
