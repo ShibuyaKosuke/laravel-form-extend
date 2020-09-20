@@ -66,7 +66,7 @@ class Bootstrap4Form extends FormBuilder
 
         $optionsField = Arr::except($options, ['suffix', 'prefix']);
         $inputElement = $this->form->input($type, $name, $value, $optionsField);
-        $inputElement = $this->withAddon($inputElement, $options);
+        $inputElement = $this->withAddonForBootstrap4($inputElement, $options, $name);
 
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
@@ -82,15 +82,20 @@ class Bootstrap4Form extends FormBuilder
     /**
      * @param HtmlString $inputElement
      * @param array $options
+     * @param string $name
      * @return HtmlString
      */
-    public function withAddon($inputElement, $options)
+    public function withAddonForBootstrap4($inputElement, $options, string $name)
     {
         $prefix = str_replace(':class_name', 'input-group-prepend', $options['prefix'] ?? null);
         $suffix = str_replace(':class_name', 'input-group-append', $options['suffix'] ?? null);
 
         if ($prefix || $suffix) {
             $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'input-group');
+
+            if ($this->getFieldError($name)) {
+                $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'is-invalid');
+            }
             return $this->html->tag(
                 'div',
                 implode([$prefix, $inputElement->toHtml(), $suffix]),
@@ -119,6 +124,41 @@ class Bootstrap4Form extends FormBuilder
         return $this->formGroup(
             $this->label($name, $label),
             $this->form->input(__FUNCTION__, $name, null, $options),
+            $name
+        );
+    }
+
+    /**
+     * select
+     *
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param array $list
+     * @param mixed|null $selected
+     * @param array $selectAttrs
+     * @param array $optionsAttrs
+     * @param array $optgroupsAttrs
+     * @return HtmlString
+     */
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    {
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
+        }
+
+        $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
+
+        $optionsField = Arr::except($selectAttrs, ['suffix', 'prefix']);
+        $inputElement = $this->form->select($name, $list, $selected, $optionsField, $optionsAttrs, $optgroupsAttrs);
+        $inputElement = $this->withAddonForBootstrap4($inputElement, $selectAttrs, $name);
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($optionsField, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $inputElement,
             $name
         );
     }
