@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
@@ -61,7 +62,42 @@ class Bootstrap4Form extends FormBuilder
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
         }
-        return parent::input($type, $name, $label, $value, $options);
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        $optionsField = Arr::except($options, ['suffix', 'prefix']);
+        $inputElement = $this->form->input($type, $name, $value, $optionsField);
+        $inputElement = $this->withAddon($inputElement, $options);
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $inputElement,
+            $name
+        );
+    }
+
+    /**
+     * @param HtmlString $inputElement
+     * @param array $options
+     * @return HtmlString
+     */
+    public function withAddon($inputElement, $options)
+    {
+        $prefix = str_replace(':class_name', 'input-group-prepend', $options['prefix'] ?? null);
+        $suffix = str_replace(':class_name', 'input-group-append', $options['suffix'] ?? null);
+
+        if ($prefix || $suffix) {
+            $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'input-group');
+            return $this->html->tag(
+                'div',
+                implode([$prefix, $inputElement->toHtml(), $suffix]),
+                $inputGroupClass
+            );
+        }
+        return $inputElement;
     }
 
     /**
@@ -94,7 +130,8 @@ class Bootstrap4Form extends FormBuilder
      */
     public function addonButton($label, $options = []): string
     {
-        return '';
+        $this->addFormElementClass($options, 'btn btn-outline-secondary');
+        return '<div class=":class_name"><button ' . $this->html->attributes($options) . '>' . $label . '</button></div>';
     }
 
     /**
@@ -104,7 +141,8 @@ class Bootstrap4Form extends FormBuilder
      */
     public function addonText($text, $options = []): string
     {
-        return '';
+        $this->addFormElementClass($options, 'input-group-text');
+        return '<div class=":class_name"><span ' . $this->html->attributes($options) . '>' . $text . '</span></div>';
     }
 
     /**
@@ -114,6 +152,7 @@ class Bootstrap4Form extends FormBuilder
      */
     public function addonIcon($icon, $options = []): string
     {
-        return '';
+        $this->addFormElementClass($options, 'input-group-text');
+        return '<div class=":class_name"><span ' . $this->html->attributes($options) . '><i class="' . $icon . '"></i></span></div>';
     }
 }
