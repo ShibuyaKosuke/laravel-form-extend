@@ -30,6 +30,45 @@ Edit config/lara_form.php.
 'default' => 'bootstrap4', // bootstrap3 or bulma
 ```
 
+## Supported 
+
+### Elements
+
+|  | Bootstrap 4 | Bootstrap 3 | Bulma |
+|:----|:---:|:----:|:---:|
+|input::text| OK | OK | OK |
+|input::password| OK | OK | OK |
+|input::email| OK | OK | OK |
+|input::url| OK | OK | OK |
+|input::search| OK | OK | OK |
+|input::range| OK | OK | OK |
+|input::hidden| OK | OK | OK |
+|input::number| OK | OK | OK |
+|input::tel| OK | OK | OK |
+|input::date| OK | OK | OK |
+|input::datetime| OK | OK | OK |
+|input::datetimeLocal| OK | OK | OK |
+|input::time| OK | OK | OK |
+|input::week| OK | OK | OK |
+|input::file| OK | OK | OK |
+|input::color| OK | OK | OK |
+|button:submit| OK | OK | OK |
+|button:button| OK | OK | OK |
+|select| OK | OK | OK |
+|textarea| OK | OK | OK |
+|checkbox| OK | OK | OK |
+|checkboxes| OK | OK | OK |
+|radio| OK | OK | OK |
+|radios| OK | OK | OK |
+
+### Addon
+
+|  | Bootstrap 4 | Bootstrap 3 | Bulma |
+|:----|:---:|:----:|:---:|
+|text| OK | OK | NG |
+|button| OK | OK | NG |
+|icon| OK | OK | OK |
+
 ## Example
 
 ### Blade
