@@ -65,6 +65,9 @@ class Bootstrap4Form extends FormBuilder
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $optionsField = Arr::except($options, ['suffix', 'prefix']);
+        if (!Arr::has($optionsField, 'id')) {
+            Arr::set($optionsField, 'id', $name);
+        }
         $inputElement = $this->form->input($type, $name, $value, $optionsField);
         $inputElement = $this->withAddonForBootstrap4($inputElement, $options, $name);
 
