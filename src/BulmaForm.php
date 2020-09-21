@@ -74,6 +74,7 @@ class BulmaForm extends FormBuilder
             return $this->wrapElement(implode([$label, $form]), 'field is-horizontal');
         }
 
+        $form = $this->wrapElement($form->toHtml(), 'field has-addons');
         return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
     }
 
