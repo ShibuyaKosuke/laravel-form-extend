@@ -48,6 +48,36 @@ class BulmaForm extends FormBuilder
     }
 
     /**
+     * @param $label
+     * @param $form
+     * @param $name
+     * @return HtmlString
+     */
+    public function formGroupWithAddon($label, $form, $name)
+    {
+        $error = $this->getFieldError($name);
+        $errorElements = ($error) ?
+            $this->html->tag('p', $error, ['class' => $this->getHelpTextErrorClassName()]) :
+            null;
+
+        $this->addFormElementClass($attributes, $this->getFormGroupClassName());
+
+        if ($this->isHorizontal()) {
+            if ($label) {
+                $label = $this->wrapElement($label, 'field-label is-expanded is-normal');
+            } else {
+                $label = $this->wrapElement('', 'field-label is-normal');
+            }
+            $form = $this->wrapElement($form->toHtml(), 'field has-addons');
+            $form = $this->wrapElement($form->toHtml() . $errorElements, 'field is-expanded');
+            $form = $this->wrapElement($form, 'field-body');
+            return $this->wrapElement(implode([$label, $form]), 'field is-horizontal');
+        }
+
+        return $this->html->tag('div', implode([$label, $form, $errorElements]), $attributes);
+    }
+
+    /**
      * Only use when BulmaForm support
      * @param HtmlString|string $inputElement
      * @param string|null $class
@@ -69,6 +99,7 @@ class BulmaForm extends FormBuilder
      * @param string|null $value
      * @param array $options
      * @return HtmlString
+     * @throws \Exception
      */
     public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
     {
@@ -80,6 +111,14 @@ class BulmaForm extends FormBuilder
         $optionsField = Arr::except($options, ['suffix', 'prefix']);
         $inputElement = $this->form->input($type, $name, $value, $optionsField);
         $inputElement = $this->withAddon($inputElement, $options);
+
+        if (isset($options['prefix']) || isset($options['suffix'])) {
+            return $this->formGroupWithAddon(
+                $this->label($name, $label),
+                $inputElement,
+                $name
+            );
+        }
 
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
@@ -108,27 +147,29 @@ class BulmaForm extends FormBuilder
             return $inputElement;
         }
 
-        /** @todo */
+        if ($prefix instanceof Text || $prefix instanceof Button) {
+            $inputElement = $this->wrapElement($inputElement, 'control');
+            return new HtmlString($prefix->toHtml() . $inputElement);
+        }
+
         if ($suffix instanceof Text || $suffix instanceof Button) {
-            return $inputElement;
+            $inputElement = $this->wrapElement($inputElement, 'control  is-expanded');
+            return new HtmlString($inputElement . $suffix->toHtml());
         }
 
         $inputGroupClass = [];
-        if ($prefix) {
-            if ($prefix instanceof Icon) {
-                $prefix = str_replace(':class_name', 'is-left', $prefix->toHtml());
-                $this->addFormElementClass($inputGroupClass, 'control');
-                $this->addFormElementClass($inputGroupClass, 'has-icons-left');
-            }
+        if ($prefix && $prefix instanceof Icon) {
+            $prefix = str_replace(':class_name', 'is-left', $prefix->toHtml());
+            $this->addFormElementClass($inputGroupClass, 'has-icons-left');
         }
 
-        if ($suffix) {
-            if ($suffix instanceof Icon) {
-                $suffix = str_replace(':class_name', 'is-right', $suffix->toHtml());
-                $this->addFormElementClass($inputGroupClass, 'control');
-                $this->addFormElementClass($inputGroupClass, 'has-icons-right');
-            }
+        if ($suffix && $suffix instanceof Icon) {
+            $suffix = str_replace(':class_name', 'is-right', $suffix->toHtml());
+            $this->addFormElementClass($inputGroupClass, 'has-icons-right');
         }
+
+        $this->addFormElementClass($inputGroupClass, 'control');
+        $this->addFormElementClass($inputGroupClass, 'is-expanded');
 
         return $this->html->tag(
             'div',
@@ -146,7 +187,7 @@ class BulmaForm extends FormBuilder
     {
         $callback = function ($label, $options) {
             $this->addFormElementClass($options, 'button');
-            $a = $this->html->tag('a', $label, $options);
+            $a = $this->html->tag('button', $label, $options);
             return $this->html->tag('p', $a->toHtml(), ['class' => 'control']);
         };
         return new Button($this->app, $callback, $label, $options);
@@ -176,7 +217,7 @@ class BulmaForm extends FormBuilder
     public function addonIcon($icon, $options = [])
     {
         $iconObject = new Builders\Icons\Icon($this->app, $icon);
-        $callback = function (Builders\Icons\Icon $iconObject, array $options) {
+        $callback = function (Builders\Icons\Icon $iconObject) {
             $this->addFormElementClass($iconClass, $iconObject->className());
             $i = $this->html->tag('i', '', $iconClass);
             return $this->html->tag('span', $i->toHtml(), ['class' => 'icon is-small :class_name']);
