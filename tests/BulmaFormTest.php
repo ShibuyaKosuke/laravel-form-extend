@@ -233,13 +233,15 @@ class BulmaFormTest extends TestCase
             'label',
             'name',
             null,
-            ['prefix' => $this->form->addonIcon('addon')]
+            ['prefix' => $this->form->addonIcon('fas fa-envelope')]
         );
         $this->hasClass($output, 'div', 'field');
         $this->hasAttribute($output, 'label', 'for', 'label');
         $this->hasClass($output, 'div', 'has-addons');
         $this->hasClass($output, 'div', 'control');
         $this->hasClass($output, 'input', 'input');
+        $this->hasClass($output, 'i', 'fas');
+        $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//div/label");
         $this->assertHtml($output, "//div/div/div/input");
     }
