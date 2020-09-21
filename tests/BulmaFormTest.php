@@ -126,4 +126,27 @@ class BulmaFormTest extends TestCase
             $this->hasClass($output, 'div', $class);
         }
     }
+
+    public function testAddonButton()
+    {
+        $output = $this->form->addonButton('button')->toHtml();
+        $this->hasClass($output, 'button', 'button');
+        $this->assertHtml($output, "//p/button");
+    }
+
+    public function testAddonText()
+    {
+        $output = $this->form->addonText('text')->toHtml();
+        $this->assertHtml($output, "//p/a[@class='button is-static']");
+    }
+
+    public function testAddonIcon()
+    {
+        $output = $this->form->addonIcon('fas fa-envelope')->toHtml();
+        $this->hasClass($output, 'span', 'icon');
+        $this->hasClass($output, 'span', 'is-small');
+        $this->hasClass($output, 'i', 'fas');
+        $this->hasClass($output, 'i', 'fa-envelope');
+        $this->assertHtml($output, "//span/i");
+    }
 }
