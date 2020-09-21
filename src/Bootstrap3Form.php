@@ -122,13 +122,9 @@ class Bootstrap3Form extends FormBuilder
      */
     public function addonButton($label, $options = []): string
     {
-        $attributes = array_merge(['class' => 'btn', 'type' => 'button'], $options);
-
-        if (isset($options['class'])) {
-            $attributes['class'] .= ' btn';
-        }
-
-        return '<div class="input-group-btn"><button ' . $this->html->attributes($attributes) . '>' . $label . '</button></div>';
+        $attributes = array_merge(['class' => 'btn btn-default', 'type' => 'button'], $options);
+        $button = $this->form->button($label, $attributes)->toHtml();
+        return $this->html->tag('div', $button, ['class' => 'input-group-btn'])->toHtml();
     }
 
     /**
@@ -138,7 +134,8 @@ class Bootstrap3Form extends FormBuilder
      */
     public function addonText($text, $options = []): string
     {
-        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '>' . $text . '</span></div>';
+        $span = $this->html->tag('span', $text, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
     }
 
     /**
@@ -148,8 +145,8 @@ class Bootstrap3Form extends FormBuilder
      */
     public function addonIcon($icon, $options = []): string
     {
-        $prefix = Arr::get($options, 'prefix', $this->getIconPrefix());
-
-        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="' . $prefix . $icon . '"></i></span></div>';
+        $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();
+        $span = $this->html->tag('span', $i, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
     }
 }

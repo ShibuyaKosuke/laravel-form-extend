@@ -138,4 +138,28 @@ class Bootstrap3FormTest extends TestCase
             $this->hasClass($output, 'label', $class);
         }
     }
+
+    public function testAddonButton()
+    {
+        $output = $this->form->addonButton('button');
+        $this->hasClass($output, 'div', 'input-group-btn');
+        $this->hasClass($output, 'button', 'btn');
+        $this->hasClass($output, 'button', 'btn-default');
+        $this->assertHtml($output, "//div[@class='input-group-btn']/button");
+    }
+
+    public function testAddonText()
+    {
+        $output = $this->form->addonText('text');
+        $this->assertHtml($output, "//div[@class='input-group-addon']/span");
+    }
+
+    public function testAddonIcon()
+    {
+        $output = $this->form->addonIcon('fas fa-envelope');
+        $this->hasClass($output, 'div', 'input-group-addon');
+        $this->hasClass($output, 'i', 'fas');
+        $this->hasClass($output, 'i', 'fa-envelope');
+        $this->assertHtml($output, "//div[@class='input-group-addon']/span/i");
+    }
 }

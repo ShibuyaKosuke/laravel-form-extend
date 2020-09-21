@@ -171,7 +171,8 @@ class Bootstrap4Form extends FormBuilder
     public function addonButton($label, $options = []): string
     {
         $this->addFormElementClass($options, 'btn btn-outline-secondary');
-        return '<div class=":class_name"><button ' . $this->html->attributes($options) . '>' . $label . '</button></div>';
+        $button = $this->form->button($label, $options)->toHtml();
+        return $this->html->tag('div', $button, ['class' => ':class_name'])->toHtml();
     }
 
     /**
@@ -182,7 +183,8 @@ class Bootstrap4Form extends FormBuilder
     public function addonText($text, $options = []): string
     {
         $this->addFormElementClass($options, 'input-group-text');
-        return '<div class=":class_name"><span ' . $this->html->attributes($options) . '>' . $text . '</span></div>';
+        $span = $this->html->tag('span', $text, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => ':class_name']);
     }
 
     /**
@@ -193,6 +195,8 @@ class Bootstrap4Form extends FormBuilder
     public function addonIcon($icon, $options = []): string
     {
         $this->addFormElementClass($options, 'input-group-text');
-        return '<div class=":class_name"><span ' . $this->html->attributes($options) . '><i class="' . $icon . '"></i></span></div>';
+        $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();
+        $span = $this->html->tag('span', $i, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => ':class_name'])->toHtml();
     }
 }

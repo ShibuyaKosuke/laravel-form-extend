@@ -3,6 +3,7 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Test;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap3Form;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap4Form;
@@ -155,8 +156,11 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function assertHtml($output, $expression, $count = 1)
     {
+        if ($output instanceof HtmlString) {
+            $output = $output->toHtml();
+        }
         $dom = new \DOMDocument();
-        $dom->loadHTML($output->toHtml());
+        $dom->loadHTML($output);
         $xpath = new \DOMXPath($dom);
         $ul_nodes = $xpath->evaluate($expression);
         $this->assertEquals($count, $ul_nodes->length);
@@ -164,15 +168,21 @@ abstract class TestCase extends OrchestraTestCase
 
     protected function getNodeByTagName($output, $tagName)
     {
+        if ($output instanceof HtmlString) {
+            $output = $output->toHtml();
+        }
         $dom = new \DOMDocument();
-        $dom->loadHTML($output->toHtml());
+        $dom->loadHTML($output);
         return $dom->getElementsByTagName($tagName)->item(0);
     }
 
     protected function hasAttribute($output, $tagName, $attribute_name, $value)
     {
         $dom = new \DOMDocument();
-        $dom->loadHTML($output->toHtml());
+        if ($output instanceof HtmlString) {
+            $output = $output->toHtml();
+        }
+        $dom->loadHTML($output);
         $xpath = new \DOMXPath($dom);
 
         /** @var \DOMNodeList $elements */

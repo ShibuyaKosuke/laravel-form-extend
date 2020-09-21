@@ -136,4 +136,26 @@ class Bootstrap4FormTest extends TestCase
             $this->hasClass($output, 'div', $class);
         }
     }
+
+    public function testAddonButton()
+    {
+        $output = $this->form->addonButton('button');
+        $this->hasClass($output, 'button', 'btn');
+        $this->hasClass($output, 'button', 'btn-outline-secondary');
+        $this->assertHtml($output, "//div/button");
+    }
+
+    public function testAddonText()
+    {
+        $output = $this->form->addonText('text');
+        $this->assertHtml($output, "//div/span");
+    }
+
+    public function testAddonIcon()
+    {
+        $output = $this->form->addonIcon('fas fa-envelope');
+        $this->hasClass($output, 'i', 'fas');
+        $this->hasClass($output, 'i', 'fa-envelope');
+        $this->assertHtml($output, "//div/span/i");
+    }
 }

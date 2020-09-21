@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
@@ -59,12 +60,81 @@ class BulmaForm extends FormBuilder
     }
 
     /**
+     * @param string $type
+     * @param string $name
+     * @param null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
+    {
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        $optionsField = Arr::except($options, ['suffix', 'prefix']);
+        $inputElement = $this->form->input($type, $name, $value, $optionsField);
+        $inputElement = $this->withAddon($inputElement, $options);
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $inputElement,
+            $name
+        );
+    }
+
+    /**
+     * @param HtmlString $inputElement
+     * @param array $options
+     * @return HtmlString
+     */
+    public function withAddon($inputElement, $options)
+    {
+        $prefix = $options['prefix'] ?? null;
+
+        $suffix = $options['suffix'] ?? null;
+
+        if (is_null($prefix) && is_null($suffix)) {
+            return $inputElement;
+        }
+
+        $this->addFormElementClass($inputGroupClass, 'control');
+
+        if ($prefix) {
+            $position = 'right';
+            $iconPosition = 'is-' . $position;
+            $prefix = str_replace(':class_name', $iconPosition, $prefix);
+            $this->addFormElementClass($inputGroupClass, 'has-icons-right');
+        }
+
+        if ($suffix) {
+            $position = 'left';
+            $iconPosition = 'is-' . $position;
+            $suffix = str_replace(':class_name', $iconPosition, $suffix);
+            $this->addFormElementClass($inputGroupClass, 'has-icons-left');
+        }
+
+        return $this->html->tag(
+            'div',
+            implode([$inputElement->toHtml(), $prefix, $suffix]),
+            $inputGroupClass
+        );
+    }
+
+    /**
      * @param string $label
      * @param array $options
      * @return string
      */
     public function addonButton($label, $options = []): string
     {
+        // @todo
         return '';
     }
 
@@ -75,6 +145,7 @@ class BulmaForm extends FormBuilder
      */
     public function addonText($text, $options = []): string
     {
+        // @todo
         return '';
     }
 
@@ -85,6 +156,8 @@ class BulmaForm extends FormBuilder
      */
     public function addonIcon($icon, $options = []): string
     {
-        return '';
+        $this->addFormElementClass($iconClass, $icon);
+        $i = $this->html->tag('i', '', $iconClass);
+        return $this->html->tag('span', $i->toHtml(), ['class' => 'icon is-small :class_name']);
     }
 }
