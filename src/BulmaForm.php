@@ -48,9 +48,9 @@ class BulmaForm extends FormBuilder
     }
 
     /**
-     * @param $label
-     * @param $form
-     * @param $name
+     * @param HtmlString $label
+     * @param HtmlString $form
+     * @param string $name name attribute
      * @return HtmlString
      */
     public function formGroupWithAddon($label, $form, $name)
