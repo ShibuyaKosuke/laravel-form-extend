@@ -4,6 +4,9 @@ namespace ShibuyaKosuke\LaravelFormExtend;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Button;
+use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Icon;
+use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Text;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
@@ -93,6 +96,7 @@ class BulmaForm extends FormBuilder
      * @param HtmlString $inputElement
      * @param array $options
      * @return HtmlString
+     * @throws \Exception
      */
     public function withAddon($inputElement, $options)
     {
@@ -104,20 +108,26 @@ class BulmaForm extends FormBuilder
             return $inputElement;
         }
 
-        $this->addFormElementClass($inputGroupClass, 'control');
+        /** @todo */
+        if ($suffix instanceof Text || $suffix instanceof Button) {
+            return $inputElement;
+        }
 
+        $inputGroupClass = [];
         if ($prefix) {
-            $position = 'right';
-            $iconPosition = 'is-' . $position;
-            $prefix = str_replace(':class_name', $iconPosition, $prefix);
-            $this->addFormElementClass($inputGroupClass, 'has-icons-right');
+            if ($prefix instanceof Icon) {
+                $prefix = str_replace(':class_name', 'is-left', $prefix->toHtml());
+                $this->addFormElementClass($inputGroupClass, 'control');
+                $this->addFormElementClass($inputGroupClass, 'has-icons-left');
+            }
         }
 
         if ($suffix) {
-            $position = 'left';
-            $iconPosition = 'is-' . $position;
-            $suffix = str_replace(':class_name', $iconPosition, $suffix);
-            $this->addFormElementClass($inputGroupClass, 'has-icons-left');
+            if ($suffix instanceof Icon) {
+                $suffix = str_replace(':class_name', 'is-right', $suffix->toHtml());
+                $this->addFormElementClass($inputGroupClass, 'control');
+                $this->addFormElementClass($inputGroupClass, 'has-icons-right');
+            }
         }
 
         return $this->html->tag(
@@ -130,34 +140,47 @@ class BulmaForm extends FormBuilder
     /**
      * @param string $label
      * @param array $options
-     * @return string
+     * @return Button
      */
-    public function addonButton($label, $options = []): string
+    public function addonButton($label, $options = [])
     {
-        // @todo
-        return '';
+        $callback = function ($label, $options) {
+            $this->addFormElementClass($options, 'button');
+            $a = $this->html->tag('a', $label, $options);
+            return $this->html->tag('p', $a->toHtml(), ['class' => 'control']);
+        };
+        return new Button($this->app, $callback, $label, $options);
     }
 
     /**
      * @param string $text
      * @param array $options
-     * @return string
+     * @return Text
      */
-    public function addonText($text, $options = []): string
+    public function addonText($text, $options = [])
     {
-        // @todo
-        return '';
+        $callback = function (string $text, array $options) {
+            $this->addFormElementClass($options, 'button');
+            $this->addFormElementClass($options, 'is-static');
+            $a = $this->html->tag('a', $text, $options);
+            return $this->html->tag('p', $a->toHtml(), ['class' => 'control']);
+        };
+        return new Text($this->app, $callback, $text, $options);
     }
 
     /**
      * @param string $icon
      * @param array $options
-     * @return string
+     * @return Icon
      */
-    public function addonIcon($icon, $options = []): string
+    public function addonIcon($icon, $options = [])
     {
-        $this->addFormElementClass($iconClass, $icon);
-        $i = $this->html->tag('i', '', $iconClass);
-        return $this->html->tag('span', $i->toHtml(), ['class' => 'icon is-small :class_name']);
+        $iconObject = new Builders\Icons\Icon($this->app, $icon);
+        $callback = function (Builders\Icons\Icon $iconObject, array $options) {
+            $this->addFormElementClass($iconClass, $iconObject->className());
+            $i = $this->html->tag('i', '', $iconClass);
+            return $this->html->tag('span', $i->toHtml(), ['class' => 'icon is-small :class_name']);
+        };
+        return new Icon($this->app, $callback, $iconObject, $options);
     }
 }

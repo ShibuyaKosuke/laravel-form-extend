@@ -14,7 +14,7 @@ interface Addon
      * @param array $options
      * @return string
      */
-    public function addonButton($label, $options = []): string;
+    public function addonButton($label, $options = []);
 
     /**
      * Create an addon text element.
@@ -22,7 +22,7 @@ interface Addon
      * @param array $options
      * @return string
      */
-    public function addonText($text, $options = []): string;
+    public function addonText($text, $options = []);
 
     /**
      * Create an addon icon element.
@@ -30,5 +30,5 @@ interface Addon
      * @param array $options
      * @return string
      */
-    public function addonIcon($icon, $options = []): string;
+    public function addonIcon($icon, $options = []);
 }
