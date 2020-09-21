@@ -22,6 +22,11 @@ class Icon
      */
     private $icon;
 
+    /**
+     * Icon constructor.
+     * @param Application $app
+     * @param string $icon
+     */
     public function __construct(Application $app, string $icon)
     {
         $this->default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default_icon');
