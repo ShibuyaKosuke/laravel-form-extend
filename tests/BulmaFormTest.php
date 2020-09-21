@@ -149,4 +149,98 @@ class BulmaFormTest extends TestCase
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//span/i");
     }
+
+    public function testInputWithAddon()
+    {
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['prefix' => $this->form->addonText('addon')]
+        );
+        $this->hasClass($output, 'div', 'field');
+        $this->hasAttribute($output, 'label', 'for', 'label');
+        $this->hasClass($output, 'div', 'has-addons');
+        $this->hasClass($output, 'p', 'control');
+        $this->hasClass($output, 'a', 'button');
+        $this->hasClass($output, 'a', 'is-static');
+        $this->hasClass($output, 'div', 'control');
+        $this->hasClass($output, 'input', 'input');
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/p");
+        $this->assertHtml($output, "//div/div/div/input");
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['suffix' => $this->form->addonButton('addon')]
+        );
+        $this->hasClass($output, 'div', 'field');
+        $this->hasAttribute($output, 'label', 'for', 'label');
+        $this->hasClass($output, 'div', 'has-addons');
+        $this->hasClass($output, 'p', 'control');
+        $this->hasClass($output, 'button', 'button');
+        $this->hasClass($output, 'div', 'control');
+        $this->hasClass($output, 'input', 'input');
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/p");
+        $this->assertHtml($output, "//div/div/div/input");
+    }
+
+    public function testInputHorizontalWithAddon()
+    {
+        $this->setType(BulmaForm::HORIZONTAL);
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['prefix' => $this->form->addonText('addon')]
+        );
+        $this->hasClass($output, 'div', 'field');
+        $this->hasAttribute($output, 'label', 'for', 'label');
+        $this->hasClass($output, 'div', 'has-addons');
+        $this->hasClass($output, 'p', 'control');
+        $this->hasClass($output, 'a', 'button');
+        $this->hasClass($output, 'a', 'is-static');
+        $this->hasClass($output, 'div', 'control');
+        $this->hasClass($output, 'input', 'input');
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/p");
+        $this->assertHtml($output, "//div/div/div/input");
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['suffix' => $this->form->addonIcon('addon')]
+        );
+        $this->hasClass($output, 'div', 'field');
+        $this->hasAttribute($output, 'label', 'for', 'label');
+        $this->hasClass($output, 'div', 'has-addons');
+        $this->hasClass($output, 'div', 'control');
+        $this->hasClass($output, 'input', 'input');
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/div/input");
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['prefix' => $this->form->addonIcon('addon')]
+        );
+        $this->hasClass($output, 'div', 'field');
+        $this->hasAttribute($output, 'label', 'for', 'label');
+        $this->hasClass($output, 'div', 'has-addons');
+        $this->hasClass($output, 'div', 'control');
+        $this->hasClass($output, 'input', 'input');
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/div/input");
+    }
 }

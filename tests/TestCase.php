@@ -7,11 +7,15 @@ use Illuminate\Support\HtmlString;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap3Form;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap4Form;
+use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 use ShibuyaKosuke\LaravelFormExtend\BulmaForm;
 use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
+    /**
+     * @var FormBuilder
+     */
     protected $form;
     protected $method;
 
