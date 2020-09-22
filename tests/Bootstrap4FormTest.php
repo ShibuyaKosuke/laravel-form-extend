@@ -28,6 +28,7 @@ class Bootstrap4FormTest extends TestCase
         $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
         foreach ($types as $type) {
             $name = 'input-name';
+            $this->validate($name);
             $output = $this->form->input($type, $name);
 
             $this->horizontal($output);
