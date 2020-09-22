@@ -105,16 +105,6 @@ abstract class FormBuilder implements Addon
         }
     }
 
-    public function getApp()
-    {
-        return $this->app;
-    }
-
-    public function getForm()
-    {
-        return $this->form;
-    }
-
     /**
      * set form style
      *

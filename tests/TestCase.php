@@ -240,21 +240,28 @@ abstract class TestCase extends OrchestraTestCase
 
     public function validate($name)
     {
-        $data = [
-            $name => null
-        ];
-        $rules = [
-            $name => 'required'
-        ];
-        $validator = Validator::make($data, $rules);
-        $app = $this->form->getApp();
-        $this->form->getForm()->setSessionStore($app['session.store']);
-        $store = $this->form->getForm()->getSessionStore();
+        $formBuilder = $this->form;
+
+        /** @var \Collective\Html\FormBuilder $form */
+        $class = new \ReflectionClass($formBuilder);
+
+        $appProperty = $class->getProperty('app');
+        $appProperty->setAccessible(true);
+        $app = $appProperty->getValue($formBuilder);
+
+        $formProperty = $class->getProperty('form');
+        $formProperty->setAccessible(true);
+        $form = $formProperty->getValue($formBuilder);
+
+        $form->setSessionStore($app['session.store']);
+
+        $validator = Validator::make([$name => null], [$name => 'required']);
         $errorBugs = new ViewErrorBag();
         $messageBag = new MessageBag();
         $messageBag->add($name, $validator->errors()->first($name));
         $errorBugs->put('default', $messageBag);
-        $store = $this->form->getForm()->getSessionStore();
+
+        $store = $form->getSessionStore();
         $store->put('errors', $errorBugs);
     }
 }
