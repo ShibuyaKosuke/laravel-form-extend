@@ -3,6 +3,7 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Test;
 
 use Collective\Html\HtmlBuilder;
+use Mockery;
 use ShibuyaKosuke\LaravelFormExtend\BulmaForm;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
@@ -15,7 +16,7 @@ class BulmaFormTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->app['html'] = \Mockery::mock(HtmlBuilder::class);
+        $this->app['html'] = Mockery::mock(HtmlBuilder::class);
 
         /** @var BulmaForm|FormBuilder form */
         $this->form = new BulmaForm($this->app, 'bulma');
@@ -28,12 +29,24 @@ class BulmaFormTest extends TestCase
         $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
         foreach ($types as $type) {
             $name = 'input-name';
+            $this->validate($name);
             $output = $this->form->input($type, $name);
 
             $this->label($output, $name, $name);
             $this->input($output, $type, $name);
             $this->assertHtml($output, '//div/div/input');
         }
+    }
+
+    public function testInputWithoutLabel()
+    {
+        $this->setType(BulmaForm::HORIZONTAL);
+
+        $name = 'input-name';
+        $label = false;
+        $output = $this->form->input('text', $name, $label);
+        $this->input($output, 'text', $name);
+        $this->assertHtml($output, '//div/div/input');
     }
 
     public function testSomeInputVertical()

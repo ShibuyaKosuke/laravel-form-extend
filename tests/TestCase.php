@@ -3,7 +3,10 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Test;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap3Form;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap4Form;
@@ -233,5 +236,25 @@ abstract class TestCase extends OrchestraTestCase
     public function select($output, $name)
     {
         $this->hasAttribute($output, 'select', 'name', $name);
+    }
+
+    public function validate($name)
+    {
+        $data = [
+            $name => null
+        ];
+        $rules = [
+            $name => 'required'
+        ];
+        $validator = Validator::make($data, $rules);
+        $app = $this->form->getApp();
+        $this->form->getForm()->setSessionStore($app['session.store']);
+        $store = $this->form->getForm()->getSessionStore();
+        $errorBugs = new ViewErrorBag();
+        $messageBag = new MessageBag();
+        $messageBag->add($name, $validator->errors()->first($name));
+        $errorBugs->put('default', $messageBag);
+        $store = $this->form->getForm()->getSessionStore();
+        $store->put('errors', $errorBugs);
     }
 }
