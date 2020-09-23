@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
@@ -112,5 +113,40 @@ class Bootstrap3Form extends FormBuilder
             $this->form->input(__FUNCTION__, $name, null, $options),
             $name
         );
+    }
+
+    /**
+     * @param string $label
+     * @param array $options
+     * @return string
+     */
+    public function addonButton(string $label, array $options = []): string
+    {
+        $attributes = array_merge(['class' => 'btn btn-default', 'type' => 'button'], $options);
+        $button = $this->form->button($label, $attributes)->toHtml();
+        return $this->html->tag('div', $button, ['class' => 'input-group-btn'])->toHtml();
+    }
+
+    /**
+     * @param string $text
+     * @param array $options
+     * @return string
+     */
+    public function addonText(string $text, array $options = []): string
+    {
+        $span = $this->html->tag('span', $text, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
+    }
+
+    /**
+     * @param string $icon
+     * @param array $options
+     * @return string
+     */
+    public function addonIcon(string $icon, array $options = []): string
+    {
+        $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();
+        $span = $this->html->tag('span', $i, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
@@ -49,6 +50,66 @@ class Bootstrap4Form extends FormBuilder
     }
 
     /**
+     * @param string $type
+     * @param string $name
+     * @param null $label
+     * @param string|null $value
+     * @param array $options
+     * @return HtmlString
+     */
+    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
+    {
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+        $this->addFormElementClass($options, $this->getFormControlClassName());
+
+        $optionsField = Arr::except($options, ['suffix', 'prefix']);
+        if (!Arr::has($optionsField, 'id')) {
+            Arr::set($optionsField, 'id', $name);
+        }
+        $inputElement = $this->form->input($type, $name, $value, $optionsField);
+
+        $inputElement = $this->withAddonForBootstrap4($inputElement, $options, $name);
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $inputElement,
+            $name
+        );
+    }
+
+    /**
+     * @param HtmlString $inputElement
+     * @param array $options
+     * @param string $name
+     * @return HtmlString
+     */
+    public function withAddonForBootstrap4($inputElement, $options, string $name)
+    {
+        $prefix = str_replace(':class_name', 'input-group-prepend', $options['prefix'] ?? null);
+        $suffix = str_replace(':class_name', 'input-group-append', $options['suffix'] ?? null);
+
+        if ($prefix || $suffix) {
+            $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'input-group');
+
+            if ($this->getFieldError($name)) {
+                $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'is-invalid');
+            }
+            return $this->html->tag(
+                'div',
+                implode([$prefix, $inputElement->toHtml(), $suffix]),
+                $inputGroupClass
+            );
+        }
+        return $inputElement;
+    }
+
+    /**
      * input::file
      *
      * @param string $name name attribute
@@ -69,5 +130,73 @@ class Bootstrap4Form extends FormBuilder
             $this->form->input(__FUNCTION__, $name, null, $options),
             $name
         );
+    }
+
+    /**
+     * select
+     *
+     * @param string $name name attribute
+     * @param mixed|null $label inner text label element
+     * @param array $list
+     * @param mixed|null $selected
+     * @param array $selectAttrs
+     * @param array $optionsAttrs
+     * @param array $optgroupsAttrs
+     * @return HtmlString
+     */
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    {
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
+        }
+
+        $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
+
+        $optionsField = Arr::except($selectAttrs, ['suffix', 'prefix']);
+        $inputElement = $this->form->select($name, $list, $selected, $optionsField, $optionsAttrs, $optgroupsAttrs);
+        $inputElement = $this->withAddonForBootstrap4($inputElement, $selectAttrs, $name);
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $inputElement,
+            $name
+        );
+    }
+
+    /**
+     * @param string $label
+     * @param array $options
+     * @return string
+     */
+    public function addonButton(string $label, array $options = []): string
+    {
+        $this->addFormElementClass($options, 'btn btn-outline-secondary');
+        $button = $this->form->button($label, $options)->toHtml();
+        return $this->html->tag('div', $button, ['class' => ':class_name'])->toHtml();
+    }
+
+    /**
+     * @param string $text
+     * @param array $options
+     * @return string
+     */
+    public function addonText(string $text, array $options = []): string
+    {
+        $this->addFormElementClass($options, 'input-group-text');
+        $span = $this->html->tag('span', $text, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => ':class_name']);
+    }
+
+    /**
+     * @param string $icon
+     * @param array $options
+     * @return string
+     */
+    public function addonIcon(string $icon, array $options = []): string
+    {
+        $this->addFormElementClass($options, 'input-group-text');
+        $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();
+        $span = $this->html->tag('span', $i, $options)->toHtml();
+        return $this->html->tag('div', $span, ['class' => ':class_name'])->toHtml();
     }
 }
