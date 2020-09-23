@@ -25,6 +25,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public const CONFIG = __DIR__ . '/../../config/form_extend.php';
 
     /**
+     * @var string|null Css framework
+     */
+    private $default = 'bootstrap3';
+
+    /**
      * boot method
      * @return void
      */
@@ -43,6 +48,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->mergeConfigFrom(self::CONFIG, self::KEY);
 
+        // Dynamic change CSS framework.
+        if (request()->query->has('type')) {
+            $this->default = request()->query->get('type');
+        }
+
         /**
          * Extends LaravelCollective/HtmlBuilder
          */
@@ -59,7 +69,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             /** @var Application $app */
             $app = $this->app;
             $class = $this->defaultClass($app);
-            return new $class($app);
+            return new $class($app, $this->default);
         });
     }
 
@@ -73,9 +83,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     private function defaultClass(Application $app)
     {
         $config = Arr::get($app['config'], self::KEY);
-        $default = Arr::get($config, 'default');
         $frameworks = Arr::get($config, 'frameworks');
-        $class = Arr::get($frameworks, $default);
+        $class = Arr::get($frameworks, $this->default);
         if (!$app->isProduction()) {
             Log::debug($class);
         }
