@@ -307,4 +307,37 @@ abstract class TestCase extends OrchestraTestCase
         $label = 'radio-label';
         return $this->form->radios($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
     }
+
+    protected function getSelect()
+    {
+        $name = 'select';
+        $label = 'select-label';
+        return $this->form->select($name, $label);
+    }
+
+    protected function getFile()
+    {
+        $name = 'file';
+        $label = 'file-label';
+        return $this->form->file($name, $label);
+    }
+
+    protected function getTextarea()
+    {
+        $name = 'textarea';
+        $label = 'textarea-label';
+        return $this->form->textarea($name, $label);
+    }
+
+    protected function getButton()
+    {
+        $name = 'button';
+        return $this->form->button($name);
+    }
+
+    protected function getSubmit()
+    {
+        $name = 'submit';
+        return $this->form->submit($name);
+    }
 }

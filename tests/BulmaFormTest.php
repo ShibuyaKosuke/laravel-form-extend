@@ -255,4 +255,30 @@ class BulmaFormTest extends TestCase
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//div/div/div/input");
     }
+
+    public function testSelect()
+    {
+        $output = $this->getSelect();
+        $this->assertHtml($output, '//div/label');
+        $this->assertHtml($output, '//div/select');
+    }
+
+    public function testTextarea()
+    {
+        $output = $this->getTextarea();
+        $this->assertHtml($output, '//div/label');
+        $this->assertHtml($output, '//div/textarea');
+    }
+
+    public function testButton()
+    {
+        $output = $this->getButton();
+        $this->assertHtml($output, '//div/button');
+    }
+
+    public function testSubmit()
+    {
+        $output = $this->getSubmit();
+        $this->assertHtml($output, '//div[@class="field"]/input[@class="button is-link"]');
+    }
 }
