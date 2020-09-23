@@ -183,3 +183,13 @@ Edit config/lara_form.php.
 Screenshot when error. 
 
 ![Bootstrap4](https://raw.githubusercontent.com/ShibuyaKosuke/laravel-form-extend/master/screenshots/screeshot-bootstrap4.png "Bootstrap4")
+
+## Addons
+
+```blade
+{{ LaraForm::email('email', 'email', null, ['prefix' => LaraForm::addonText('E-mail')]) }}
+
+{{ LaraForm::email('email', 'email', null, ['suffix' => LaraForm::addonButton('submit')]) }}
+
+{{ LaraForm::email('email', 'email', null, ['prefix' => LaraForm::addonIcon('fas fa-envelope')]) }}
+```
