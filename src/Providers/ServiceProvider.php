@@ -27,7 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * @var string|null Css framework
      */
-    private $default = 'bootstrap3';
+    private $default = null;
 
     /**
      * boot method
