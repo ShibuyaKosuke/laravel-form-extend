@@ -29,12 +29,12 @@ class HtmlBuilder
     }
 
     /**
-     * @param string $name
-     * @param array|null $arguments
+     * @param string $method
+     * @param array $parameters
      * @return mixed
      */
-    public function __call($name, $arguments)
+    public function __call(string $method, array $parameters = [])
     {
-        return call_user_func_array([$this->html, $name], $arguments);
+        return call_user_func_array([$this->html, $method], $parameters);
     }
 }

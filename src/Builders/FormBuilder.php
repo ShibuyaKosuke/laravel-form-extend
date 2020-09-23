@@ -131,7 +131,7 @@ abstract class FormBuilder implements Addon
      */
     public function linkCss()
     {
-        return new HtmlString('<link rel="stylesheet" href="' . $this->css() . '">');
+        return $this->html->style($this->css());
     }
 
     /**
@@ -150,7 +150,7 @@ abstract class FormBuilder implements Addon
      * @return mixed
      * @throws FormExtendException
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters = [])
     {
         try {
             return call_user_func_array([$this->form, $method], $parameters);
