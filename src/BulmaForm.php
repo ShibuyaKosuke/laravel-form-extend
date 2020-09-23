@@ -53,7 +53,7 @@ class BulmaForm extends FormBuilder
      * @param string $name name attribute
      * @return HtmlString
      */
-    public function formGroupWithAddon($label, $form, $name)
+    public function formGroupWithAddon($label, HtmlString $form, string $name)
     {
         $error = $this->getFieldError($name);
         $errorElements = ($error) ?
@@ -96,7 +96,7 @@ class BulmaForm extends FormBuilder
     /**
      * @param string $type
      * @param string $name
-     * @param null $label
+     * @param string|null $label
      * @param string|null $value
      * @param array $options
      * @return HtmlString
@@ -133,7 +133,7 @@ class BulmaForm extends FormBuilder
     }
 
     /**
-     * @param HtmlString $inputElement
+     * @param HtmlString|string $inputElement
      * @param array $options
      * @return HtmlString
      * @throws \Exception
@@ -184,7 +184,7 @@ class BulmaForm extends FormBuilder
      * @param array $options
      * @return Button
      */
-    public function addonButton($label, $options = [])
+    public function addonButton(string $label, array $options = [])
     {
         $callback = function ($label, $options) {
             $this->addFormElementClass($options, 'button');
@@ -199,7 +199,7 @@ class BulmaForm extends FormBuilder
      * @param array $options
      * @return Text
      */
-    public function addonText($text, $options = [])
+    public function addonText(string $text, array $options = [])
     {
         $callback = function (string $text, array $options) {
             $this->addFormElementClass($options, 'button');
@@ -215,7 +215,7 @@ class BulmaForm extends FormBuilder
      * @param array $options
      * @return Icon
      */
-    public function addonIcon($icon, $options = [])
+    public function addonIcon(string $icon, array $options = [])
     {
         $iconObject = new Builders\Icons\Icon($this->app, $icon);
         $callback = function (Builders\Icons\Icon $iconObject) {

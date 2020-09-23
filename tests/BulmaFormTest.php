@@ -32,7 +32,7 @@ class BulmaFormTest extends TestCase
             $this->validate($name);
             $output = $this->form->input($type, $name);
 
-            $this->label($output, $name, $name);
+            $this->label($output, $name, false);
             $this->input($output, $type, $name);
             $this->assertHtml($output, '//div/div/input');
         }
@@ -241,21 +241,21 @@ class BulmaFormTest extends TestCase
         $this->assertHtml($output, "//div/label");
         $this->assertHtml($output, "//div/div/div/input");
 
+        $this->validate('label');
+
         $output = $this->form->input(
             'text',
             'label',
-            'name',
+            false,
             null,
             ['prefix' => $this->form->addonIcon('fas fa-envelope')]
         );
         $this->hasClass($output, 'div', 'field');
-        $this->hasAttribute($output, 'label', 'for', 'label');
         $this->hasClass($output, 'div', 'has-addons');
         $this->hasClass($output, 'div', 'control');
         $this->hasClass($output, 'input', 'input');
         $this->hasClass($output, 'i', 'fas');
         $this->hasClass($output, 'i', 'fa-envelope');
-        $this->assertHtml($output, "//div/label");
         $this->assertHtml($output, "//div/div/div/input");
     }
 }

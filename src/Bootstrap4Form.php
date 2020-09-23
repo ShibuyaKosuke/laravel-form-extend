@@ -171,7 +171,7 @@ class Bootstrap4Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonButton($label, $options = []): string
+    public function addonButton(string $label, array $options = []): string
     {
         $this->addFormElementClass($options, 'btn btn-outline-secondary');
         $button = $this->form->button($label, $options)->toHtml();
@@ -183,7 +183,7 @@ class Bootstrap4Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonText($text, $options = []): string
+    public function addonText(string $text, array $options = []): string
     {
         $this->addFormElementClass($options, 'input-group-text');
         $span = $this->html->tag('span', $text, $options)->toHtml();
@@ -195,7 +195,7 @@ class Bootstrap4Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonIcon($icon, $options = []): string
+    public function addonIcon(string $icon, array $options = []): string
     {
         $this->addFormElementClass($options, 'input-group-text');
         $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();

@@ -120,7 +120,7 @@ class Bootstrap3Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonButton($label, $options = []): string
+    public function addonButton(string $label, array $options = []): string
     {
         $attributes = array_merge(['class' => 'btn btn-default', 'type' => 'button'], $options);
         $button = $this->form->button($label, $attributes)->toHtml();
@@ -132,7 +132,7 @@ class Bootstrap3Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonText($text, $options = []): string
+    public function addonText(string $text, array $options = []): string
     {
         $span = $this->html->tag('span', $text, $options)->toHtml();
         return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
@@ -143,7 +143,7 @@ class Bootstrap3Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonIcon($icon, $options = []): string
+    public function addonIcon(string $icon, array $options = []): string
     {
         $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();
         $span = $this->html->tag('span', $i, $options)->toHtml();
