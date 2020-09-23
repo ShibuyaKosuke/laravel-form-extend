@@ -5,6 +5,7 @@ namespace ShibuyaKosuke\LaravelFormExtend\Test;
 use Collective\Html\HtmlBuilder;
 use ShibuyaKosuke\LaravelFormExtend\Bootstrap4Form;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
+use ShibuyaKosuke\LaravelFormExtend\BulmaForm;
 
 /**
  * Class FormBuilderTest
@@ -158,5 +159,98 @@ class Bootstrap4FormTest extends TestCase
         $this->hasClass($output, 'i', 'fas');
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//div/span/i");
+    }
+
+    public function testInputWithAddon()
+    {
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['prefix' => $this->form->addonText('addon')]
+        );
+        $this->hasAttribute($output, 'label', 'for', 'label');
+        $this->assertHtml($output, "//div/label");
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['suffix' => $this->form->addonButton('addon')]
+        );
+        $this->assertHtml($output, "//div/label");
+    }
+
+    public function testInputHorizontalWithAddon()
+    {
+        $this->setType(BulmaForm::HORIZONTAL);
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['prefix' => $this->form->addonText('addon')]
+        );
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/div/input");
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            'name',
+            null,
+            ['suffix' => $this->form->addonIcon('addon')]
+        );
+        $this->assertHtml($output, "//div/label");
+        $this->assertHtml($output, "//div/div/div/input");
+        $this->assertHtml($output, "//div[@class=\"form-group row\"]/div[@class=\"col-sm-2 col-md-3 col-form-label\"]");
+        $this->assertHtml($output, "//div[@class=\"form-group row\"]/div[@class=\"col-sm-10 col-md-9\"]");
+        $this->assertHtml($output, "//div[@class=\"input-group\"]/input[@class=\"form-control\"]");
+
+        $this->validate('label');
+
+        $output = $this->form->input(
+            'text',
+            'label',
+            false,
+            null,
+            ['prefix' => $this->form->addonIcon('fas fa-envelope')]
+        );
+        $this->hasClass($output, 'i', 'fa-envelope');
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group row\"]/div[@class=\"col-sm-2 col-md-3 col-form-label\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group row\"]/div[@class=\"col-sm-10 col-md-9\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"col-sm-10 col-md-9\"]/div[@class=\"input-group is-invalid\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"input-group is-invalid\"]/div[@class=\"input-group-prepend\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"input-group-prepend\"]/span[@class=\"input-group-text\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//span[@class=\"input-group-text\"]/i[@class=\"fas fa-envelope\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"input-group is-invalid\"]/input[@class=\"is-invalid form-control\"]"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"col-sm-10 col-md-9\"]/div[@class=\"invalid-feedback\"]"
+        );
     }
 }

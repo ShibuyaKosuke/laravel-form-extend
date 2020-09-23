@@ -165,22 +165,21 @@ class BulmaFormTest extends TestCase
 
     public function testInputWithAddon()
     {
+        $this->validate('label');
         $output = $this->form->input(
             'text',
             'label',
-            'name',
+            false,
             null,
             ['prefix' => $this->form->addonText('addon')]
         );
         $this->hasClass($output, 'div', 'field');
-        $this->hasAttribute($output, 'label', 'for', 'label');
         $this->hasClass($output, 'div', 'has-addons');
         $this->hasClass($output, 'p', 'control');
         $this->hasClass($output, 'a', 'button');
         $this->hasClass($output, 'a', 'is-static');
         $this->hasClass($output, 'div', 'control');
         $this->hasClass($output, 'input', 'input');
-        $this->assertHtml($output, "//div/label");
         $this->assertHtml($output, "//div/div/p");
         $this->assertHtml($output, "//div/div/div/input");
 
