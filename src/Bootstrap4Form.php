@@ -155,10 +155,6 @@ class Bootstrap4Form extends FormBuilder
         $inputElement = $this->form->select($name, $list, $selected, $optionsField, $optionsAttrs, $optgroupsAttrs);
         $inputElement = $this->withAddonForBootstrap4($inputElement, $selectAttrs, $name);
 
-        if ($this->getFieldError($name)) {
-            $this->addFormElementClass($optionsField, $this->getFormControlErrorClassName());
-        }
-
         return $this->formGroup(
             $this->label($name, $label),
             $inputElement,
