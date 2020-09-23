@@ -69,6 +69,7 @@ class Bootstrap4Form extends FormBuilder
             Arr::set($optionsField, 'id', $name);
         }
         $inputElement = $this->form->input($type, $name, $value, $optionsField);
+
         $inputElement = $this->withAddonForBootstrap4($inputElement, $options, $name);
 
         if ($this->getFieldError($name)) {

@@ -26,8 +26,7 @@ class BulmaFormTest extends TestCase
     {
         $this->setType(BulmaForm::HORIZONTAL);
 
-        $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
-        foreach ($types as $type) {
+        foreach ($this->types as $type) {
             $name = 'input-name';
             $this->validate($name);
             $output = $this->form->input($type, $name);
@@ -53,8 +52,7 @@ class BulmaFormTest extends TestCase
     {
         $this->setType(BulmaForm::VERTICAL);
 
-        $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
-        foreach ($types as $type) {
+        foreach ($this->types as $type) {
             $name = 'input-name';
             $output = $this->form->input($type, $name);
 

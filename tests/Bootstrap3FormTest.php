@@ -25,8 +25,7 @@ class Bootstrap3FormTest extends TestCase
     {
         $this->setType(Bootstrap3Form::HORIZONTAL);
 
-        $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
-        foreach ($types as $type) {
+        foreach ($this->types as $type) {
             $name = 'input-name';
             $this->validate($name);
             $output = $this->form->input($type, $name);
@@ -43,8 +42,7 @@ class Bootstrap3FormTest extends TestCase
     {
         $this->setType(Bootstrap3Form::VERTICAL);
 
-        $types = ['text', 'date', 'number', 'password', 'email', 'tel', 'datetime', 'url', 'search', 'time', 'range'];
-        foreach ($types as $type) {
+        foreach ($this->types as $type) {
             $name = 'input-name';
             $output = $this->form->input($type, $name);
 
@@ -162,5 +160,74 @@ class Bootstrap3FormTest extends TestCase
         $this->hasClass($output, 'i', 'fas');
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//div[@class='input-group-addon']/span/i");
+    }
+
+    public function testCheckbox()
+    {
+        $output = $this->getCheckbox();
+        $this->assertHtml($output, "//div[@class=\"form-group\"]");
+        $this->assertHtml($output, "//div[@class=\"form-group\"]/div[@class=\"checkbox\"]");
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]/div[@class=\"checkbox\"]/label"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]" .
+            "/div[@class=\"checkbox\"]/label/input"
+        );
+    }
+
+    public function testCheckboxes()
+    {
+        $output = $this->getCheckboxes();
+//        dd($output);
+        $this->assertHtml($output, "//div[@class=\"form-group\"]");
+        $this->assertHtml($output, "//div[@class=\"form-group\"]/div/div[@class=\"checkbox\"]", 2);
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]/div/div[@class=\"checkbox\"]/label",
+            2
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]" .
+            "/div/div[@class=\"checkbox\"]/label/input",
+            2
+        );
+    }
+
+    public function testRadio()
+    {
+        $output = $this->getRadio();
+        $this->assertHtml($output, "//div[@class=\"form-group\"]");
+        $this->assertHtml($output, "//div[@class=\"form-group\"]/div[@class=\"radio\"]");
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]/div[@class=\"radio\"]/label"
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]" .
+            "/div[@class=\"radio\"]/label/input"
+        );
+    }
+
+    public function testRadios()
+    {
+        $output = $this->getRadios();
+        $this->assertHtml($output, "//div[@class=\"form-group\"]");
+        $this->assertHtml($output, "//div[@class=\"form-group\"]/div/div[@class=\"radio\"]", 2);
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]/div/div[@class=\"radio\"]/label",
+            2
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]" .
+            "/div/div[@class=\"radio\"]/label/input",
+            2
+        );
     }
 }

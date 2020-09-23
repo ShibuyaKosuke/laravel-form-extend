@@ -21,6 +21,21 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected $form;
     protected $method;
+    protected $types = [
+        'text',
+        'date',
+        'number',
+        'password',
+        'email',
+        'tel',
+        'datetime',
+        'url',
+        'search',
+        'time',
+        'range',
+        'week',
+        'color'
+    ];
 
     protected function getEnvironmentSetUp($app)
     {
@@ -263,5 +278,33 @@ abstract class TestCase extends OrchestraTestCase
 
         $store = $form->getSessionStore();
         $store->put('errors', $errorBugs);
+    }
+
+    protected function getCheckbox()
+    {
+        $name = 'checkbox';
+        $label = 'checkbox-label';
+        return $this->form->checkbox($name, $label);
+    }
+
+    protected function getCheckboxes()
+    {
+        $name = 'checkbox';
+        $label = 'checkbox-label';
+        return $this->form->checkboxes($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
+    }
+
+    protected function getRadio()
+    {
+        $name = 'radio';
+        $label = 'radio-label';
+        return $this->form->radio($name, $label);
+    }
+
+    protected function getRadios()
+    {
+        $name = 'radio';
+        $label = 'radio-label';
+        return $this->form->radios($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
     }
 }
