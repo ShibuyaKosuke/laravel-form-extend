@@ -65,8 +65,8 @@ Edit config/lara_form.php.
 
 |  | Bootstrap 4 | Bootstrap 3 | Bulma |
 |:----|:---:|:----:|:---:|
-|text| OK | OK | NG |
-|button| OK | OK | NG |
+|text| OK | OK | OK |
+|button| OK | OK | OK |
 |icon| OK | OK | OK |
 
 ## Example
