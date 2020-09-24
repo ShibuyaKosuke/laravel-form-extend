@@ -192,6 +192,7 @@ class Bootstrap4Form extends FormBuilder
      * @param string $icon
      * @param array $options
      * @return string
+     * @throws \Exception
      */
     public function addonIcon(string $icon, array $options = []): string
     {

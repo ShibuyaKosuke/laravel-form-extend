@@ -154,7 +154,7 @@ class Bootstrap4FormTest extends TestCase
 
     public function testAddonIcon()
     {
-        $output = $this->form->addonIcon('fas fa-envelope');
+        $output = $this->form->addonIcon('solid.envelope');
         $this->hasClass($output, 'i', 'fas');
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//div/span/i");
@@ -201,7 +201,7 @@ class Bootstrap4FormTest extends TestCase
             'label',
             'name',
             null,
-            ['suffix' => $this->form->addonIcon('addon')]
+            ['suffix' => $this->form->addonIcon('solid.envelope')]
         );
         $this->assertHtml($output, "//div/label");
         $this->assertHtml($output, "//div/div/div/input");
@@ -216,7 +216,7 @@ class Bootstrap4FormTest extends TestCase
             'label',
             false,
             null,
-            ['prefix' => $this->form->addonIcon('fas fa-envelope')]
+            ['prefix' => $this->form->addonIcon('solid.envelope')]
         );
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml(

@@ -153,7 +153,7 @@ class BulmaFormTest extends TestCase
 
     public function testAddonIcon()
     {
-        $output = $this->form->addonIcon('fas fa-envelope')->toHtml();
+        $output = $this->form->addonIcon('solid.envelope')->toHtml();
         $this->hasClass($output, 'span', 'icon');
         $this->hasClass($output, 'span', 'is-small');
         $this->hasClass($output, 'i', 'fas');
@@ -228,7 +228,7 @@ class BulmaFormTest extends TestCase
             'label',
             'name',
             null,
-            ['suffix' => $this->form->addonIcon('addon')]
+            ['suffix' => $this->form->addonIcon('solid.envelope')]
         );
         $this->hasClass($output, 'div', 'field');
         $this->hasAttribute($output, 'label', 'for', 'label');
@@ -245,7 +245,7 @@ class BulmaFormTest extends TestCase
             'label',
             false,
             null,
-            ['prefix' => $this->form->addonIcon('fas fa-envelope')]
+            ['prefix' => $this->form->addonIcon('solid.envelope')]
         );
         $this->hasClass($output, 'div', 'field');
         $this->hasClass($output, 'div', 'has-addons');
@@ -279,6 +279,6 @@ class BulmaFormTest extends TestCase
     public function testSubmit()
     {
         $output = $this->getSubmit();
-        $this->assertHtml($output, '//div[@class="field"]/input[@class="button is-link"]');
+        $this->assertHtml($output, '//div[@class="field"]/input[@class="button is-primary"]');
     }
 }
