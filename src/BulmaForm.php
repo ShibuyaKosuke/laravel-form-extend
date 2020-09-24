@@ -212,10 +212,6 @@ class BulmaForm extends FormBuilder
             );
         }
 
-        if ($this->getFieldError($name)) {
-            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
-        }
-
         return $this->formGroup(
             $this->label($name, $label),
             $inputElement,
