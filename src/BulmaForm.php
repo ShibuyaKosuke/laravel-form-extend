@@ -180,6 +180,50 @@ class BulmaForm extends FormBuilder
     }
 
     /**
+     * select
+     *
+     * @param string $name
+     * @param mixed|null $label
+     * @param array $list
+     * @param string|null $selected
+     * @param array $selectAttrs
+     * @param array $optionsAttrs
+     * @param array $optgroupsAttrs
+     * @return HtmlString
+     * @throws \Exception
+     */
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    {
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
+        }
+        $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
+
+        $options = Arr::except($selectAttrs, ['suffix', 'prefix']);
+
+        $inputElement = $this->form->select($name, $list, $selected, $options, $optionsAttrs, $optgroupsAttrs);
+        $inputElement = $this->withAddon($inputElement, $selectAttrs);
+
+        if (isset($selectAttrs['prefix']) || isset($selectAttrs['suffix'])) {
+            return $this->formGroupWithAddon(
+                $this->label($name, $label),
+                $inputElement,
+                $name
+            );
+        }
+
+        if ($this->getFieldError($name)) {
+            $this->addFormElementClass($options, $this->getFormControlErrorClassName());
+        }
+
+        return $this->formGroup(
+            $this->label($name, $label),
+            $inputElement,
+            $name
+        );
+    }
+
+    /**
      * @param string $label
      * @param array $options
      * @return Button
@@ -191,6 +235,7 @@ class BulmaForm extends FormBuilder
             $a = $this->html->tag('button', $label, $options);
             return $this->html->tag('p', $a->toHtml(), ['class' => 'control']);
         };
+        array_merge(['type' => 'submit'], $options);
         return new Button($this->app, $callback, $label, $options);
     }
 

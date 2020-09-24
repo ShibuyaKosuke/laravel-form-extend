@@ -171,7 +171,7 @@ class Bootstrap4Form extends FormBuilder
     public function addonButton(string $label, array $options = []): string
     {
         $this->addFormElementClass($options, 'btn btn-outline-secondary');
-        $button = $this->form->button($label, $options)->toHtml();
+        $button = $this->form->submit($label, $options)->toHtml();
         return $this->html->tag('div', $button, ['class' => ':class_name'])->toHtml();
     }
 

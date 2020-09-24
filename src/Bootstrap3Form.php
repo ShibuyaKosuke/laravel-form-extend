@@ -123,7 +123,7 @@ class Bootstrap3Form extends FormBuilder
     public function addonButton(string $label, array $options = []): string
     {
         $attributes = array_merge(['class' => 'btn btn-default', 'type' => 'button'], $options);
-        $button = $this->form->button($label, $attributes)->toHtml();
+        $button = $this->form->submit($label, $attributes)->toHtml();
         return $this->html->tag('div', $button, ['class' => 'input-group-btn'])->toHtml();
     }
 
