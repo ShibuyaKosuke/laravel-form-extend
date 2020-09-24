@@ -49,9 +49,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->mergeConfigFrom(self::CONFIG, self::KEY);
 
         // Dynamic change CSS framework.
-        if (request()->query->has('type')) {
-            $this->default = request()->query->get('type');
-        }
+        $this->setDefault();
 
         /**
          * Extends LaravelCollective/HtmlBuilder
@@ -71,6 +69,17 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $class = $this->defaultClass($app);
             return new $class($app, $this->default);
         });
+    }
+
+    /**
+     * Set default framework.
+     */
+    private function setDefault()
+    {
+        $query = request()->query;
+        $this->default = $query->has('type') ?
+            $query->get('type') :
+            $this->app['config']->get(self::KEY . '.default');
     }
 
     /**
