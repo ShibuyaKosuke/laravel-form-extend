@@ -13,11 +13,6 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 class Icon
 {
     /**
-     * @var array|\ArrayAccess|mixed
-     */
-    private $default;
-
-    /**
      * @var array
      */
     private $icon_fonts;
@@ -34,15 +29,15 @@ class Icon
      */
     public function __construct(Application $app, string $icon)
     {
-        $this->default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default_icon');
-        $this->icon_fonts = $app['config']->get("shibuyakosuke.{$this->default}");
+        $default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default_icon');
+        $this->icon_fonts = $app['config']->get("shibuyakosuke.{$default}");
         $this->icon = $icon;
     }
 
     /**
      * @return string
      */
-    public function className()
+    public function className(): string
     {
         return Arr::get($this->icon_fonts, $this->icon, $this->icon);
     }

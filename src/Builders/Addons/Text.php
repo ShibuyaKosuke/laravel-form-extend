@@ -3,10 +3,7 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Builders\Addons;
 
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
-use phpDocumentor\Reflection\Types\Callable_;
-use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
 /**
  * Class Text
@@ -14,11 +11,6 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
  */
 class Text
 {
-    /**
-     * @var array|\ArrayAccess|mixed
-     */
-    private $default;
-
     /**
      * @var callable
      */
@@ -43,7 +35,6 @@ class Text
      */
     public function __construct(Application $app, callable $callback, string $text, array $options = [])
     {
-        $this->default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default');
         $this->callback = $callback;
         $this->text = $text;
         $this->options = $options;
@@ -53,12 +44,12 @@ class Text
      * @return string
      * @throws \Exception
      */
-    public function toHtml()
+    public function toHtml(): string
     {
-        $html = call_user_func_array($this->callback, [$this->text, $this->options]);
+        $html = call_user_func($this->callback, $this->text, $this->options);
         if ($html instanceof HtmlString) {
             return $html->toHtml();
         }
-        throw new \Exception('Callback not return HtmlString.');
+        throw new \RuntimeException('Callback not return HtmlString.');
     }
 }

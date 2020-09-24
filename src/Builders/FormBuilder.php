@@ -111,7 +111,7 @@ abstract class FormBuilder implements Addon
      * @param integer $type form style
      * @return void
      */
-    protected function setType(int $type)
+    protected function setType(int $type): void
     {
         $this->form_type = $type;
     }
@@ -129,7 +129,7 @@ abstract class FormBuilder implements Addon
     /**
      * @return HtmlString
      */
-    public function linkCss()
+    public function linkCss(): HtmlString
     {
         return $this->html->style($this->css());
     }
@@ -270,12 +270,12 @@ abstract class FormBuilder implements Addon
     /**
      * get form group
      *
-     * @param HtmlString $label
+     * @param HtmlString|string|null $label
      * @param HtmlString $form
-     * @param string $name name attribute
+     * @param string|null $name name attribute
      * @return HtmlString
      */
-    abstract protected function formGroup($label, $form, $name);
+    abstract protected function formGroup($label, HtmlString $form, ?string $name): HtmlString;
 
     /**
      * label
@@ -353,7 +353,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function password(string $name, $label = null, $options = [])
+    public function password(string $name, $label = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, '', $options);
     }
@@ -367,7 +367,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function range(string $name, $label = null, $value = null, $options = [])
+    public function range(string $name, $label = null, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -380,7 +380,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function hidden(string $name, $value = null, $options = [])
+    public function hidden(string $name, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, false, $value, $options);
     }
@@ -394,7 +394,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function number(string $name, $label = null, $value = null, $options = [])
+    public function number(string $name, $label = null, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -408,7 +408,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function text(string $name, $label, $value = null, $options = [])
+    public function text(string $name, $label, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -422,7 +422,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function search(string $name, $label, $value = null, $options = [])
+    public function search(string $name, $label, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -436,7 +436,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function tel(string $name, $label, string $value = null, $options = [])
+    public function tel(string $name, $label, string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -450,7 +450,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function email(string $name, $label, string $value = null, $options = [])
+    public function email(string $name, $label, string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -464,7 +464,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function date(string $name, $label, string $value = null, $options = [])
+    public function date(string $name, $label, string $value = null, $options = []): HtmlString
     {
         if ($value instanceof DateTime) {
             $value = $value->format('Y-m-d');
@@ -482,7 +482,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function datetime(string $name, $label, $value = null, $options = [])
+    public function datetime(string $name, $label, $value = null, $options = []): HtmlString
     {
         if ($value instanceof DateTime) {
             $value = $value->format(DateTime::RFC3339);
@@ -500,7 +500,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function datetimeLocal(string $name, $label, $value = null, $options = [])
+    public function datetimeLocal(string $name, $label, $value = null, $options = []): HtmlString
     {
         if ($value instanceof DateTime) {
             $value = $value->format('Y-m-d\TH:i');
@@ -518,7 +518,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function time(string $name, $label, $value = null, $options = [])
+    public function time(string $name, $label, $value = null, $options = []): HtmlString
     {
         if ($value instanceof DateTime) {
             $value = $value->format('H:i');
@@ -536,7 +536,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function url(string $name, $label, $value = null, $options = [])
+    public function url(string $name, $label, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -550,7 +550,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function week(string $name, $label, $value = null, $options = [])
+    public function week(string $name, $label, $value = null, $options = []): HtmlString
     {
         if ($value instanceof DateTime) {
             $value = $value->format('Y-\WW');
@@ -567,7 +567,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function file(string $name, $label, $options = [])
+    public function file(string $name, $label, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, null, $options);
     }
@@ -581,7 +581,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function color(string $name, $label, $value = null, $options = [])
+    public function color(string $name, $label, $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -593,7 +593,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function submit(string $value = null, $options = [])
+    public function submit(string $value = null, $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getButtonClass());
 
@@ -611,7 +611,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function button(string $value = null, $options = [])
+    public function button(string $value = null, $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getButtonClass());
 
@@ -631,7 +631,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function textarea(string $name, $label, $value = null, $options = [])
+    public function textarea(string $name, $label, $value = null, $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
@@ -658,7 +658,7 @@ abstract class FormBuilder implements Addon
      * @param array $optgroupsAttrs
      * @return HtmlString
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
@@ -690,7 +690,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function selectRange(string $name, $label, $begin, $end, $selected = null, $options = [])
+    public function selectRange(string $name, $label, $begin, $end, $selected = null, $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
@@ -715,7 +715,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function checkbox(string $name, $label = null, $value = 1, $checked = null, array $options = [])
+    public function checkbox(string $name, $label = null, $value = 1, $checked = null, array $options = []): HtmlString
     {
         $inputElement = $this->checkboxElement($name, $label, $value, $checked, false, $options);
 
@@ -733,7 +733,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
@@ -759,7 +759,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function checkboxes(string $name, $label = null, $choices = [], $checkedValues = [], $inline = false, array $options = [])
+    public function checkboxes(string $name, $label = null, $choices = [], $checkedValues = [], $inline = false, array $options = []): HtmlString
     {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
@@ -790,7 +790,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function radio(string $name, $label = null, $value = null, $checked = null, array $options = [])
+    public function radio(string $name, $label = null, $value = null, $checked = null, array $options = []): HtmlString
     {
         $inputElement = $this->radioElement($name, $label, $value, $checked, false, $options);
 
@@ -808,7 +808,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function radioElement(string $name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
+    public function radioElement(string $name, $label = null, $value = null, $checked = null, $inline = false, array $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getRadioInputClassName($inline));
         $inputElement = $this->form->radio($name, $value, $checked, $options);
@@ -834,7 +834,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function radios(string $name, $label = null, $choices = [], $checkedValue = null, $inline = false, array $options = [])
+    public function radios(string $name, $label = null, $choices = [], $checkedValue = null, $inline = false, array $options = []): HtmlString
     {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
@@ -860,11 +860,11 @@ abstract class FormBuilder implements Addon
     /**
      * Build class names for form element
      *
-     * @param array $options form element attributes
+     * @param array|null $options form element attributes
      * @param string $value class name to be add
      * @return mixed
      */
-    protected function addFormElementClass(&$options, string $value)
+    protected function addFormElementClass(?array &$options, string $value)
     {
         if (!is_null($options) && !is_array($options)) {
             return $options;
@@ -877,7 +877,7 @@ abstract class FormBuilder implements Addon
             if (is_string($options['class'])) {
                 $options['class'] = explode(' ', $options['class']);
             }
-            array_push($options['class'], $value);
+            $options['class'][] = $value;
         }
         return $options;
     }
@@ -898,7 +898,7 @@ abstract class FormBuilder implements Addon
      * @param string $errorBag
      * @return void
      */
-    protected function setErrorBag(string $errorBag)
+    protected function setErrorBag(string $errorBag): void
     {
         $this->errorBag = $errorBag;
     }
@@ -907,10 +907,10 @@ abstract class FormBuilder implements Addon
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
      *
-     * @param string $field
+     * @param string|null $field
      * @return string
      */
-    protected function flattenFieldName($field): string
+    protected function flattenFieldName(?string $field): string
     {
         return preg_replace_callback("/\[(.*)]/U", function ($matches) {
             if (!empty($matches[1]) || $matches[1] === '0') {
@@ -924,9 +924,9 @@ abstract class FormBuilder implements Addon
      * Get the MessageBag of errors that is populated by the
      * validator.
      *
-     * @return ViewErrorBag
+     * @return ViewErrorBag|null
      */
-    public function getErrors()
+    public function getErrors(): ?ViewErrorBag
     {
         return $this->form->getSessionStore()->get('errors');
     }
@@ -936,22 +936,18 @@ abstract class FormBuilder implements Addon
      * format, defaulting to the normal Bootstrap 3 format.
      *
      * @param string|null $field
-     * @return mixed
+     * @return string|null
      */
-    protected function getFieldError(string $field = null)
+    protected function getFieldError(?string $field = null): ?string
     {
         $field = $this->flattenFieldName($field);
 
         if ($this->getErrors()) {
-            if ($this->getErrorBag()) {
-                $errorBag = $this->getErrors()->{$this->getErrorBag()};
-            } else {
-                $errorBag = $this->getErrors();
+            $errorBag = ($this->getErrorBag()) ? $this->getErrors()->{$this->getErrorBag()} : $this->getErrors();
+            if ($errorBag) {
+                return $errorBag->first($field, ':message');
             }
-
-            return $errorBag->first($field, ':message');
         }
-
         return null;
     }
 

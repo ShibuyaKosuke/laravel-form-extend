@@ -3,9 +3,7 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Builders\Addons;
 
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
-use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 use ShibuyaKosuke\LaravelFormExtend\Builders\Icons\Icon as IconType;
 
 /**
@@ -14,11 +12,6 @@ use ShibuyaKosuke\LaravelFormExtend\Builders\Icons\Icon as IconType;
  */
 class Icon
 {
-    /**
-     * @var array|\ArrayAccess|mixed
-     */
-    private $default;
-
     /**
      * @var callable
      */
@@ -43,22 +36,20 @@ class Icon
      */
     public function __construct(Application $app, callable $callback, IconType $icon, array $options = [])
     {
-        $this->default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default');
         $this->callback = $callback;
         $this->icon = $icon;
         $this->options = $options;
     }
 
     /**
-     * @return mixed
-     * @throws \Exception
+     * @return string
      */
-    public function toHtml()
+    public function toHtml(): string
     {
-        $html = call_user_func_array($this->callback, [$this->icon, $this->options]);
+        $html = call_user_func($this->callback, $this->icon, $this->options);
         if ($html instanceof HtmlString) {
             return $html->toHtml();
         }
-        throw new \Exception('Callback not return HtmlString.');
+        throw new \RuntimeException('Callback not return HtmlString.');
     }
 }

@@ -16,13 +16,13 @@ class Bootstrap3Form extends FormBuilder
     /**
      * get form group
      *
-     * @param HtmlString $label Label text
+     * @param HtmlString|string|null $label Label text
      * @param HtmlString $form Form element
-     * @param string $name Name attribute
+     * @param string|null $name Name attribute
      * @return HtmlString
      * @see FormBuilder::formGroup()
      */
-    public function formGroup($label, $form, $name)
+    public function formGroup($label, HtmlString $form, ?string $name): HtmlString
     {
         $error = $this->getFieldError($name);
         $errorElements = ($error) ?
@@ -79,7 +79,7 @@ class Bootstrap3Form extends FormBuilder
      * @return HtmlString
      * @see FormBuilder::checkboxElement()
      */
-    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = []): HtmlString
     {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
@@ -103,7 +103,7 @@ class Bootstrap3Form extends FormBuilder
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function file(string $name, $label, $options = [])
+    public function file(string $name, $label, $options = []): HtmlString
     {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());

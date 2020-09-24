@@ -18,12 +18,12 @@ class BulmaForm extends FormBuilder
     /**
      * get form group
      *
-     * @param HtmlString $label
+     * @param HtmlString|string|null $label
      * @param HtmlString $form
-     * @param string $name name attribute
+     * @param string|null $name name attribute
      * @return HtmlString
      */
-    protected function formGroup($label, $form, $name)
+    protected function formGroup($label, HtmlString $form, ?string $name): HtmlString
     {
         $error = $this->getFieldError($name);
         $errorElements = ($error) ?
@@ -48,12 +48,12 @@ class BulmaForm extends FormBuilder
     }
 
     /**
-     * @param HtmlString $label
+     * @param HtmlString|string $label
      * @param HtmlString $form
      * @param string $name name attribute
      * @return HtmlString
      */
-    public function formGroupWithAddon($label, HtmlString $form, string $name)
+    public function formGroupWithAddon($label, HtmlString $form, string $name): HtmlString
     {
         $error = $this->getFieldError($name);
         $errorElements = ($error) ?
@@ -84,7 +84,7 @@ class BulmaForm extends FormBuilder
      * @param string|null $class
      * @return HtmlString
      */
-    private function wrapElement($inputElement, string $class = null)
+    private function wrapElement($inputElement, string $class = null): HtmlString
     {
         if ($inputElement instanceof HtmlString) {
             $inputElement = $inputElement->toHtml();
@@ -192,7 +192,7 @@ class BulmaForm extends FormBuilder
      * @return HtmlString
      * @throws \Exception
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = []): HtmlString
     {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());

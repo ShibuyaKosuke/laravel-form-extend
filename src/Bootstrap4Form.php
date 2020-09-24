@@ -16,12 +16,12 @@ class Bootstrap4Form extends FormBuilder
     /**
      * get form group
      *
-     * @param HtmlString $label
+     * @param HtmlString|string|null $label
      * @param HtmlString $form
-     * @param string $name name attribute
+     * @param string|null $name name attribute
      * @return HtmlString
      */
-    protected function formGroup($label, $form, $name)
+    protected function formGroup($label, HtmlString $form, ?string $name): HtmlString
     {
         $error = $this->getFieldError($name);
         $errorElements = ($error) ?
@@ -58,7 +58,7 @@ class Bootstrap4Form extends FormBuilder
      * @param array $options
      * @return HtmlString
      */
-    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
+    public function input(string $type, string $name, $label = null, string $value = null, array $options = []): HtmlString
     {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
@@ -118,7 +118,7 @@ class Bootstrap4Form extends FormBuilder
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function file(string $name, $label, $options = [])
+    public function file(string $name, $label, $options = []): HtmlString
     {
         $this->addFormElementClass($options, 'form-control-file');
 
@@ -145,7 +145,7 @@ class Bootstrap4Form extends FormBuilder
      * @param array $optgroupsAttrs
      * @return HtmlString
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = [])
+    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = []): HtmlString
     {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());

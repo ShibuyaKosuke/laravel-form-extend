@@ -3,9 +3,7 @@
 namespace ShibuyaKosuke\LaravelFormExtend\Builders\Addons;
 
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
-use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
 /**
  * Class Button
@@ -13,11 +11,6 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
  */
 class Button
 {
-    /**
-     * @var array|\ArrayAccess|mixed
-     */
-    private $default;
-
     /**
      * @var callable
      */
@@ -42,7 +35,6 @@ class Button
      */
     public function __construct(Application $app, callable $callback, string $label, array $options = [])
     {
-        $this->default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default');
         $this->callback = $callback;
         $this->label = $label;
         $this->options = $options;
@@ -52,12 +44,12 @@ class Button
      * @return string
      * @throws \Exception
      */
-    public function toHtml()
+    public function toHtml(): string
     {
-        $html = call_user_func_array($this->callback, [$this->label, $this->options]);
+        $html = call_user_func($this->callback, $this->label, $this->options);
         if ($html instanceof HtmlString) {
             return $html->toHtml();
         }
-        throw new \Exception('Callback not return HtmlString.');
+        throw new \RuntimeException('Callback not return HtmlString.');
     }
 }
