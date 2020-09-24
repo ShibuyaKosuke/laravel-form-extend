@@ -153,14 +153,14 @@ class Bootstrap3FormTest extends TestCase
         $this->assertHtml($output, "//div[@class='input-group-addon']/span");
     }
 
-//    public function testAddonIcon()
-//    {
-//        $output = $this->form->addonIcon('solid.envelope');
-//        $this->hasClass($output, 'div', 'input-group-addon');
-//        $this->hasClass($output, 'i', 'fas');
-//        $this->hasClass($output, 'i', 'fa-envelope');
-//        $this->assertHtml($output, "//div[@class='input-group-addon']/span/i");
-//    }
+    public function testAddonIcon()
+    {
+        $output = $this->form->addonIcon('solid.envelope');
+        $this->hasClass($output, 'div', 'input-group-addon');
+        $this->hasClass($output, 'i', 'fas');
+        $this->hasClass($output, 'i', 'fa-envelope');
+        $this->assertHtml($output, "//div[@class='input-group-addon']/span/i");
+    }
 
     public function testCheckbox()
     {
