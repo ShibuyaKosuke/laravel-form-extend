@@ -28,12 +28,11 @@ class Button
 
     /**
      * Button constructor.
-     * @param Application $app
      * @param callable $callback
      * @param string $label
      * @param array $options
      */
-    public function __construct(Application $app, callable $callback, string $label, array $options = [])
+    public function __construct(callable $callback, string $label, array $options = [])
     {
         $this->callback = $callback;
         $this->label = $label;

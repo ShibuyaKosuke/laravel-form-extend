@@ -37,7 +37,7 @@ abstract class TestCase extends OrchestraTestCase
         'color'
     ];
 
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         // Setup default database to use sqlite :memory:
         $app['config']->set(ServiceProvider::KEY, [
@@ -1797,7 +1797,7 @@ abstract class TestCase extends OrchestraTestCase
         ]);
     }
 
-    public function setType($type)
+    public function setType($type): void
     {
         /** @var \ReflectionClass $class */
         $class = new \ReflectionClass($this->form);
@@ -1806,7 +1806,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->method->invoke($this->form, $type);
     }
 
-    protected function assertHtml($output, $expression, $count = 1)
+    protected function assertHtml($output, $expression, $count = 1): void
     {
         if ($output instanceof HtmlString) {
             $output = $output->toHtml();
@@ -1828,7 +1828,7 @@ abstract class TestCase extends OrchestraTestCase
         return $dom->getElementsByTagName($tagName)->item(0);
     }
 
-    protected function hasAttribute($output, $tagName, $attribute_name, $value)
+    protected function hasAttribute($output, $tagName, $attribute_name, $value): void
     {
         $dom = new \DOMDocument();
         if ($output instanceof HtmlString) {
@@ -1837,7 +1837,6 @@ abstract class TestCase extends OrchestraTestCase
         $dom->loadHTML($output);
         $xpath = new \DOMXPath($dom);
 
-        /** @var \DOMNodeList $elements */
         $elements = $dom->getElementsByTagName($tagName);
 
         foreach ($elements as $element) {
@@ -1845,7 +1844,7 @@ abstract class TestCase extends OrchestraTestCase
             $attributes = $element->attributes;
 
             foreach ($attributes as $attribute) {
-                if ($attribute->name == $attribute_name && in_array($value, explode(' ', $attribute->value))) {
+                if ($attribute->name === $attribute_name && in_array($value, explode(' ', $attribute->value), true)) {
                     $this->assertTrue(true);
                     return;
                 }
@@ -1854,7 +1853,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->assertTrue(false);
     }
 
-    protected function hasClass($output, $tagName, $className)
+    protected function hasClass($output, $tagName, $className): void
     {
         $this->hasAttribute($output, $tagName, 'class', $className);
     }
@@ -1867,7 +1866,7 @@ abstract class TestCase extends OrchestraTestCase
         $this->hasAttribute($output, 'input', 'name', $name);
     }
 
-    public function label($output, $name, $label)
+    public function label($output, $name, $label): void
     {
         $this->hasAttribute($output, 'label', 'for', $name);
     }
@@ -1878,12 +1877,12 @@ abstract class TestCase extends OrchestraTestCase
         return Arr::get($this->app->config->get(ServiceProvider::KEY), "class_name.$name");
     }
 
-    public function select($output, $name)
+    public function select($output, $name): void
     {
         $this->hasAttribute($output, 'select', 'name', $name);
     }
 
-    public function validate($name)
+    public function validate($name): void
     {
         $formBuilder = $this->form;
 
@@ -1910,62 +1909,62 @@ abstract class TestCase extends OrchestraTestCase
         $store->put('errors', $errorBugs);
     }
 
-    protected function getCheckbox()
+    protected function getCheckbox(): HtmlString
     {
         $name = 'checkbox';
         $label = 'checkbox-label';
         return $this->form->checkbox($name, $label);
     }
 
-    protected function getCheckboxes()
+    protected function getCheckboxes(): HtmlString
     {
         $name = 'checkbox';
         $label = 'checkbox-label';
         return $this->form->checkboxes($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
     }
 
-    protected function getRadio()
+    protected function getRadio(): HtmlString
     {
         $name = 'radio';
         $label = 'radio-label';
         return $this->form->radio($name, $label);
     }
 
-    protected function getRadios()
+    protected function getRadios(): HtmlString
     {
         $name = 'radio';
         $label = 'radio-label';
         return $this->form->radios($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
     }
 
-    protected function getSelect()
+    protected function getSelect(): HtmlString
     {
         $name = 'select';
         $label = 'select-label';
         return $this->form->select($name, $label);
     }
 
-    protected function getFile()
+    protected function getFile(): HtmlString
     {
         $name = 'file';
         $label = 'file-label';
         return $this->form->file($name, $label);
     }
 
-    protected function getTextarea()
+    protected function getTextarea(): HtmlString
     {
         $name = 'textarea';
         $label = 'textarea-label';
         return $this->form->textarea($name, $label);
     }
 
-    protected function getButton()
+    protected function getButton(): HtmlString
     {
         $name = 'button';
         return $this->form->button($name);
     }
 
-    protected function getSubmit()
+    protected function getSubmit(): HtmlString
     {
         $name = 'submit';
         return $this->form->submit($name);

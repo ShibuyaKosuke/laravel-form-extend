@@ -28,12 +28,11 @@ class Text
 
     /**
      * Text constructor.
-     * @param Application $app
      * @param callable $callback
      * @param string $text
      * @param array $options
      */
-    public function __construct(Application $app, callable $callback, string $text, array $options = [])
+    public function __construct(callable $callback, string $text, array $options = [])
     {
         $this->callback = $callback;
         $this->text = $text;

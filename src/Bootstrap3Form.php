@@ -4,7 +4,9 @@ namespace ShibuyaKosuke\LaravelFormExtend;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Button;
 use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Icon;
+use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Text;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
@@ -121,30 +123,37 @@ class Bootstrap3Form extends FormBuilder
      * @param array $options
      * @return string
      */
-    public function addonButton(string $label, array $options = []): string
+    public function addonButton(string $label, array $options = []): Button
     {
-        $attributes = array_merge(['class' => 'btn btn-default', 'type' => 'button'], $options);
-        $button = $this->form->submit($label, $attributes)->toHtml();
-        return $this->html->tag('div', $button, ['class' => 'input-group-btn'])->toHtml();
+        $callback = function ($label, $options) {
+            $attributes = array_merge(['class' => 'btn btn-default', 'type' => 'button'], $options);
+            $button = $this->form->submit($label, $attributes)->toHtml();
+            return $this->html->tag('div', $button, ['class' => 'input-group-btn']);
+        };
+        array_merge(['type' => 'submit'], $options);
+        return new Button($callback, $label, $options);
     }
 
     /**
      * @param string $text
      * @param array $options
-     * @return string
+     * @return Text
      */
-    public function addonText(string $text, array $options = []): string
+    public function addonText(string $text, array $options = []): Text
     {
-        $span = $this->html->tag('span', $text, $options)->toHtml();
-        return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
+        $callback = function (string $text, array $options) {
+            $span = $this->html->tag('span', $text, $options)->toHtml();
+            return $this->html->tag('div', $span, ['class' => 'input-group-addon']);
+        };
+        return new Text($callback, $text, $options);
     }
 
     /**
      * @param string $icon
      * @param array $options
-     * @return string
+     * @return Icon
      */
-    public function addonIcon(string $icon, array $options = []): string
+    public function addonIcon(string $icon, array $options = []): Icon
     {
         $callback = function (Builders\Icons\Icon $iconObject) use ($options) {
             $this->addFormElementClass($iconClass, $iconObject->className());
@@ -154,6 +163,6 @@ class Bootstrap3Form extends FormBuilder
         };
 
         $iconObject = new Builders\Icons\Icon($this->app, $icon);
-        return (new Icon($this->app, $callback, $iconObject, $options))->toHtml();
+        return new Icon($callback, $iconObject, $options);
     }
 }

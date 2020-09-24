@@ -301,9 +301,9 @@ abstract class FormBuilder implements Addon
      */
     public function withAddon($inputElement, $options)
     {
-        $prefix = $options['prefix'] ?? null;
+        $prefix = isset($options['prefix']) ? $options['prefix']->toHtml() : null;
 
-        $suffix = $options['suffix'] ?? null;
+        $suffix = isset($options['suffix']) ? $options['suffix']->toHtml() : null;
 
         if ($prefix || $suffix) {
             $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'input-group');

@@ -232,7 +232,7 @@ class BulmaForm extends FormBuilder
             return $this->html->tag('p', $a->toHtml(), ['class' => 'control']);
         };
         array_merge(['type' => 'submit'], $options);
-        return new Button($this->app, $callback, $label, $options);
+        return new Button($callback, $label, $options);
     }
 
     /**
@@ -248,7 +248,7 @@ class BulmaForm extends FormBuilder
             $a = $this->html->tag('a', $text, $options);
             return $this->html->tag('p', $a->toHtml(), ['class' => 'control']);
         };
-        return new Text($this->app, $callback, $text, $options);
+        return new Text($callback, $text, $options);
     }
 
     /**
@@ -265,6 +265,6 @@ class BulmaForm extends FormBuilder
         };
 
         $iconObject = new Builders\Icons\Icon($this->app, $icon);
-        return new Icon($this->app, $callback, $iconObject, $options);
+        return new Icon($callback, $iconObject, $options);
     }
 }

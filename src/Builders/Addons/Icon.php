@@ -29,12 +29,11 @@ class Icon
 
     /**
      * Icon constructor.
-     * @param Application $app
      * @param callable $callback
      * @param IconType $icon
      * @param array $options
      */
-    public function __construct(Application $app, callable $callback, IconType $icon, array $options = [])
+    public function __construct(callable $callback, IconType $icon, array $options = [])
     {
         $this->callback = $callback;
         $this->icon = $icon;

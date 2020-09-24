@@ -140,7 +140,7 @@ class Bootstrap4FormTest extends TestCase
 
     public function testAddonButton()
     {
-        $output = $this->form->addonButton('button');
+        $output = $this->form->addonButton('button')->toHtml();
         $this->hasClass($output, 'input', 'btn');
         $this->hasClass($output, 'input', 'btn-outline-secondary');
         $this->assertHtml($output, "//div/input");
@@ -148,13 +148,13 @@ class Bootstrap4FormTest extends TestCase
 
     public function testAddonText()
     {
-        $output = $this->form->addonText('text');
+        $output = $this->form->addonText('text')->toHtml();
         $this->assertHtml($output, "//div/span");
     }
 
     public function testAddonIcon()
     {
-        $output = $this->form->addonIcon('solid.envelope');
+        $output = $this->form->addonIcon('solid.envelope')->toHtml();
         $this->hasClass($output, 'i', 'fas');
         $this->hasClass($output, 'i', 'fa-envelope');
         $this->assertHtml($output, "//div/span/i");
