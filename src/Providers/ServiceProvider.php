@@ -73,6 +73,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Set default framework.
+     * @return void
      */
     private function setDefault()
     {
