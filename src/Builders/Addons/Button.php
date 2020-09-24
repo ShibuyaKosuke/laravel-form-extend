@@ -2,7 +2,6 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend\Builders\Addons;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\HtmlString;
 
 /**
