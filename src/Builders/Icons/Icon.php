@@ -20,7 +20,7 @@ class Icon
     /**
      * @var array
      */
-    private $fonts;
+    private $icon_fonts;
 
     /**
      * @var string
@@ -35,7 +35,7 @@ class Icon
     public function __construct(Application $app, string $icon)
     {
         $this->default = Arr::get($app['config']->get(ServiceProvider::KEY), 'default_icon');
-        $this->fonts = $app['config']->get("shibuyakosuke.{$this->default}");
+        $this->icon_fonts = $app['config']->get("shibuyakosuke.{$this->default}");
         $this->icon = $icon;
     }
 
@@ -44,6 +44,6 @@ class Icon
      */
     public function className()
     {
-        return Arr::get($this->fonts, $this->icon);
+        return Arr::get($this->icon_fonts, $this->icon, $this->icon);
     }
 }
