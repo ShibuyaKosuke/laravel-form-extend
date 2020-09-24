@@ -192,8 +192,15 @@ class BulmaForm extends FormBuilder
      * @return HtmlString
      * @throws \Exception
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = []): HtmlString
-    {
+    public function select(
+        string $name,
+        $label,
+        $list = [],
+        $selected = null,
+        array $selectAttrs = [],
+        array $optionsAttrs = [],
+        array $optgroupsAttrs = []
+    ): HtmlString {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
         }

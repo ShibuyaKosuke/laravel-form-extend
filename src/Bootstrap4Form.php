@@ -60,8 +60,13 @@ class Bootstrap4Form extends FormBuilder
      * @param array $options
      * @return HtmlString
      */
-    public function input(string $type, string $name, $label = null, string $value = null, array $options = []): HtmlString
-    {
+    public function input(
+        string $type,
+        string $name,
+        $label = null,
+        string $value = null,
+        array $options = []
+    ): HtmlString {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
         }
@@ -94,8 +99,16 @@ class Bootstrap4Form extends FormBuilder
      */
     public function withAddonForBootstrap4($inputElement, $options, string $name)
     {
-        $prefix = str_replace(':class_name', 'input-group-prepend', isset($options['prefix']) ? $options['prefix']->toHtml() : null);
-        $suffix = str_replace(':class_name', 'input-group-append', isset($options['suffix']) ? $options['suffix']->toHtml() : null);
+        $prefix = str_replace(
+            ':class_name',
+            'input-group-prepend',
+            isset($options['prefix']) ? $options['prefix']->toHtml() : null
+        );
+        $suffix = str_replace(
+            ':class_name',
+            'input-group-append',
+            isset($options['suffix']) ? $options['suffix']->toHtml() : null
+        );
 
         if ($prefix || $suffix) {
             $inputGroupClass = $this->addFormElementClass($inputGroupClass, 'input-group');
@@ -147,8 +160,15 @@ class Bootstrap4Form extends FormBuilder
      * @param array $optgroupsAttrs
      * @return HtmlString
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = []): HtmlString
-    {
+    public function select(
+        string $name,
+        $label,
+        $list = [],
+        $selected = null,
+        array $selectAttrs = [],
+        array $optionsAttrs = [],
+        array $optgroupsAttrs = []
+    ): HtmlString {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($selectAttrs, $this->getFormControlErrorClassName());
         }

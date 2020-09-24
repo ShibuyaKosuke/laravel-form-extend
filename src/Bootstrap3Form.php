@@ -80,8 +80,14 @@ class Bootstrap3Form extends FormBuilder
      * @return HtmlString
      * @see FormBuilder::checkboxElement()
      */
-    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = []): HtmlString
-    {
+    public function checkboxElement(
+        string $name,
+        $label = null,
+        $value = 1,
+        $checked = null,
+        $inline = false,
+        array $options = []
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
 

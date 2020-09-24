@@ -658,8 +658,15 @@ abstract class FormBuilder implements Addon
      * @param array $optgroupsAttrs
      * @return HtmlString
      */
-    public function select(string $name, $label, $list = [], $selected = null, array $selectAttrs = [], array $optionsAttrs = [], array $optgroupsAttrs = []): HtmlString
-    {
+    public function select(
+        string $name,
+        $label,
+        $list = [],
+        $selected = null,
+        array $selectAttrs = [],
+        array $optionsAttrs = [],
+        array $optgroupsAttrs = []
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
@@ -733,8 +740,14 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function checkboxElement(string $name, $label = null, $value = 1, $checked = null, $inline = false, array $options = []): HtmlString
-    {
+    public function checkboxElement(
+        string $name,
+        $label = null,
+        $value = 1,
+        $checked = null,
+        $inline = false,
+        array $options = []
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
 
@@ -759,8 +772,14 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function checkboxes(string $name, $label = null, $choices = [], $checkedValues = [], $inline = false, array $options = []): HtmlString
-    {
+    public function checkboxes(
+        string $name,
+        $label = null,
+        $choices = [],
+        $checkedValues = [],
+        $inline = false,
+        array $options = []
+    ): HtmlString {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
             $checked = in_array($value, (array)$checkedValues);
@@ -808,8 +827,14 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function radioElement(string $name, $label = null, $value = null, $checked = null, $inline = false, array $options = []): HtmlString
-    {
+    public function radioElement(
+        string $name,
+        $label = null,
+        $value = null,
+        $checked = null,
+        $inline = false,
+        array $options = []
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getRadioInputClassName($inline));
         $inputElement = $this->form->radio($name, $value, $checked, $options);
 
@@ -834,8 +859,14 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function radios(string $name, $label = null, $choices = [], $checkedValue = null, $inline = false, array $options = []): HtmlString
-    {
+    public function radios(
+        string $name,
+        $label = null,
+        $choices = [],
+        $checkedValue = null,
+        $inline = false,
+        array $options = []
+    ): HtmlString {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
