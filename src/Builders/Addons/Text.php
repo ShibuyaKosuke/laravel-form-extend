@@ -42,14 +42,11 @@ class Text
 
     /**
      * @return string
-     * @throws \Exception
      */
     public function toHtml(): string
     {
+        /** @var HtmlString $html */
         $html = call_user_func($this->callback, $this->text, $this->options);
-        if ($html instanceof HtmlString) {
-            return $html->toHtml();
-        }
-        throw new \RuntimeException('Callback not return HtmlString.');
+        return $html->toHtml();
     }
 }
