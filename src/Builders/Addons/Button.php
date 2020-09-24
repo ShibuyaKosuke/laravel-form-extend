@@ -40,6 +40,7 @@ class Button
     }
 
     /**
+     * @return string
      */
     public function toHtml(): string
     {
