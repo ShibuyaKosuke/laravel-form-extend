@@ -141,9 +141,9 @@ class Bootstrap4FormTest extends TestCase
     public function testAddonButton()
     {
         $output = $this->form->addonButton('button');
-        $this->hasClass($output, 'button', 'btn');
-        $this->hasClass($output, 'button', 'btn-outline-secondary');
-        $this->assertHtml($output, "//div/button");
+        $this->hasClass($output, 'input', 'btn');
+        $this->hasClass($output, 'input', 'btn-outline-secondary');
+        $this->assertHtml($output, "//div/input");
     }
 
     public function testAddonText()

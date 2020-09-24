@@ -142,9 +142,9 @@ class Bootstrap3FormTest extends TestCase
     {
         $output = $this->form->addonButton('button');
         $this->hasClass($output, 'div', 'input-group-btn');
-        $this->hasClass($output, 'button', 'btn');
-        $this->hasClass($output, 'button', 'btn-default');
-        $this->assertHtml($output, "//div[@class='input-group-btn']/button");
+        $this->hasClass($output, 'input', 'btn');
+        $this->hasClass($output, 'input', 'btn-default');
+        $this->assertHtml($output, "//div[@class='input-group-btn']/input");
     }
 
     public function testAddonText()
