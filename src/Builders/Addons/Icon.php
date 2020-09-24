@@ -51,6 +51,7 @@ class Icon
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function toHtml()
     {

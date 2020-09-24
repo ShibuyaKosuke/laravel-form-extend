@@ -47,6 +47,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(self::CONFIG, self::KEY);
+        $this->mergeConfigFrom(__DIR__ . '/../../config/fontawesome5.php', 'shibuyakosuke.fontawesome5');
 
         // Dynamic change CSS framework.
         $this->setDefault();

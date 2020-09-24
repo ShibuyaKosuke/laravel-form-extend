@@ -4,6 +4,7 @@ namespace ShibuyaKosuke\LaravelFormExtend;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Icon;
 use ShibuyaKosuke\LaravelFormExtend\Builders\FormBuilder;
 
 /**
@@ -145,8 +146,14 @@ class Bootstrap3Form extends FormBuilder
      */
     public function addonIcon(string $icon, array $options = []): string
     {
-        $i = $this->html->tag('i', '', ['class' => $icon])->toHtml();
-        $span = $this->html->tag('span', $i, $options)->toHtml();
-        return $this->html->tag('div', $span, ['class' => 'input-group-addon'])->toHtml();
+        $callback = function (Builders\Icons\Icon $iconObject) use ($options) {
+            $this->addFormElementClass($iconClass, $iconObject->className());
+            $i = $this->html->tag('i', '', $iconClass)->toHtml();
+            $span = $this->html->tag('span', $i, $options)->toHtml();
+            return $this->html->tag('div', $span, ['class' => 'input-group-addon']);
+        };
+
+        $iconObject = new Builders\Icons\Icon($this->app, $icon);
+        return (new Icon($this->app, $callback, $iconObject, $options))->toHtml();
     }
 }

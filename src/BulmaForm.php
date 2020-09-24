@@ -228,7 +228,7 @@ class BulmaForm extends FormBuilder
      * @param array $options
      * @return Button
      */
-    public function addonButton(string $label, array $options = [])
+    public function addonButton(string $label, array $options = []): Button
     {
         $callback = function ($label, $options) {
             $this->addFormElementClass($options, 'button');
@@ -244,7 +244,7 @@ class BulmaForm extends FormBuilder
      * @param array $options
      * @return Text
      */
-    public function addonText(string $text, array $options = [])
+    public function addonText(string $text, array $options = []): Text
     {
         $callback = function (string $text, array $options) {
             $this->addFormElementClass($options, 'button');
@@ -260,14 +260,15 @@ class BulmaForm extends FormBuilder
      * @param array $options
      * @return Icon
      */
-    public function addonIcon(string $icon, array $options = [])
+    public function addonIcon(string $icon, array $options = []): Icon
     {
-        $iconObject = new Builders\Icons\Icon($this->app, $icon);
         $callback = function (Builders\Icons\Icon $iconObject) {
             $this->addFormElementClass($iconClass, $iconObject->className());
             $i = $this->html->tag('i', '', $iconClass);
             return $this->html->tag('span', $i->toHtml(), ['class' => 'icon is-small :class_name']);
         };
+
+        $iconObject = new Builders\Icons\Icon($this->app, $icon);
         return new Icon($this->app, $callback, $iconObject, $options);
     }
 }
