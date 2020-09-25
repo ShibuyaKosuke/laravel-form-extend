@@ -40,6 +40,20 @@ class Bootstrap4FormTest extends TestCase
         }
     }
 
+    public function testSomeInputHorizontalWithoutLabel()
+    {
+        $this->setType(Bootstrap4Form::HORIZONTAL);
+
+        foreach ($this->types as $type) {
+            $name = 'input-name';
+            $output = $this->form->input($type, $name, false);
+
+            $this->input($output, $type, $name);
+            $this->hasClass($output, 'input', 'form-control');
+            $this->assertHtml($output, '//div/input');
+        }
+    }
+
     public function testSomeInputVertical()
     {
         $this->setType(Bootstrap4Form::VERTICAL);
@@ -70,6 +84,18 @@ class Bootstrap4FormTest extends TestCase
         $this->assertHtml($output, "//div/input[@name='$name'][@type='$type']");
     }
 
+    public function testVerticalInputWithoutLabel()
+    {
+        $this->setType(Bootstrap4Form::VERTICAL);
+        $type = 'text';
+        $name = 'input-name';
+        $output = $this->form->input($type, $name);
+        $this->hasClass($output, 'div', 'form-group');
+        $this->input($output, $type, $name);
+        $this->hasClass($output, 'input', 'form-control');
+        $this->assertHtml($output, "//div/input[@name='$name'][@type='$type']");
+    }
+
     public function testHorizontal()
     {
         $output = $this->form->horizontal();
@@ -93,6 +119,7 @@ class Bootstrap4FormTest extends TestCase
         $this->assertHtml($output, "//div/div/label[@for='$name']");
         $this->assertHtml($output, "//div/div/input[@name='$name']");
 
+        $this->validate($name);
         $this->setType(Bootstrap4Form::VERTICAL);
         $output = $this->form->file($name, $label);
 
@@ -122,6 +149,7 @@ class Bootstrap4FormTest extends TestCase
         $this->setType(Bootstrap4Form::VERTICAL);
         $name = 'input-name';
         $label = 'select';
+        $this->validate($name);
         $output = $this->form->select($name, $label);
         $this->select($output, $name);
         $this->label($output, $name, $label);
@@ -214,7 +242,7 @@ class Bootstrap4FormTest extends TestCase
         $output = $this->form->input(
             'text',
             'label',
-            false,
+            'label',
             null,
             ['prefix' => $this->form->addonIcon('solid.envelope')]
         );

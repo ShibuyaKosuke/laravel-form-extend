@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Button;
@@ -100,10 +101,15 @@ class BulmaForm extends FormBuilder
      * @param string|null $value
      * @param array $options
      * @return HtmlString
-     * @throws \Exception
+     * @throws Exception
      */
-    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
-    {
+    public function input(
+        string $type,
+        string $name,
+        $label = null,
+        string $value = null,
+        array $options = []
+    ): HtmlString {
         if ($this->getFieldError($name)) {
             $this->addFormElementClass($options, $this->getFormControlErrorClassName());
         }
@@ -136,9 +142,9 @@ class BulmaForm extends FormBuilder
      * @param HtmlString|string $inputElement
      * @param array $options
      * @return HtmlString
-     * @throws \Exception
+     * @throws Exception
      */
-    public function withAddon($inputElement, $options)
+    public function withAddon(HtmlString $inputElement, array $options)
     {
         $prefix = $options['prefix'] ?? null;
 
@@ -190,7 +196,7 @@ class BulmaForm extends FormBuilder
      * @param array $optionsAttrs
      * @param array $optgroupsAttrs
      * @return HtmlString
-     * @throws \Exception
+     * @throws Exception
      */
     public function select(
         string $name,

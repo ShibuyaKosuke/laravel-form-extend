@@ -126,7 +126,7 @@ class Bootstrap3Form extends FormBuilder
     /**
      * @param string $label
      * @param array $options
-     * @return string
+     * @return Button
      */
     public function addonButton(string $label, array $options = []): Button
     {

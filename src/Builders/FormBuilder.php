@@ -13,6 +13,14 @@ use Illuminate\Support\HtmlString;
 use DateTime;
 use Illuminate\Support\ViewErrorBag;
 use ShibuyaKosuke\LaravelFormExtend\Contracts\Addon;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Button;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Checkbox;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Form;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\HelpText;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Input;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Radio;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Select;
+use ShibuyaKosuke\LaravelFormExtend\Contracts\Textarea;
 use ShibuyaKosuke\LaravelFormExtend\Exceptions\FormExtendException;
 use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
 
@@ -20,7 +28,7 @@ use ShibuyaKosuke\LaravelFormExtend\Providers\ServiceProvider;
  * Class FormBuilder
  * @package ShibuyaKosuke\LaravelFormExtend\Builders
  */
-abstract class FormBuilder implements Addon
+abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radio, HelpText, Select, Textarea
 {
     /**
      * Vertical form
@@ -165,7 +173,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function open($options = [])
+    public function open(array $options = []): HtmlString
     {
         if (array_key_exists('error_bag', $options)) {
             $this->setErrorBag($options['error_bag']);
@@ -299,7 +307,7 @@ abstract class FormBuilder implements Addon
      * @param array $options
      * @return HtmlString
      */
-    public function withAddon($inputElement, $options)
+    public function withAddon(HtmlString $inputElement, array $options)
     {
         $prefix = isset($options['prefix']) ? $options['prefix']->toHtml() : null;
 
@@ -326,8 +334,13 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function input(string $type, string $name, $label = null, string $value = null, array $options = [])
-    {
+    public function input(
+        string $type,
+        string $name,
+        $label = null,
+        ?string $value = null,
+        array $options = []
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $optionsField = Arr::except($options, ['suffix', 'prefix']);
@@ -353,7 +366,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function password(string $name, $label = null, $options = []): HtmlString
+    public function password(string $name, $label = null, array $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, '', $options);
     }
@@ -367,7 +380,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function range(string $name, $label = null, $value = null, $options = []): HtmlString
+    public function range(string $name, $label = null, ?string $value = null, array $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -394,7 +407,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function number(string $name, $label = null, $value = null, $options = []): HtmlString
+    public function number(string $name, $label = null, ?string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -408,7 +421,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function text(string $name, $label, $value = null, $options = []): HtmlString
+    public function text(string $name, $label, ?string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -422,7 +435,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function search(string $name, $label, $value = null, $options = []): HtmlString
+    public function search(string $name, $label, ?string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -464,7 +477,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function date(string $name, $label, string $value = null, $options = []): HtmlString
+    public function date(string $name, $label, $value = null, $options = []): HtmlString
     {
         if ($value instanceof DateTime) {
             $value = $value->format('Y-m-d');
@@ -536,7 +549,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function url(string $name, $label, $value = null, $options = []): HtmlString
+    public function url(string $name, $label, string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }
@@ -581,7 +594,7 @@ abstract class FormBuilder implements Addon
      * @param array $options attributes array
      * @return HtmlString
      */
-    public function color(string $name, $label, $value = null, $options = []): HtmlString
+    public function color(string $name, $label, string $value = null, $options = []): HtmlString
     {
         return $this->input(__FUNCTION__, $name, $label, $value, $options);
     }

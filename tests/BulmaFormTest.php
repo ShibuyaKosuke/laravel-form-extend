@@ -122,7 +122,14 @@ class BulmaFormTest extends TestCase
         $this->setType(BulmaForm::VERTICAL);
         $name = 'input-name';
         $label = 'select';
-        $output = $this->form->select($name, $label);
+        $this->validate($name);
+        $output = $this->form->select(
+            $name,
+            $label,
+            [],
+            null,
+            ['prefix' => $this->form->addonText('addon')]
+        );
         $this->select($output, $name);
         $this->label($output, $name, $label);
         $this->assertHtml($output, "//div/label[@for='$name']");
@@ -161,7 +168,7 @@ class BulmaFormTest extends TestCase
         $this->assertHtml($output, "//span/i");
     }
 
-    public function testInputWithAddon()
+    public function testInputWithAddon(): void
     {
         $this->validate('label');
         $output = $this->form->input(
@@ -200,7 +207,7 @@ class BulmaFormTest extends TestCase
         $this->assertHtml($output, "//div/div/div/input");
     }
 
-    public function testInputHorizontalWithAddon()
+    public function testInputHorizontalWithAddon(): void
     {
         $this->setType(BulmaForm::HORIZONTAL);
 
@@ -256,27 +263,27 @@ class BulmaFormTest extends TestCase
         $this->assertHtml($output, "//div/div/div/input");
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $output = $this->getSelect();
         $this->assertHtml($output, '//div/label');
         $this->assertHtml($output, '//div/select');
     }
 
-    public function testTextarea()
+    public function testTextarea(): void
     {
         $output = $this->getTextarea();
         $this->assertHtml($output, '//div/label');
         $this->assertHtml($output, '//div/textarea');
     }
 
-    public function testButton()
+    public function testButton(): void
     {
         $output = $this->getButton();
         $this->assertHtml($output, '//div/button');
     }
 
-    public function testSubmit()
+    public function testSubmit(): void
     {
         $output = $this->getSubmit();
         $this->assertHtml($output, '//div[@class="field"]/input[@class="button is-primary"]');

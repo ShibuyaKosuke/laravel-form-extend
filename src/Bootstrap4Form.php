@@ -2,6 +2,7 @@
 
 namespace ShibuyaKosuke\LaravelFormExtend;
 
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Button;
@@ -36,11 +37,14 @@ class Bootstrap4Form extends FormBuilder
             $this->addFormElementClass($attributes, 'row');
 
             // label
-            $this->addFormElementClass($labelAttributes, $this->getClassName('left_column_class'));
-            $label = $this->html->tag('div', implode([$label]), $labelAttributes);
+            if (!is_null($label)) {
+                $this->addFormElementClass($labelAttributes, $this->getClassName('left_column_class'));
+                $label = $this->html->tag('div', implode([$label]), $labelAttributes);
+            }
 
             $formAttributes = [];
             $this->addFormElementClass($formAttributes, $this->getClassName('right_column_class'));
+
             if (is_null($label)) {
                 $this->addFormElementClass($formAttributes, $this->getClassName('left_column_offset_class'));
             }
@@ -97,7 +101,7 @@ class Bootstrap4Form extends FormBuilder
      * @param string $name
      * @return HtmlString
      */
-    public function withAddonForBootstrap4($inputElement, $options, string $name)
+    public function withAddonForBootstrap4(HtmlString $inputElement, array $options, string $name): HtmlString
     {
         $prefix = str_replace(
             ':class_name',
@@ -221,7 +225,7 @@ class Bootstrap4Form extends FormBuilder
      * @param string $icon
      * @param array $options
      * @return Icon
-     * @throws \Exception
+     * @throws Exception
      */
     public function addonIcon(string $icon, array $options = []): Icon
     {
