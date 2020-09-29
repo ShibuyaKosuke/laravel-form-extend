@@ -343,7 +343,8 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $label = null,
         ?string $value = null,
         array $options = []
-    ): HtmlString {
+    ): HtmlString
+    {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $optionsField = Arr::except($options, ['suffix', 'prefix']);
@@ -682,7 +683,8 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         array $selectAttrs = [],
         array $optionsAttrs = [],
         array $optgroupsAttrs = []
-    ): HtmlString {
+    ): HtmlString
+    {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
@@ -763,7 +765,8 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checked = null,
         $inline = false,
         array $options = []
-    ): HtmlString {
+    ): HtmlString
+    {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
 
@@ -795,7 +798,8 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checkedValues = [],
         $inline = false,
         array $options = []
-    ): HtmlString {
+    ): HtmlString
+    {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
             $checked = in_array($value, (array)$checkedValues);
@@ -850,7 +854,8 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checked = null,
         $inline = false,
         array $options = []
-    ): HtmlString {
+    ): HtmlString
+    {
         $this->addFormElementClass($options, $this->getRadioInputClassName($inline));
         $inputElement = $this->form->radio($name, $value, $checked, $options);
 
@@ -882,7 +887,8 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checkedValue = null,
         $inline = false,
         array $options = []
-    ): HtmlString {
+    ): HtmlString
+    {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
@@ -913,19 +919,16 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
      */
     protected function addFormElementClass(?array &$options, string $value)
     {
-        if (!is_null($options) && !is_array($options)) {
-            return $options;
-        }
-
         if (!Arr::has($options, 'class')) {
             Arr::set($options, 'class', []);
         }
-        if ($value !== '') {
-            if (is_string($options['class'])) {
-                $options['class'] = explode(' ', $options['class']);
-            }
+        if (is_string($options['class'])) {
+            $options['class'] = explode(' ', $options['class']);
+        }
+        if ($value !== '' && !in_array($value, $options['class'], true)) {
             $options['class'][] = $value;
         }
+        $options['class'] = array_unique($options['class']);
         return $options;
     }
 
