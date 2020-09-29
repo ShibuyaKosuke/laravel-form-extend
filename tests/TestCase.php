@@ -1920,7 +1920,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         $name = 'checkbox';
         $label = 'checkbox-label';
-        return $this->form->checkboxes($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
+        return $this->form->checkboxes($name, $label, [1 => 'choice-1', 2 => 'choice-2']);
     }
 
     protected function getRadio(): HtmlString
@@ -1934,7 +1934,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         $name = 'radio';
         $label = 'radio-label';
-        return $this->form->radios($name, $label, [1 => 'choice-1', 2 => 'choice-2¬']);
+        return $this->form->radios($name, $label, [1 => 'choice-1', 2 => 'choice-2']);
     }
 
     protected function getSelect(): HtmlString

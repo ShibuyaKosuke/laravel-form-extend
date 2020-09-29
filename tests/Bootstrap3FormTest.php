@@ -262,4 +262,41 @@ class Bootstrap3FormTest extends TestCase
         $output = $this->form->text('name', ['html' => 'label' . '<span class="required text-danger">*</span>']);
         $this->assertHtml($output, '//div[@class="form-group"]/label[@for="name"]/span[@class="required text-danger"]');
     }
+
+    public function testFormGroupWithoutLavel()
+    {
+        $this->setType(Bootstrap3Form::HORIZONTAL);
+        $output = $this->form->text('name', false);
+        $this->assertHtml($output, '//div[@class="form-group"]/div/input');
+    }
+
+    public function testFileOnError()
+    {
+        $name = 'input-name';
+        $label = 'file';
+        $type = 'file';
+        $this->validate($name);
+        $output = $this->form->file($name, $label);
+        $this->input($output, $type, $name);
+        $this->assertHtml($output, "//div/label[@for=\"$name\"]");
+        $this->assertHtml($output, "//div/input[@name=\"$name\"]");
+    }
+
+    public function testCheckboxesInline()
+    {
+        $name = 'checkbox';
+        $label = 'checkbox-label';
+        $output = $this->form->checkboxes($name, $label, [1 => 'choice-1', 2 => 'choice-2'], [1], true);
+        $this->assertHtml($output, "//div[@class=\"form-group\"]");
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]/div/label[@class=\"checkbox-inline\"]",
+            2
+        );
+        $this->assertHtml(
+            $output,
+            "//div[@class=\"form-group\"]/div/label[@class=\"checkbox-inline\"]/input",
+            2
+        );
+    }
 }
