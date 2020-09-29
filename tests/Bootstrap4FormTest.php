@@ -374,4 +374,10 @@ class Bootstrap4FormTest extends TestCase
         $output = $this->getSubmit();
         $this->assertHtml($output, '//div/input[@class="btn btn-primary"]');
     }
+
+    public function testLabelHtml()
+    {
+        $output = $this->form->text('name', ['html' => '氏名' . '<span class="required text-danger">*</span>']);
+        $this->assertHtml($output, '//div[@class="form-group"]/label[@for="name"]/span[@class="required text-danger"]');
+    }
 }

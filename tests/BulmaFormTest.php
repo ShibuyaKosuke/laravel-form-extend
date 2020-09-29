@@ -288,4 +288,10 @@ class BulmaFormTest extends TestCase
         $output = $this->getSubmit();
         $this->assertHtml($output, '//div[@class="field"]/input[@class="button is-primary"]');
     }
+
+    public function testLabelHtml()
+    {
+        $output = $this->form->text('name', ['html' => '氏名' . '<span class="required text-danger">*</span>']);
+        $this->assertHtml($output, '//div[@class="field"]/label[@for="name"]/span[@class="required text-danger"]');
+    }
 }
