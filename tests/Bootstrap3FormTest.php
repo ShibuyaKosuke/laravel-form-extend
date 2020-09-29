@@ -259,7 +259,7 @@ class Bootstrap3FormTest extends TestCase
 
     public function testLabelHtml(): void
     {
-        $output = $this->form->text('name', ['html' => '氏名' . '<span class="required text-danger">*</span>']);
+        $output = $this->form->text('name', ['html' => 'label' . '<span class="required text-danger">*</span>']);
         $this->assertHtml($output, '//div[@class="form-group"]/label[@for="name"]/span[@class="required text-danger"]');
     }
 }
