@@ -343,8 +343,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $label = null,
         ?string $value = null,
         array $options = []
-    ): HtmlString
-    {
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $optionsField = Arr::except($options, ['suffix', 'prefix']);
@@ -683,8 +682,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         array $selectAttrs = [],
         array $optionsAttrs = [],
         array $optgroupsAttrs = []
-    ): HtmlString
-    {
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getFormControlClassName());
 
         $this->addFormElementClass($selectAttrs, $this->getFormControlClassName());
@@ -765,8 +763,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checked = null,
         $inline = false,
         array $options = []
-    ): HtmlString
-    {
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getCheckboxInputClassName($inline));
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
 
@@ -798,8 +795,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checkedValues = [],
         $inline = false,
         array $options = []
-    ): HtmlString
-    {
+    ): HtmlString {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
             $checked = in_array($value, (array)$checkedValues);
@@ -854,8 +850,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checked = null,
         $inline = false,
         array $options = []
-    ): HtmlString
-    {
+    ): HtmlString {
         $this->addFormElementClass($options, $this->getRadioInputClassName($inline));
         $inputElement = $this->form->radio($name, $value, $checked, $options);
 
@@ -887,8 +882,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $checkedValue = null,
         $inline = false,
         array $options = []
-    ): HtmlString
-    {
+    ): HtmlString {
         $elements = '';
         foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
