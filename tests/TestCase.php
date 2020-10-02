@@ -46,6 +46,14 @@ abstract class TestCase extends OrchestraTestCase
         return [ServiceProvider::class];
     }
 
+    protected function getPackageAliases($app)
+    {
+        return [
+            'LaraForm' => 'ShibuyaKosuke\LaravelFormExtend\Facades\FormBuilder',
+            'LaraHtml' => 'ShibuyaKosuke\LaravelFormExtend\Facades\HtmlBuilder',
+        ];
+    }
+
     public function setType($type): void
     {
         /** @var \ReflectionClass $class */
