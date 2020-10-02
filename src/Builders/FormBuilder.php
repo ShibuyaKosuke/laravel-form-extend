@@ -93,7 +93,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
         $this->app = $app;
         $config = $this->app->config->get(ServiceProvider::KEY);
         $this->config = new Collection($config);
-        $this->default = ($default) ? $default : $this->config->get('default', $default);
+        $this->default = ($default) ?: $this->config->get('default', $default);
 
         if (is_null($this->html)) {
             $this->html = new HtmlBuilder(
@@ -310,7 +310,7 @@ abstract class FormBuilder implements Addon, Input, Form, Button, Checkbox, Radi
      * @param array $options
      * @return HtmlString
      */
-    public function withAddon(HtmlString $inputElement, array $options)
+    public function withAddon(HtmlString $inputElement, array $options): HtmlString
     {
         $prefix = isset($options['prefix']) ? $options['prefix']->toHtml() : null;
 

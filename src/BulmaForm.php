@@ -144,7 +144,7 @@ class BulmaForm extends FormBuilder
      * @return HtmlString
      * @throws Exception
      */
-    public function withAddon(HtmlString $inputElement, array $options)
+    public function withAddon(HtmlString $inputElement, array $options): HtmlString
     {
         $prefix = $options['prefix'] ?? null;
 
