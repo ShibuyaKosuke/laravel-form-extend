@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 /**
  * Class HtmlBuilder
  * @package ShibuyaKosuke\LaravelFormExtend\Builders
+ * @codeCoverageIgnore
  */
 class HtmlBuilder
 {

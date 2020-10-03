@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * Class ServiceProvider
  * @package ShibuyaKosuke\LaravelFormExtend\Providers
+ * @codeCoverageIgnore
  */
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
