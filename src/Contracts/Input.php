@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface Input
  * @package ShibuyaKosuke\LaravelFormExtend\Contracts
+ * @codeCoverageIgnore
  */
 interface Input
 {

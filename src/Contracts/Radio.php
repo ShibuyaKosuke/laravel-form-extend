@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface Radio
  * @package ShibuyaKosuke\LaravelFormExtend\Contracts
+ * @codeCoverageIgnore
  */
 interface Radio
 {

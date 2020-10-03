@@ -9,6 +9,7 @@ use ShibuyaKosuke\LaravelFormExtend\Builders\Addons\Text;
 /**
  * Interface Addon
  * @package ShibuyaKosuke\LaravelFormExtend\Builders
+ * @codeCoverageIgnore
  */
 interface Addon
 {

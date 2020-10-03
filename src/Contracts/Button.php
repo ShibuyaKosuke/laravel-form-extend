@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface Button
  * @package ShibuyaKosuke\LaravelFormExtend\Contracts
+ * @codeCoverageIgnore
  */
 interface Button
 {

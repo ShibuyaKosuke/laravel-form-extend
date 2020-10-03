@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface Select
  * @package ShibuyaKosuke\LaravelFormExtend\Contracts
+ * @codeCoverageIgnore
  */
 interface Select
 {

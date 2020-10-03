@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface Checkbox
  * @package ShibuyaKosuke\LaravelFormExtend\Contracts
+ * @codeCoverageIgnore
  */
 interface Checkbox
 {

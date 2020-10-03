@@ -7,6 +7,7 @@ use Illuminate\Support\HtmlString;
 /**
  * Interface Textarea
  * @package ShibuyaKosuke\LaravelFormExtend\Contracts
+ * @codeCoverageIgnore
  */
 interface Textarea
 {

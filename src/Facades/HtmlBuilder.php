@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Class HtmlBuilder
  * @package ShibuyaKosuke\LaravelFormExtend\Facades
+ * @codeCoverageIgnore
  */
 class HtmlBuilder extends Facade
 {
