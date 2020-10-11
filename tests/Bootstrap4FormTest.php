@@ -60,10 +60,11 @@ class Bootstrap4FormTest extends TestCase
 
         foreach ($this->types as $type) {
             $name = 'input-name';
-            $output = $this->form->input($type, $name);
+            $value = 'value';
+            $output = $this->form->input($type, $name, $name, $value);
 
             $this->label($output, $name, $name);
-            $this->input($output, $type, $name);
+            $this->input($output, $type, $name, $value);
             $this->hasClass($output, 'input', 'form-control');
             $this->assertHtml($output, '//div/label');
             $this->assertHtml($output, '//div/input');

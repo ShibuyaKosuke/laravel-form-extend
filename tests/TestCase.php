@@ -114,10 +114,13 @@ abstract class TestCase extends OrchestraTestCase
 
     abstract public function horizontal($output);
 
-    public function input($output, $type, $name)
+    public function input($output, $type, $name, $value = null): void
     {
         $this->hasAttribute($output, 'input', 'type', $type);
         $this->hasAttribute($output, 'input', 'name', $name);
+        if ($value) {
+            $this->hasAttribute($output, 'input', 'value', $value);
+        }
     }
 
     public function label($output, $name, $label): void
