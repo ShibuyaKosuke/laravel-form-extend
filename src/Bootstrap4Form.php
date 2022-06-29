@@ -106,12 +106,12 @@ class Bootstrap4Form extends FormBuilder
         $prefix = str_replace(
             ':class_name',
             'input-group-prepend',
-            isset($options['prefix']) ? $options['prefix']->toHtml() : null
+            isset($options['prefix']) ? $options['prefix']->toHtml() : ''
         );
         $suffix = str_replace(
             ':class_name',
             'input-group-append',
-            isset($options['suffix']) ? $options['suffix']->toHtml() : null
+            isset($options['suffix']) ? $options['suffix']->toHtml() : ''
         );
 
         if ($prefix || $suffix) {
